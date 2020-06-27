@@ -1,0 +1,11 @@
+framework module DataProvider {
+  umbrella header "DataProvider.h"
+
+  export *
+  module * { export * }
+}
+
+module DataProvider.Swift {
+    header "DataProvider-Swift.h"
+    requires objc
+}
