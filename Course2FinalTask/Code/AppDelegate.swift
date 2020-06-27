@@ -25,6 +25,8 @@ private extension AppDelegate {
     func assembly() {
         window = UIWindow(frame: UIScreen.main.bounds)
 
+        let loginScreenViewController = LoginScreenViewController()
+
         let feedViewController = FeedViewController()
         feedViewController.tabBarItem.image = Asset.IconAssets.feed.image
         let feedNavigationController = UINavigationController(rootViewController: feedViewController)
@@ -43,7 +45,7 @@ private extension AppDelegate {
         tabBarController.tabBar.backgroundColor = Asset.ColorAssets.viewBackground.color
         tabBarController.setViewControllers([feedNavigationController, newNavigationController, profileNavigationController], animated: false)
 
-        window?.rootViewController = tabBarController
+        window?.rootViewController = loginScreenViewController
         window?.makeKeyAndVisible()
     }
 }
