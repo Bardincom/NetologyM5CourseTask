@@ -9,12 +9,12 @@
 import Foundation
 
 extension Date {
-    /// Форматирует дату в String в формате Месяц Число Год Часы
-    func displayDate() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .medium
-        dateFormatter.doesRelativeDateFormatting = true
-        return dateFormatter.string(from: self)
-    }
+  /// Форматирует дату в String в формате Месяц Число Год Часы
+  func displayDate() -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateStyle = .medium
+    dateFormatter.timeStyle = .medium
+    dateFormatter.doesRelativeDateFormatting = true
+    return dateFormatter.string(from: self)
+  }
 }

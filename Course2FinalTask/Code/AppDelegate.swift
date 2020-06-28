@@ -10,42 +10,34 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var window: UIWindow?
+  var window: UIWindow?
 
-    func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        assembly()
+  func application(_ application: UIApplication,
+                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    assembly()
 
-        return true
-    }
+    return true
+  }
 }
 
 private extension AppDelegate {
 
-    func assembly() {
-        window = UIWindow(frame: UIScreen.main.bounds)
+  func assembly() {
+    window = UIWindow(frame: UIScreen.main.bounds)
 
-        let loginScreenViewController = LoginScreenViewController()
+    let rootViewController = RootViewController()
+    window?.rootViewController = rootViewController
+    window?.makeKeyAndVisible()
+  }
+}
 
-        let feedViewController = FeedViewController()
-        feedViewController.tabBarItem.image = Asset.IconAssets.feed.image
-        let feedNavigationController = UINavigationController(rootViewController: feedViewController)
-
-        let profileViewController = ProfileViewController()
-        profileViewController.tabBarItem.title = ControllerSet.profileViewController
-        profileViewController.tabBarItem.image = Asset.IconAssets.profile.image
-        let profileNavigationController = UINavigationController(rootViewController: profileViewController)
-
-        let newPostViewController = NewPostViewController()
-        newPostViewController.tabBarItem.title = ControllerSet.newPostViewController
-        newPostViewController.tabBarItem.image = Asset.IconAssets.plus.image
-        let newNavigationController = UINavigationController(rootViewController: newPostViewController)
-
-        let tabBarController = UITabBarController()
-        tabBarController.tabBar.backgroundColor = Asset.ColorAssets.viewBackground.color
-        tabBarController.setViewControllers([feedNavigationController, newNavigationController, profileNavigationController], animated: false)
-
-        window?.rootViewController = loginScreenViewController
-        window?.makeKeyAndVisible()
-    }
+// swiftlint:disable force_cast
+// swiftlint:disable force_unwrapping
+extension AppDelegate {
+  static var shared: AppDelegate {
+    return UIApplication.shared.delegate as! AppDelegate
+  }
+  var rootViewController: RootViewController {
+    return window!.rootViewController as! RootViewController
+  }
 }

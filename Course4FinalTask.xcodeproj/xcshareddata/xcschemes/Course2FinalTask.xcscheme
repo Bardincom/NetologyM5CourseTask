@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "74B79253202B3254006BCB41"
-               BuildableName = "Course3FinalTask.app"
+               BuildableName = "Course4FinalTask.app"
                BlueprintName = "Course4FinalTask"
                ReferencedContainer = "container:Course4FinalTask.xcodeproj">
             </BuildableReference>
@@ -48,7 +48,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "74B79253202B3254006BCB41"
-            BuildableName = "Course3FinalTask.app"
+            BuildableName = "Course4FinalTask.app"
             BlueprintName = "Course4FinalTask"
             ReferencedContainer = "container:Course4FinalTask.xcodeproj">
          </BuildableReference>
@@ -65,7 +65,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "74B79253202B3254006BCB41"
-            BuildableName = "Course3FinalTask.app"
+            BuildableName = "Course4FinalTask.app"
             BlueprintName = "Course4FinalTask"
             ReferencedContainer = "container:Course4FinalTask.xcodeproj">
          </BuildableReference>
