@@ -16,7 +16,7 @@ final class LoginScreenViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    signInButton.layer.cornerRadius = 5
+    signInButton.layer.cornerRadius = cornerRadiusButton
     disableSignInButton()
     setDelegate()
   }
@@ -53,17 +53,27 @@ extension LoginScreenViewController: UITextFieldDelegate {
   }
 
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    textField.resignFirstResponder()
+    guard
+      let login = login.text,
+      let password = password.text,
+      !login.isEmpty && !password.isEmpty else {
+        displayAlert()
+        return false
+    }
+
+    AppDelegate.shared.rootViewController.switchToFeedViewController()
     return true
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
-    guard let simbolCount = login.text?.count else { return }
-
-    if simbolCount > 0 {
-      enableSignInButton()
-    } else {
-      disableSignInButton()
+    guard
+      let login = login.text,
+      let password = password.text,
+      !login.isEmpty && !password.isEmpty else {
+        disableSignInButton()
+        return
     }
+
+    enableSignInButton()
   }
 }
