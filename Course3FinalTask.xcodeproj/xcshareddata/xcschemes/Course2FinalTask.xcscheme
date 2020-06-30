@@ -16,8 +16,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "74B79253202B3254006BCB41"
                BuildableName = "Course3FinalTask.app"
-               BlueprintName = "Course4FinalTask"
-               ReferencedContainer = "container:Course4FinalTask.xcodeproj">
+               BlueprintName = "Course3FinalTask"
+               ReferencedContainer = "container:Course3FinalTask.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -49,8 +49,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "74B79253202B3254006BCB41"
             BuildableName = "Course3FinalTask.app"
-            BlueprintName = "Course4FinalTask"
-            ReferencedContainer = "container:Course4FinalTask.xcodeproj">
+            BlueprintName = "Course3FinalTask"
+            ReferencedContainer = "container:Course3FinalTask.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -66,8 +66,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "74B79253202B3254006BCB41"
             BuildableName = "Course3FinalTask.app"
-            BlueprintName = "Course4FinalTask"
-            ReferencedContainer = "container:Course4FinalTask.xcodeproj">
+            BlueprintName = "Course3FinalTask"
+            ReferencedContainer = "container:Course3FinalTask.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
