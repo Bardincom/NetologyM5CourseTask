@@ -14,6 +14,8 @@ final class LoginScreenViewController: UIViewController {
   @IBOutlet private var password: UITextField!
   @IBOutlet private var signInButton: UIButton!
 
+  lazy var rootViewController = AppDelegate.shared.rootViewController
+
   override func viewDidLoad() {
     super.viewDidLoad()
     signInButton.layer.cornerRadius = cornerRadiusButton
@@ -22,7 +24,7 @@ final class LoginScreenViewController: UIViewController {
   }
 
   @IBAction func sendAuthorizationRequest(_ sender: Any) {
-    AppDelegate.shared.rootViewController.switchToFeedViewController()
+    rootViewController.switchToFeedViewController()
   }
 
   @IBAction func hideKeyboard(_ sender: UITapGestureRecognizer) {
@@ -61,7 +63,7 @@ extension LoginScreenViewController: UITextFieldDelegate {
         return false
     }
 
-    AppDelegate.shared.rootViewController.switchToFeedViewController()
+    rootViewController.switchToFeedViewController()
     return true
   }
 

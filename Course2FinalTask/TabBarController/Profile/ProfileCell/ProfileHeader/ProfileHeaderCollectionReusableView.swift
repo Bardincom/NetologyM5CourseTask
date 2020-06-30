@@ -30,8 +30,8 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
   override func awakeFromNib() {
     super.awakeFromNib()
 
-    userDataProviders.currentUser(queue: queue) { user in
-      self.currentUser = user
+    userDataProviders.currentUser(queue: queue) { [weak self] user in
+      self?.currentUser = user
     }
 
     followButton.layer.cornerRadius = 6

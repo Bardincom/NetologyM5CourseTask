@@ -45,7 +45,6 @@ final class FeedCollectionViewCell: UICollectionViewCell {
 
   }
 
-  /// настройка ленты
   func setupFeed(post: Post) {
     dateLabel.text = post.createdTime.displayDate()
     avatarImageView.image = post.authorAvatar

@@ -31,7 +31,7 @@ class RootViewController: UIViewController {
   }
 
   func switchToFeedViewController() {
-    let feedScreen = assemblytabBarController()
+    let feedScreen = assemblyTabBarController()
     addChild(feedScreen)
     feedScreen.view.frame = view.bounds
     view.addSubview(feedScreen.view)
@@ -57,7 +57,7 @@ class RootViewController: UIViewController {
 }
 
 private extension RootViewController {
-  func assemblytabBarController() -> UITabBarController {
+  func assemblyTabBarController() -> UITabBarController {
     let feedViewController = FeedViewController()
     feedViewController.tabBarItem.image = Asset.IconAssets.feed.image
     let feedNavigationController = UINavigationController(rootViewController: feedViewController)

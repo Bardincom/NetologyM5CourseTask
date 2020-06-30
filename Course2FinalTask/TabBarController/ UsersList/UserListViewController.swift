@@ -23,9 +23,7 @@ class UserListViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    if let navigationItemTitle = navigationItemTitle {
-      self.navigationItem.title = navigationItemTitle
-    }
+    navigationItemTitle = navigationItem.title
   }
 }
 
@@ -54,7 +52,7 @@ extension UserListViewController: UITableViewDelegate {
 
     let profileViewController = ProfileViewController()
     profileViewController.feedUserID = selectUser.id
-    self.navigationController?.pushViewController(profileViewController, animated: true)
+    navigationController?.pushViewController(profileViewController, animated: true)
     userListTableView.deselectRow(at: indexPath, animated: true)
   }
 }

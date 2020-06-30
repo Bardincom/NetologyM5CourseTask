@@ -30,7 +30,8 @@ final class FeedViewController: UIViewController {
 
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    postsDataProviders.feed(queue: queue) { posts in
+    postsDataProviders.feed(queue: queue) { [weak self] posts in
+      guard let self = self else { return }
       guard let posts = posts else {
         self.alertAction = { bool in
           if bool {
@@ -148,8 +149,8 @@ extension FeedViewController: FeedCollectionViewProtocol {
       return
     }
 
-    postsDataProviders.likePost(with: postID, queue: queue) { post in
-      self.post = post
+    postsDataProviders.likePost(with: postID, queue: queue) { [weak self] post in
+      self?.post = post
     }
 
     postsArray[indexPath.row].currentUserLikesThisPost = true

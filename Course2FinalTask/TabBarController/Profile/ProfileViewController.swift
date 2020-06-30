@@ -16,6 +16,7 @@ final class ProfileViewController: UIViewController {
   var currentUser: User?
 
   private var postsProfile: [Post]?
+  lazy var rootViewController = AppDelegate.shared.rootViewController
 
   @IBOutlet weak private var profileCollectionView: UICollectionView! {
     willSet {
@@ -148,7 +149,7 @@ extension ProfileViewController {
 
   @objc
   private func logout() {
-    AppDelegate.shared.rootViewController.switchToLogout()
+    rootViewController.switchToLogout()
   }
 
   /// Загрузка профиля друга из ленты
@@ -156,14 +157,16 @@ extension ProfileViewController {
 
     ActivityIndicator.start()
     feedUserID = id
-    userDataProviders.user(with: id, queue: queue) { user in
+    userDataProviders.user(with: id, queue: queue) { [weak self] user in
+      guard let self = self else { return }
       guard let user = user else {
         self.displayAlert()
         return
       }
       self.userProfile = user
 
-      postsDataProviders.findPosts(by: user.id, queue: queue) { posts in
+      postsDataProviders.findPosts(by: user.id, queue: queue) { [weak self] posts in
+        guard let self = self else { return }
         guard let cPosts = posts else {
           self.displayAlert()
           return
@@ -178,14 +181,16 @@ extension ProfileViewController {
   func loadCurrentUser() {
 
     ActivityIndicator.start()
-    userDataProviders.currentUser(queue: queue) { user in
+    userDataProviders.currentUser(queue: queue) { [weak self] user in
+      guard let self = self else { return }
       guard let cUser = user else {
         self.displayAlert()
         return
       }
       self.userProfile = cUser
 
-      postsDataProviders.findPosts(by: cUser.id, queue: queue) { posts in
+      postsDataProviders.findPosts(by: cUser.id, queue: queue) { [weak self] posts in
+        guard let self = self else { return }
         guard let cPosts = posts else {
           self.displayAlert()
           return
@@ -208,7 +213,8 @@ extension ProfileViewController: ProfileHeaderDelegate {
     let userListViewController = UserListViewController()
 
     guard let userID = userProfile?.id else { return }
-    userDataProviders.usersFollowingUser(with: userID, queue: queue) { users in
+    userDataProviders.usersFollowingUser(with: userID, queue: queue) { [weak self] users in
+      guard let self = self else { return }
       guard let users = users else {
         self.displayAlert()
         return }
