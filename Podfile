@@ -8,6 +8,7 @@ target 'Course3FinalTask' do
 
   # Pods for Course3FinalTask
   pod 'SwiftLint'
-  pod 'SwiftGen' 
+  pod 'SwiftGen'
+  pod 'Kingfisher'
 
 end
