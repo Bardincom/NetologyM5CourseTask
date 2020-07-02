@@ -392,6 +392,7 @@
 				74B79251202B3254006BCB41 /* Frameworks */,
 				74B79252202B3254006BCB41 /* Resources */,
 				74B7927A202B33EA006BCB41 /* Embed Frameworks */,
+				980E8D1CB52619920C654B62 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -465,6 +466,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		980E8D1CB52619920C654B62 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Course3FinalTask/Pods-Course3FinalTask-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Course3FinalTask/Pods-Course3FinalTask-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Course3FinalTask/Pods-Course3FinalTask-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		A2FE06AC246FC0A10051CC9E /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 12;
