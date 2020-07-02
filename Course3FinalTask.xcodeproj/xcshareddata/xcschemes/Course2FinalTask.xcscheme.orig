@@ -15,8 +15,15 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "74B79253202B3254006BCB41"
+<<<<<<< HEAD:Course3FinalTask.xcodeproj/xcshareddata/xcschemes/Course2FinalTask.xcscheme
+               BuildableName = "Course4FinalTask.app"
+               BlueprintName = "Course4FinalTask"
+               ReferencedContainer = "container:Course4FinalTask.xcodeproj">
+=======
+               BuildableName = "Course3FinalTask.app"
                BlueprintName = "Course3FinalTask"
                ReferencedContainer = "container:Course3FinalTask.xcodeproj">
+>>>>>>> develop:Course4FinalTask.xcodeproj/xcshareddata/xcschemes/Course2FinalTask.xcscheme
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,9 +54,15 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "74B79253202B3254006BCB41"
+<<<<<<< HEAD:Course3FinalTask.xcodeproj/xcshareddata/xcschemes/Course2FinalTask.xcscheme
             BuildableName = "Course4FinalTask.app"
+            BlueprintName = "Course4FinalTask"
+            ReferencedContainer = "container:Course4FinalTask.xcodeproj">
+=======
+            BuildableName = "Course3FinalTask.app"
             BlueprintName = "Course3FinalTask"
             ReferencedContainer = "container:Course3FinalTask.xcodeproj">
+>>>>>>> develop:Course4FinalTask.xcodeproj/xcshareddata/xcschemes/Course2FinalTask.xcscheme
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -64,9 +77,15 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "74B79253202B3254006BCB41"
+<<<<<<< HEAD:Course3FinalTask.xcodeproj/xcshareddata/xcschemes/Course2FinalTask.xcscheme
             BuildableName = "Course4FinalTask.app"
+            BlueprintName = "Course4FinalTask"
+            ReferencedContainer = "container:Course4FinalTask.xcodeproj">
+=======
+            BuildableName = "Course3FinalTask.app"
             BlueprintName = "Course3FinalTask"
             ReferencedContainer = "container:Course3FinalTask.xcodeproj">
+>>>>>>> develop:Course4FinalTask.xcodeproj/xcshareddata/xcschemes/Course2FinalTask.xcscheme
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
