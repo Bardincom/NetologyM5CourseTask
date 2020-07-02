@@ -19,9 +19,12 @@
 		A25685C024335B9400A09C0D /* UserListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27133B32413B2B0007E13BC /* UserListTableViewCell.swift */; };
 		A25E5462240C275200478BC5 /* ProfileHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25E5460240C275200478BC5 /* ProfileHeaderCollectionReusableView.swift */; };
 		A25E5463240C275200478BC5 /* ProfileHeaderCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A25E5461240C275200478BC5 /* ProfileHeaderCollectionReusableView.xib */; };
+<<<<<<< HEAD
 		A262D14A24AB85A200022684 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262D14624AB85A200022684 /* RootViewController.swift */; };
 		A262D14B24AB85A200022684 /* LoginScreenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A262D14824AB85A200022684 /* LoginScreenViewController.xib */; };
 		A262D14C24AB85A200022684 /* LoginScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262D14924AB85A200022684 /* LoginScreenViewController.swift */; };
+=======
+>>>>>>> develop
 		A27133AA240F7FB8007E13BC /* UIViewController Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27133A9240F7FB8007E13BC /* UIViewController Properties.swift */; };
 		A27133AC240FC416007E13BC /* Date + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27133AB240FC416007E13BC /* Date + Extension.swift */; };
 		A27133B12413B259007E13BC /* UserListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A27133AF2413B259007E13BC /* UserListViewController.xib */; };
@@ -81,9 +84,12 @@
 		A23BC8A92419054400640E54 /* UIFont Properties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont Properties.swift"; sourceTree = "<group>"; };
 		A25E5460240C275200478BC5 /* ProfileHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		A25E5461240C275200478BC5 /* ProfileHeaderCollectionReusableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileHeaderCollectionReusableView.xib; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		A262D14624AB85A200022684 /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		A262D14824AB85A200022684 /* LoginScreenViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginScreenViewController.xib; sourceTree = "<group>"; };
 		A262D14924AB85A200022684 /* LoginScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginScreenViewController.swift; sourceTree = "<group>"; };
+=======
+>>>>>>> develop
 		A27133A9240F7FB8007E13BC /* UIViewController Properties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController Properties.swift"; sourceTree = "<group>"; };
 		A27133AB240FC416007E13BC /* Date + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date + Extension.swift"; sourceTree = "<group>"; };
 		A27133AE2413B259007E13BC /* UserListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListViewController.swift; sourceTree = "<group>"; };
@@ -181,9 +187,13 @@
 			isa = PBXGroup;
 			children = (
 				74B7927B202B3427006BCB41 /* Code */,
+<<<<<<< HEAD
 				A262D14524AB85A200022684 /* RootViewController */,
 				A262D14724AB85A200022684 /* LoginViewController */,
 				A2F7486224041F1700396045 /* TabBarController */,
+=======
+				A2F7486224041F1700396045 /* Controller */,
+>>>>>>> develop
 				A293F705240BB86A003D5A96 /* Helpers */,
 				74B7927C202B342E006BCB41 /* Resources */,
 				74B7927D202B3434006BCB41 /* Supporting Files */,
@@ -246,6 +256,7 @@
 			path = ProfileHeader;
 			sourceTree = "<group>";
 		};
+<<<<<<< HEAD
 		A262D14524AB85A200022684 /* RootViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -263,6 +274,8 @@
 			path = LoginViewController;
 			sourceTree = "<group>";
 		};
+=======
+>>>>>>> develop
 		A27133AD2413B195007E13BC /*  UsersList */ = {
 			isa = PBXGroup;
 			children = (
@@ -343,7 +356,11 @@
 			path = NewPost;
 			sourceTree = "<group>";
 		};
+<<<<<<< HEAD
 		A2F7486224041F1700396045 /* TabBarController */ = {
+=======
+		A2F7486224041F1700396045 /* Controller */ = {
+>>>>>>> develop
 			isa = PBXGroup;
 			children = (
 				A25E545C240C269F00478BC5 /* Feed */,
@@ -351,7 +368,11 @@
 				A27133AD2413B195007E13BC /*  UsersList */,
 				A2C014DE2454F16F001A4894 /* NewPost */,
 			);
+<<<<<<< HEAD
 			path = TabBarController;
+=======
+			path = Controller;
+>>>>>>> develop
 			sourceTree = "<group>";
 		};
 		A2FE06D8247307AD0051CC9E /* Constants */ = {
@@ -445,7 +466,10 @@
 				A27133B62413B2B0007E13BC /* UserListTableViewCell.xib in Resources */,
 				A2C014E52454F228001A4894 /* NewPostViewController.xib in Resources */,
 				A2FE06D72473076B0051CC9E /* swiftgen.yml in Resources */,
+<<<<<<< HEAD
 				A262D14B24AB85A200022684 /* LoginScreenViewController.xib in Resources */,
+=======
+>>>>>>> develop
 				A2F7486124041B2500396045 /* .gitignore in Resources */,
 				A2F7486624041F6200396045 /* FeedViewController.xib in Resources */,
 				A2F7486A24041F7700396045 /* ProfileViewController.xib in Resources */,
@@ -545,7 +569,10 @@
 				A277FCF5246C1B57008E14E7 /* DescriptionScreenViewController.swift in Sources */,
 				A27133B82413BB16007E13BC /* UITableView + Extension.swift in Sources */,
 				A27133AC240FC416007E13BC /* Date + Extension.swift in Sources */,
+<<<<<<< HEAD
 				A262D14A24AB85A200022684 /* RootViewController.swift in Sources */,
+=======
+>>>>>>> develop
 				A293F70C240BE7A8003D5A96 /* ProfileCollectionViewCell.swift in Sources */,
 				A23BC8A82419046E00640E54 /* DataProvider Properties.swift in Sources */,
 				A2F7486524041F6200396045 /* FeedViewController.swift in Sources */,
@@ -554,7 +581,10 @@
 				A2DF35EE2405C2C0008A9CD7 /* FeedCollectionViewCell.swift in Sources */,
 				A277FCEF246B068E008E14E7 /* UIImage + Extension.swift in Sources */,
 				A277FCEA2469B7E4008E14E7 /* FiltersCollectionViewCell.swift in Sources */,
+<<<<<<< HEAD
 				A262D14C24AB85A200022684 /* LoginScreenViewController.swift in Sources */,
+=======
+>>>>>>> develop
 				A2C014E42454F228001A4894 /* NewPostViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -697,7 +727,11 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+<<<<<<< HEAD
 				MARKETING_VERSION = 1.4;
+=======
+				MARKETING_VERSION = 1.3;
+>>>>>>> develop
 				PRODUCT_BUNDLE_IDENTIFIER = bardincom.Course3FinalTask;
 				PRODUCT_NAME = Course3FinalTask;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -728,7 +762,11 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+<<<<<<< HEAD
 				MARKETING_VERSION = 1.4;
+=======
+				MARKETING_VERSION = 1.3;
+>>>>>>> develop
 				PRODUCT_BUNDLE_IDENTIFIER = bardincom.Course3FinalTask;
 				PRODUCT_NAME = Course3FinalTask;
 				PROVISIONING_PROFILE_SPECIFIER = "";
