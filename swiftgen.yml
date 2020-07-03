@@ -1,0 +1,35 @@
+xcassets:
+  inputs:
+    - Course2FinalTask/Resources/IconAssets.xcassets
+    - Course2FinalTask/Resources/ColorAssets.xcassets
+  outputs:
+    - templateName: swift4
+      output: Course2FinalTask/Helpers/Constants/Assets.swift
+      
+#fonts:
+#  inputs:
+#    - ScoreboardTT/Resources/Fonts/
+#  outputs:
+#    - templateName: swift4
+#      output: Course2FinalTask/Helpers/Constants/Fonts.swift
+
+#strings:
+#  inputs: ScoreboardTT/Resources/Strings/en.lproj/Localizable.strings
+#  outputs:
+#    - templateName: structured-swift4
+#      output: ScoreboardTT/Resources/Constants/Strings.swift
+#      params:
+#        enumName: Localization
+#        publicAccess: 1
+#        noComments: 0
+
+#Assets.xcassets/color
+
+#Assets.xcassets/icon
+
+#xcassets:
+#paths:
+# - Resources/Images.xcassets
+# - Resources/MoreImages.xcassets
+#templateName: swift3
+#output: Generated/assets-images.swift
