@@ -18,7 +18,6 @@ final class LoginScreenViewController: UIViewController {
   private let sessionProvider = SessionProvider()
   private var keychain = Keychain.shared
 
-
   override func viewDidLoad() {
     super.viewDidLoad()
     signInButton.layer.cornerRadius = cornerRadiusButton
@@ -32,6 +31,7 @@ final class LoginScreenViewController: UIViewController {
       guard let self = self else { return }
       switch result {
         case .success(let token):
+          self.keychain.saveToken(token.token)
           print(token)
           DispatchQueue.main.async {
             self.rootViewController.switchToFeedViewController()

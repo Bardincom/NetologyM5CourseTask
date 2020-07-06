@@ -15,6 +15,7 @@ enum BackendError: Error {
   case unauthorized
   case notAcceptable
   case unprocessable
+  case transferError
 
   var errorMassege: String {
     switch self {
@@ -23,6 +24,7 @@ enum BackendError: Error {
       case .unauthorized: return "Unauthorized"
       case .notAcceptable: return "Not acceptable"
       case .unprocessable: return "Unprocessable"
+      case .transferError: return "Transfer error"
     }
   }
 }
@@ -66,11 +68,11 @@ class SessionProvider {
     guard let url = preparationURLComponents(path: path).url else { return nil }
     return url
   }
-
 }
 
 // MARK: POST
 extension SessionProvider {
+
   func signin(login: String, password: String, completionHandler: @escaping (Result<Token>) -> Void) {
     ActivityIndicator.start()
     guard let url = preparationURL(path: TokenPath.signin) else { return }
@@ -107,6 +109,18 @@ extension SessionProvider {
         completionHandler(.fail(BackendError.unauthorized))
       }
     }
+    dataTask.resume()
+  }
+
+  func signout(_ token: String) {
+    guard let url = preparationURL(path: TokenPath.signout) else { return }
+
+    var request = URLRequest(url: url)
+    request.httpMethod = httpMethod
+    defaultHeaders["token"] = token
+    request.allHTTPHeaderFields = defaultHeaders
+
+    let dataTask = sharedSession.dataTask(with: request)
     dataTask.resume()
   }
 }

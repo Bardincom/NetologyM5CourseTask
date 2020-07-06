@@ -16,7 +16,7 @@ final class Keychain {
     return keychain
   }()
 
-  private init() { }
+  private init() {}
 
   func saveToken(_ token: String) {
     let tokenData = token.data(using: .utf8)
@@ -36,9 +36,9 @@ final class Keychain {
   }
 }
 
-private extension Keychain {
+extension Keychain {
 
-  func keychainQuery() -> [String: AnyObject] {
+  private func keychainQuery() -> [String: AnyObject] {
     var query = [String: AnyObject]()
     query[kSecClass as String] = kSecClassGenericPassword
     query[kSecAttrAccessible as String] = kSecAttrAccessibleWhenUnlocked
@@ -46,7 +46,7 @@ private extension Keychain {
 
     return query
   }
-  
+
   func readToken() -> String? {
     var query = keychainQuery()
     query[kSecMatchLimit as String] = kSecMatchLimitOne
@@ -70,7 +70,5 @@ private extension Keychain {
   func deleteToken() {
     let query = keychainQuery()
     _ = SecItemDelete(query as CFDictionary)
-    //    return status == noErr
   }
 }
-
