@@ -12,7 +12,7 @@ import Kingfisher
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
-  private override init() {}
+//  private override init() {}
 
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {

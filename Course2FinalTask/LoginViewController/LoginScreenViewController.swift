@@ -15,6 +15,9 @@ final class LoginScreenViewController: UIViewController {
   @IBOutlet private var signInButton: UIButton!
 
   lazy var rootViewController = AppDelegate.shared.rootViewController
+  private let sessionProvider = SessionProvider()
+  private var keychain = Keychain.shared
+
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -24,7 +27,25 @@ final class LoginScreenViewController: UIViewController {
   }
 
   @IBAction func sendAuthorizationRequest(_ sender: Any) {
-    rootViewController.switchToFeedViewController()
+    guard let login = login.text, let password = password.text else { return }
+    sessionProvider.signin(login: login, password: password) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+        case .success(let token):
+          print(token)
+          DispatchQueue.main.async {
+            self.rootViewController.switchToFeedViewController()
+          }
+        case .fail(let backendError):
+          DispatchQueue.main.async {
+            print(backendError)
+            Alert.showAlert(self, backendError.errorMassege)
+//            self.displayAlert()
+          }
+
+      }
+    }
+
   }
 
   @IBAction func hideKeyboard(_ sender: UITapGestureRecognizer) {

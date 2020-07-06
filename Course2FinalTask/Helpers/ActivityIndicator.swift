@@ -37,10 +37,12 @@ public class ActivityIndicator {
   }
 
   static func stop() {
-    if activityIndicator != nil {
-      activityIndicator?.stopAnimating()
-      activityIndicator?.removeFromSuperview()
-      activityIndicator = nil
+    DispatchQueue.main.async {
+      if activityIndicator != nil {
+        activityIndicator?.stopAnimating()
+        activityIndicator?.removeFromSuperview()
+        activityIndicator = nil
+      }
     }
   }
 
