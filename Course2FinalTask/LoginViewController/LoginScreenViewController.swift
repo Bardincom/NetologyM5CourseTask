@@ -39,8 +39,7 @@ final class LoginScreenViewController: UIViewController {
         case .fail(let backendError):
           DispatchQueue.main.async {
             print(backendError)
-            Alert.showAlert(self, backendError.errorMassege)
-//            self.displayAlert()
+            Alert.showAlert(self, backendError.description)
           }
 
       }

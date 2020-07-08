@@ -8,36 +8,10 @@
 
 import Foundation
 import UIKit
-//404 -> “Not found” 400 -> “Bad request” 401 -> “Unauthorized” 406 -> “Not acceptable” 422 -> “Unprocessable”
-enum BackendError: Error {
-  case notFound
-  case badRequest
-  case unauthorized
-  case notAcceptable
-  case unprocessable
-  case transferError
-
-  var errorMassege: String {
-    switch self {
-      case .notFound: return "Not found"
-      case .badRequest: return "Bad request"
-      case .unauthorized: return "Unauthorized"
-      case .notAcceptable: return "Not acceptable"
-      case .unprocessable: return "Unprocessable"
-      case .transferError: return "Transfer error"
-    }
-  }
-}
 
 enum Result<T> {
   case success(T)
   case fail(BackendError)
-}
-
-enum TokenPath {
-  static let signin = "/signin"
-  static let signout = "/signout"
-  static let check = "/checkToken"
 }
 
 class SessionProvider {
@@ -86,17 +60,22 @@ extension SessionProvider {
 
     let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
 
-      if let httpResponse = response as? HTTPURLResponse {
-        switch httpResponse.statusCode {
-          case 422:
-            let backendError = BackendError.unprocessable
-            ActivityIndicator.stop()
-            completionHandler(.fail(backendError))
-            return
-          default:
-            print("http status code: \(httpResponse.statusCode)")
-            break
-        }
+      guard let httpResponse = response as? HTTPURLResponse else {
+
+        let backendError = BackendError.transferError
+        ActivityIndicator.stop()
+        completionHandler(.fail(backendError))
+        return }
+
+      switch httpResponse.statusCode {
+        case 422:
+          let backendError = BackendError.unprocessable
+          ActivityIndicator.stop()
+          completionHandler(.fail(backendError))
+          return
+        default:
+          print("http status code: \(httpResponse.statusCode)")
+          break
       }
 
       guard let data = data else { return }
@@ -127,5 +106,41 @@ extension SessionProvider {
 
 // MARK: GET
 extension SessionProvider {
+  func checkToken(_ token: String) {
+    guard let url = preparationURL(path: TokenPath.check) else { return }
 
+    var request = URLRequest(url: url)
+    defaultHeaders["token"] = token
+    request.allHTTPHeaderFields = defaultHeaders
+
+    let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
+      guard let httpResponse = response as? HTTPURLResponse else { return }
+
+      switch httpResponse.statusCode {
+        case 200:
+          print("http status code: \(httpResponse.statusCode)")
+          return
+        default:
+          print("http status code: \(httpResponse.statusCode)")
+          break
+      }
+    }
+
+    dataTask.resume()
+  }
+
+  func getCurrentUser(_ token: String) {
+    guard let url = preparationURL(path: UserPath.currentUser) else { return }
+
+    var request = URLRequest(url: url)
+    request.httpMethod = httpMethod
+    defaultHeaders["token"] = token
+    request.allHTTPHeaderFields = defaultHeaders
+
+    let dataTask = sharedSession.dataTask(with: request) { (data, responce, error) in
+      print("data")
+    }
+
+    dataTask.resume()
+  }
 }
