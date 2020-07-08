@@ -186,13 +186,13 @@ extension ProfileViewController {
     ActivityIndicator.start()
     userDataProviders.currentUser(queue: queue) { [weak self] user in
       guard let self = self else { return }
-      guard let cUser = user else {
+      guard let currentUser = user else {
         self.displayAlert()
         return
       }
-      self.userProfile = cUser
+      self.userProfile = currentUser
 
-      postsDataProviders.findPosts(by: cUser.id, queue: queue) { [weak self] posts in
+      postsDataProviders.findPosts(by: currentUser.id, queue: queue) { [weak self] posts in
         guard let self = self else { return }
         guard let cPosts = posts else {
           self.displayAlert()
