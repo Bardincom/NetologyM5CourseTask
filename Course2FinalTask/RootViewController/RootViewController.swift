@@ -12,6 +12,7 @@ class RootViewController: UIViewController {
 
   private var current: UIViewController
   private var keychain = Keychain.shared
+  private var session = SessionProvider.shared
 
   init() {
     current = LoginScreenViewController()
@@ -77,13 +78,33 @@ private extension RootViewController {
   }
 
   func startController() {
-    guard keychain.readToken() != nil else {
+    guard let token = keychain.readToken() else {
+      // если никакого токена нет
       addChild(current)
       current.view.frame = view.bounds
       view.addSubview(current.view)
       current.didMove(toParent: self)
       return }
+    // если токен есть проверям действителен ли он
+    session.checkToken(token) { [weak self] result in
+      guard let self = self else { return }
 
-    switchToFeedViewController()
+      switch result {
+        case .success(_):
+          DispatchQueue.main.async {
+            self.switchToFeedViewController()
+            return
+          }
+
+        case .fail(_):
+          DispatchQueue.main.async {
+            self.addChild(self.current)
+            self.current.view.frame = self.view.bounds
+            self.view.addSubview(self.current.view)
+            self.current.didMove(toParent: self)
+            return
+          }
+      }
+    }
   }
 }

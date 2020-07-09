@@ -23,21 +23,36 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
   @IBOutlet private var followingLabel: UILabel!
   @IBOutlet private var followButton: UIButton!
 
-  var currentUser: User?
+  var currentUser: User1?
+  private let session = SessionProvider.shared
+  private let keychain = Keychain.shared
 
   weak var delegate: ProfileHeaderDelegate?
 
   override func awakeFromNib() {
     super.awakeFromNib()
+    guard let token = keychain.readToken() else { return }
 
-    userDataProviders.currentUser(queue: queue) { [weak self] user in
-      self?.currentUser = user
+    session.getCurrentUser(token) { [weak self] currentUser in
+       guard let self = self else { return }
+           switch currentUser {
+             case .success(let user):
+              self.currentUser = user
+               print(user)
+             case .fail(let backendError):
+              print(backendError.description)
+           }
     }
+
+//    userDataProviders.currentUser(queue: queue) { [weak self] user in
+//
+//      self?.currentUser = user
+//    }
 
     followButton.layer.cornerRadius = 6
     setupTapGestureRecognizer()
   }
-
+// logoImageView.kf.setImage(with: urlImage)
   func setHeader(user: User) {
     avatarImage.image = user.avatar
     avatarImage.layer.cornerRadius = avatarImage.frame.height / 2
@@ -67,7 +82,7 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
       followButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
     }
 
-    if user.id == currentUser?.id {
+    if user.id.rawValue == currentUser?.id {
       followButton.isHidden = true
     }
   }

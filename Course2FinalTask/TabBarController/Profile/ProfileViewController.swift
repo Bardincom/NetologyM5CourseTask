@@ -15,7 +15,7 @@ final class ProfileViewController: UIViewController {
   var feedUserID: User.Identifier?
   var currentUser: User?
   private let keychain = Keychain.shared
-  private let sessionProvider = SessionProvider()
+  private let session = SessionProvider.shared
   private var postsProfile: [Post]?
   lazy var rootViewController = AppDelegate.shared.rootViewController
 
@@ -150,7 +150,7 @@ extension ProfileViewController {
   @objc
   private func logout() {
     guard let token = keychain.readToken() else { return }
-    sessionProvider.signout(token)
+    session.signout(token)
     keychain.deleteToken()
     rootViewController.switchToLogout()
   }

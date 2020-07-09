@@ -28,20 +28,15 @@ class SessionProvider {
       "token": ""
     ]
 
-  private func preparationURLComponents(path: String) -> URLComponents {
-    var urlComponents = URLComponents()
-    urlComponents.scheme = scheme
-    urlComponents.host = host
-    urlComponents.port = port
-    urlComponents.path = path
-    print(urlComponents)
-    return urlComponents
+  enum HttpMethod {
+    static let get = "GET"
+    static let post = "POST"
   }
 
-  private func preparationURL(path: String) -> URL? {
-    guard let url = preparationURLComponents(path: path).url else { return nil }
-    return url
-  }
+  static var shared = SessionProvider()
+
+  private init() { }
+
 }
 
 // MARK: POST
@@ -94,10 +89,7 @@ extension SessionProvider {
   func signout(_ token: String) {
     guard let url = preparationURL(path: TokenPath.signout) else { return }
 
-    var request = URLRequest(url: url)
-    request.httpMethod = httpMethod
-    defaultHeaders["token"] = token
-    request.allHTTPHeaderFields = defaultHeaders
+    let request = preparationRequest(url, HttpMethod.post, token)
 
     let dataTask = sharedSession.dataTask(with: request)
     dataTask.resume()
@@ -106,41 +98,104 @@ extension SessionProvider {
 
 // MARK: GET
 extension SessionProvider {
-  func checkToken(_ token: String) {
+  func checkToken(_ token: String, completionHandler: @escaping (Result<Bool>) -> Void) {
     guard let url = preparationURL(path: TokenPath.check) else { return }
 
-    var request = URLRequest(url: url)
-    defaultHeaders["token"] = token
-    request.allHTTPHeaderFields = defaultHeaders
+    let request = preparationRequest(url, HttpMethod.get, token)
 
     let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
-      guard let httpResponse = response as? HTTPURLResponse else { return }
+      guard let httpResponse = response as? HTTPURLResponse else {
+        let backendError = BackendError.transferError
+        ActivityIndicator.stop()
+        completionHandler(.fail(backendError))
+        return }
 
       switch httpResponse.statusCode {
         case 200:
+          let result = true
+          completionHandler(.success(result))
           print("http status code: \(httpResponse.statusCode)")
           return
-        default:
+        case 401:
+          let backendError = BackendError.unauthorized
+          completionHandler(.fail(backendError))
           print("http status code: \(httpResponse.statusCode)")
-          break
+        return
+        default:
+          let backendError = BackendError.transferError
+          completionHandler(.fail(backendError))
+          print("http status code: \(httpResponse.statusCode)")
+          return
       }
     }
 
     dataTask.resume()
   }
 
-  func getCurrentUser(_ token: String) {
+  func getCurrentUser(_ token: String, completionHandler: @escaping (Result<User1>) -> Void) {
     guard let url = preparationURL(path: UserPath.currentUser) else { return }
 
+    let request = preparationRequest(url, HttpMethod.get, token)
+
+    let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
+
+      guard let httpResponse = response as? HTTPURLResponse else {
+
+        let backendError = BackendError.transferError
+        ActivityIndicator.stop()
+        completionHandler(.fail(backendError))
+        return }
+
+      switch httpResponse.statusCode {
+        case 401:
+          let backendError = BackendError.unauthorized
+          ActivityIndicator.stop()
+          completionHandler(.fail(backendError))
+          return
+        default:
+          print("http status code: \(httpResponse.statusCode)")
+          break
+      }
+
+      guard let data = data else { return }
+
+      do {
+        let currentUser = try self.decoder.decode(User1.self, from: data)
+        completionHandler(.success(currentUser))
+        ActivityIndicator.stop()
+      } catch {
+        completionHandler(.fail(BackendError.unauthorized))
+      }
+    }
+
+    dataTask.resume()
+  }
+}
+
+// MARK: Helpers
+private extension SessionProvider {
+
+  func preparationURLComponents(path: String) -> URLComponents {
+    var urlComponents = URLComponents()
+    urlComponents.scheme = scheme
+    urlComponents.host = host
+    urlComponents.port = port
+    urlComponents.path = path
+    print(urlComponents)
+    return urlComponents
+  }
+
+  func preparationURL(path: String) -> URL? {
+    guard let url = preparationURLComponents(path: path).url else { return nil }
+    return url
+  }
+
+  func preparationRequest(_ url: URL, _ httpMethod: String, _ token: String) -> URLRequest {
     var request = URLRequest(url: url)
     request.httpMethod = httpMethod
     defaultHeaders["token"] = token
     request.allHTTPHeaderFields = defaultHeaders
 
-    let dataTask = sharedSession.dataTask(with: request) { (data, responce, error) in
-      print("data")
-    }
-
-    dataTask.resume()
+    return request
   }
 }
