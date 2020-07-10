@@ -9,12 +9,12 @@
 import Foundation
 
 enum BackendError: Error, CustomStringConvertible {
-  case notFound
-  case badRequest
-  case unauthorized
-  case notAcceptable
-  case unprocessable
-  case transferError
+  case badRequest // 400
+  case unauthorized // 401
+  case notFound // 404
+  case notAcceptable // 406
+  case unprocessable // 422
+  case transferError // other error
 
   var description: String {
     switch self {

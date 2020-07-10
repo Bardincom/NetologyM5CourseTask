@@ -12,10 +12,10 @@ struct Post1: Codable {
     var id: String?
     var authorID: String?
     var description: String?
-    var image: String?
+    var image: URL?
     var createdTime: Int?
     var currentUserLikesThisPost: Bool
     var likedByCount: Int?
     var authorUsername: String?
-    var authorAvatar: String?
+    var authorAvatar: URL?
 }
