@@ -10,19 +10,19 @@ import Foundation
 import UIKit
 
 /// Индикатор загрузки
-/// Индикатор загрузки
 public class ActivityIndicator {
   static var activityIndicator: UIActivityIndicatorView?
   static var style: UIActivityIndicatorView.Style = .medium
   static var baseBackColor = UIColor(white: 0, alpha: 0.7)
   static var baseColor = UIColor.white
+  static var application = UIApplication.shared
 
   static func start(style: UIActivityIndicatorView.Style = style,
                     backColor: UIColor = baseBackColor,
                     baseColor: UIColor = baseColor) {
     DispatchQueue.main.async {
       if activityIndicator == nil,
-        let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
+        let window = application.windows.first(where: { $0.isKeyWindow }) {
         let frame = UIScreen.main.bounds
         activityIndicator = UIActivityIndicatorView(frame: frame)
 
@@ -38,9 +38,11 @@ public class ActivityIndicator {
 
   static func stop() {
     if activityIndicator != nil {
-      activityIndicator?.stopAnimating()
-      activityIndicator?.removeFromSuperview()
-      activityIndicator = nil
+      DispatchQueue.main.async {
+        activityIndicator?.stopAnimating()
+        activityIndicator?.removeFromSuperview()
+        activityIndicator = nil
+      }
     }
   }
 

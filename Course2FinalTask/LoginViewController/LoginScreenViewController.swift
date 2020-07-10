@@ -15,6 +15,8 @@ final class LoginScreenViewController: UIViewController {
   @IBOutlet private var signInButton: UIButton!
 
   lazy var rootViewController = AppDelegate.shared.rootViewController
+  private let session = SessionProvider.shared
+  private var keychain = Keychain.shared
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -24,7 +26,7 @@ final class LoginScreenViewController: UIViewController {
   }
 
   @IBAction func sendAuthorizationRequest(_ sender: Any) {
-    rootViewController.switchToFeedViewController()
+    authorization()
   }
 
   @IBAction func hideKeyboard(_ sender: UITapGestureRecognizer) {
@@ -32,19 +34,6 @@ final class LoginScreenViewController: UIViewController {
     password.resignFirstResponder()
   }
 
-}
-
-// MARK: LoginScreenViewController + Helper
-private extension LoginScreenViewController {
-  func disableSignInButton() {
-    signInButton.isEnabled = false
-    signInButton.alpha = 0.3
-  }
-
-  func enableSignInButton() {
-    signInButton.isEnabled = true
-    signInButton.alpha = 1
-  }
 }
 
 // MARK: TextFieldDelegate
@@ -58,12 +47,10 @@ extension LoginScreenViewController: UITextFieldDelegate {
     guard
       let login = login.text,
       let password = password.text,
-      !login.isEmpty && !password.isEmpty else {
-        displayAlert()
-        return false
-    }
+      !login.isEmpty && !password.isEmpty else { return false }
 
-    rootViewController.switchToFeedViewController()
+    authorization()
+
     return true
   }
 
@@ -77,5 +64,39 @@ extension LoginScreenViewController: UITextFieldDelegate {
     }
 
     enableSignInButton()
+  }
+}
+
+// MARK: LoginScreenViewController + Helper
+private extension LoginScreenViewController {
+  func disableSignInButton() {
+    signInButton.isEnabled = false
+    signInButton.alpha = 0.3
+  }
+
+  func enableSignInButton() {
+    signInButton.isEnabled = true
+    signInButton.alpha = 1
+  }
+
+  func authorization() {
+    guard
+      let login = login.text,
+      let password = password.text else { return }
+
+    session.signin(login: login, password: password) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+        case .success(let token):
+          self.keychain.saveToken(token.token)
+          DispatchQueue.main.async {
+            self.rootViewController.switchToFeedViewController()
+          }
+        case .fail(let backendError):
+          DispatchQueue.main.async {
+            Alert.showAlert(self, backendError.description)
+          }
+      }
+    }
   }
 }

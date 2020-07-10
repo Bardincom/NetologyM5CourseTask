@@ -14,7 +14,8 @@ final class ProfileViewController: UIViewController {
   var userProfile: User?
   var feedUserID: User.Identifier?
   var currentUser: User?
-
+  private let keychain = Keychain.shared
+  private let session = SessionProvider.shared
   private var postsProfile: [Post]?
   lazy var rootViewController = AppDelegate.shared.rootViewController
 
@@ -27,7 +28,6 @@ final class ProfileViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
     view.backgroundColor = Asset.ColorAssets.viewBackground.color
 
     navigationController?.delegate = self
@@ -149,6 +149,9 @@ extension ProfileViewController {
 
   @objc
   private func logout() {
+    guard let token = keychain.readToken() else { return }
+    session.signout(token)
+    keychain.deleteToken()
     rootViewController.switchToLogout()
   }
 
@@ -183,13 +186,13 @@ extension ProfileViewController {
     ActivityIndicator.start()
     userDataProviders.currentUser(queue: queue) { [weak self] user in
       guard let self = self else { return }
-      guard let cUser = user else {
+      guard let currentUser = user else {
         self.displayAlert()
         return
       }
-      self.userProfile = cUser
+      self.userProfile = currentUser
 
-      postsDataProviders.findPosts(by: cUser.id, queue: queue) { [weak self] posts in
+      postsDataProviders.findPosts(by: currentUser.id, queue: queue) { [weak self] posts in
         guard let self = self else { return }
         guard let cPosts = posts else {
           self.displayAlert()

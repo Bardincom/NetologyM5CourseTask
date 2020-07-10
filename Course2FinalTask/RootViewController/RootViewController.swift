@@ -11,6 +11,8 @@ import UIKit
 class RootViewController: UIViewController {
 
   private var current: UIViewController
+  private var keychain = Keychain.shared
+  private var session = SessionProvider.shared
 
   init() {
     current = LoginScreenViewController()
@@ -24,10 +26,7 @@ class RootViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    addChild(current)
-    current.view.frame = view.bounds
-    view.addSubview(current.view)
-    current.didMove(toParent: self)
+    startController()
   }
 
   func switchToFeedViewController() {
@@ -44,15 +43,14 @@ class RootViewController: UIViewController {
 
   func switchToLogout() {
     let loginViewController = LoginScreenViewController()
-    let logoutScreen = UINavigationController(rootViewController: loginViewController)
-    addChild(logoutScreen)
-    logoutScreen.view.frame = view.bounds
-    view.addSubview(logoutScreen.view)
-    logoutScreen.didMove(toParent: self)
+    addChild(loginViewController)
+    loginViewController.view.frame = view.bounds
+    view.addSubview(loginViewController.view)
+    loginViewController.didMove(toParent: self)
     current.willMove(toParent: nil)
     current.view.removeFromSuperview()
     current.removeFromParent()
-    current = logoutScreen
+    current = loginViewController
   }
 }
 
@@ -77,5 +75,36 @@ private extension RootViewController {
     tabBarController.setViewControllers([feedNavigationController, newNavigationController, profileNavigationController], animated: false)
 
     return tabBarController
+  }
+
+  func startController() {
+    guard let token = keychain.readToken() else {
+      // если никакого токена нет
+      addChild(current)
+      current.view.frame = view.bounds
+      view.addSubview(current.view)
+      current.didMove(toParent: self)
+      return }
+    // если токен есть проверям действителен ли он
+    session.checkToken(token) { [weak self] result in
+      guard let self = self else { return }
+
+      switch result {
+        case .success(_):
+          DispatchQueue.main.async {
+            self.switchToFeedViewController()
+            return
+          }
+
+        case .fail(_):
+          DispatchQueue.main.async {
+            self.addChild(self.current)
+            self.current.view.frame = self.view.bounds
+            self.view.addSubview(self.current.view)
+            self.current.didMove(toParent: self)
+            return
+          }
+      }
+    }
   }
 }
