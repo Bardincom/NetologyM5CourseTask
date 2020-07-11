@@ -183,7 +183,7 @@ extension SessionProvider {
     request.allHTTPHeaderFields = defaultHeaders
     request.httpMethod = HttpMethod.post
 
-    let json = "{\"userID\" : \"\(postID)\"}"
+    let json = "{\"postID\" : \"\(postID)\"}"
     request.httpBody = json.data(using: .utf8)
     request.allHTTPHeaderFields = defaultHeaders
 
@@ -234,7 +234,7 @@ extension SessionProvider {
     request.allHTTPHeaderFields = defaultHeaders
     request.httpMethod = HttpMethod.post
 
-    let json = "{\"userID\" : \"\(postID)\"}"
+    let json = "{\"postID\" : \"\(postID)\"}"
     request.httpBody = json.data(using: .utf8)
     request.allHTTPHeaderFields = defaultHeaders
 

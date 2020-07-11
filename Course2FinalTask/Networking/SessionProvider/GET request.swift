@@ -337,7 +337,7 @@ extension SessionProvider {
     dataTask.resume()
   }
 
-  /// Возвращает публикации пользователей, на которых подписан текущий пользователь.
+  /// Возвращает публикацию с запрошенным ID.
   func getPostsWithID (_ token: String, _ postsID: String, completionHandler: @escaping (Result<Post1>) -> Void) {
     guard let url = preparationURL(path: PostPath.postsSlash + postsID) else { return }
     var request = URLRequest(url: url)
@@ -387,7 +387,7 @@ extension SessionProvider {
   }
 
   /// Возвращает пользователей, поставивших лайк на публикацию с запрошенным ID.
-  func getLikePostUserWithPostID(_ token: String, _ postID: String, completionHandler: @escaping (Result<[Post1]>) -> Void) {
+  func getLikePostUserWithPostID(_ token: String, _ postID: String, completionHandler: @escaping (Result<[User1]>) -> Void) {
     guard let url = preparationURL(path: PostPath.postsSlash + "\(postID)" + PostPath.likes) else { return }
     var request = URLRequest(url: url)
     defaultHeaders["token"] = token
@@ -414,7 +414,7 @@ extension SessionProvider {
           case 422: backendError = .unprocessable
           default: backendError = .transferError
         }
-        
+
         completionHandler(.fail(backendError))
         ActivityIndicator.stop()
         return
@@ -423,9 +423,9 @@ extension SessionProvider {
       guard let data = data else { return }
       print("Data \(data)")
       do {
-        let posts = try self.decoder.decode([Post1].self, from: data)
-        completionHandler(.success(posts))
-        print(posts)
+        let users = try self.decoder.decode([User1].self, from: data)
+        completionHandler(.success(users))
+        print(users)
 
       } catch {
         completionHandler(.fail(BackendError.transferError))

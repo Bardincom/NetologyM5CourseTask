@@ -11,8 +11,10 @@ import DataProvider
 
 final class FeedViewController: UIViewController {
 
-  private var postsArray: [Post] = []
-  private var post: Post?
+  private var postsArray: [Post1] = []
+  private var post: Post1?
+  private var session = SessionProvider.shared
+  private var keychain = Keychain.shared
   var newPost: ((Post) -> Void)?
   var alertAction: ((Bool) -> Void)?
 
@@ -30,16 +32,19 @@ final class FeedViewController: UIViewController {
 
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    postsDataProviders.feed(queue: queue) { [weak self] posts in
+
+    guard let token = keychain.readToken() else { return }
+
+    session.getFeedPostsWithUserID(token) { [weak self] result in
       guard let self = self else { return }
-      guard let posts = posts else {
-        self.alertAction = { bool in
-          if bool {
-            self.displayAlert()
-          }
-        }
-        return }
-      self.postsArray = posts
+      switch result {
+        case .success(let posts):
+          print(posts)
+          self.postsArray = posts
+        case .fail(let error):
+          Alert.showAlert(self, error.description)
+      }
+
       DispatchQueue.main.async {
         if self.isViewLoaded {
           self.feedCollectionView.reloadData()
@@ -54,9 +59,10 @@ final class FeedViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    // TODO: Новый пост
     // сюда попадает новая публикация и размещается вверху ленты
     newPost = { [weak self] post in
-      self?.postsArray.insert(post, at: 0)
+      //      self?.postsArray.insert(post, at: 0)
       // переходим в начало Ленты
       self?.feedCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
       self?.feedCollectionView.reloadData()
@@ -115,31 +121,37 @@ extension FeedViewController: FeedCollectionViewProtocol {
     guard let indexPath = feedCollectionView.indexPath(for: cell) else { return }
 
     let currentPost = postsArray[indexPath.row]
-
-    userDataProviders.user(with: currentPost.author, queue: queue, handler: { [weak self] user in
-      guard let user = user else {
-        self?.displayAlert()
-        return }
-
-      profileViewController.feedUserID = user.id
-
-      DispatchQueue.main.async {
-        self?.navigationController?.pushViewController(profileViewController, animated: true)
-      }
-    })
+    // TODO: Открыть профиль пользователя используя Ран
+//        userDataProviders.user(with: currentPost.author, queue: queue, handler: { [weak self] user in
+//          guard let user = user else {
+//            self?.displayAlert()
+//            return }
+//
+//          profileViewController.feedUserID = user.id
+//
+//          DispatchQueue.main.async {
+//            self?.navigationController?.pushViewController(profileViewController, animated: true)
+//          }
+//        })
   }
 
   /// ставит лайк на публикацию
   func likePost(cell: FeedCollectionViewCell) {
-
+    guard let token = keychain.readToken() else { return }
     guard let indexPath = feedCollectionView.indexPath(for: cell) else { return }
 
     let postID = postsArray[indexPath.row].id
 
     guard cell.likeButton.tintColor == Asset.ColorAssets.lightGray.color else {
 
-      postsDataProviders.unlikePost(with: postID, queue: queue) { [weak self] unlikePost in
-        self?.post = unlikePost
+      session.unlikePostCurrentUserWithPostID(token, postID) { [weak self] result in
+        guard let self = self else { return }
+        switch result {
+          case .success(let unlikePost):
+            self.post = unlikePost
+          case .fail(let error):
+            Alert.showAlert(self, error.description)
+        }
       }
 
       postsArray[indexPath.row].currentUserLikesThisPost = false
@@ -149,8 +161,15 @@ extension FeedViewController: FeedCollectionViewProtocol {
       return
     }
 
-    postsDataProviders.likePost(with: postID, queue: queue) { [weak self] post in
-      self?.post = post
+    session.likePostCurrentUserWithPostID(token, postID) { [weak self] result in
+      guard let self = self else { return }
+
+      switch result {
+        case .success(let likePost):
+          self.post = likePost
+        case .fail(let error):
+          Alert.showAlert(self, error.description)
+      }
     }
 
     postsArray[indexPath.row].currentUserLikesThisPost = true
@@ -162,6 +181,8 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
   /// открывает список пользователей поставивших лайк
   func userList(cell: FeedCollectionViewCell) {
+    guard let token = keychain.readToken() else { return }
+    
     ActivityIndicator.start()
     let userListViewController = UserListViewController()
 
@@ -169,15 +190,18 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
     let currentPostID = postsArray[indexPath.row].id
 
-    postsDataProviders.usersLikedPost(with: currentPostID, queue: queue) { [weak self] usersArray in
-      guard let usersArray = usersArray else {
-        self?.displayAlert()
-        return }
-      userListViewController.usersList = usersArray
+    session.getLikePostUserWithPostID(token, currentPostID) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+        case .success(let users):
+          userListViewController.usersList = users
+        case .fail(let error):
+          Alert.showAlert(self, error.description)
+      }
 
       DispatchQueue.main.async {
         userListViewController.navigationItemTitle = NamesItemTitle.likes
-        self?.navigationController?.pushViewController(userListViewController, animated: true)
+        self.navigationController?.pushViewController(userListViewController, animated: true)
         ActivityIndicator.stop()
       }
     }

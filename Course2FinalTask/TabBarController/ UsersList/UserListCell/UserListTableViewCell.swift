@@ -14,8 +14,8 @@ final class UserListTableViewCell: UITableViewCell {
   @IBOutlet var avatarImage: UIImageView!
   @IBOutlet var userNameLabel: UILabel!
 
-  func setupList(user: User) {
-    avatarImage.image = user.avatar
+  func setupList(user: User1) {
+    avatarImage.kf.setImage(with: user.avatar)
     userNameLabel.text = user.username
   }
 }

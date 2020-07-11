@@ -16,6 +16,7 @@ enum Result<T> {
 class SessionProvider {
   let sharedSession = URLSession.shared
   let decoder = JSONDecoder()
+  let dateFormatter: DateFormatter = .createdTime
   let encoder = JSONEncoder()
   let scheme = "http"
   let host = "localhost"
@@ -33,7 +34,9 @@ class SessionProvider {
 
   static var shared = SessionProvider()
 
-  private init() { }
+  private init() {
+    decoder.dateDecodingStrategy = .formatted(dateFormatter)
+  }
 
 }
 
