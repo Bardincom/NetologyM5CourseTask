@@ -221,7 +221,7 @@ extension ProfileViewController: ProfileHeaderDelegate {
       guard let users = users else {
         self.displayAlert()
         return }
-      userListViewController.usersList = users
+//      userListViewController.usersList = users
 
       DispatchQueue.main.async {
         userListViewController.navigationItemTitle = NamesItemTitle.followers
@@ -244,7 +244,7 @@ extension ProfileViewController: ProfileHeaderDelegate {
         self?.displayAlert()
         return }
 
-      userListViewController.usersList = users
+//      userListViewController.usersList = users
 
       DispatchQueue.main.async {
         userListViewController.navigationItemTitle = NamesItemTitle.following

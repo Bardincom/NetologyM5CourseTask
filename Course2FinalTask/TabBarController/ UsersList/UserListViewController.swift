@@ -11,8 +11,7 @@ import DataProvider
 
 class UserListViewController: UIViewController {
 
-  var usersList: [User]?
-  var userInList: User?
+  var usersList: [User1]?
   var navigationItemTitle: String?
 
   @IBOutlet var userListTableView: UITableView! {
@@ -51,7 +50,8 @@ extension UserListViewController: UITableViewDelegate {
     let selectUser = selectUsers(users: usersList)[indexPath.row]
 
     let profileViewController = ProfileViewController()
-    profileViewController.feedUserID = selectUser.id
+    // ToDo: Переделать под Run
+    profileViewController.feedUserID = User.Identifier(rawValue: selectUser.id)
     navigationController?.pushViewController(profileViewController, animated: true)
     userListTableView.deselectRow(at: indexPath, animated: true)
   }

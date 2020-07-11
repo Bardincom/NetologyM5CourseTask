@@ -9,12 +9,12 @@
 import Foundation
 
 struct User1: Codable {
-    var id: String?
-    var username: String?
-    var fullName: String?
+    var id: String
+    var username: String
+    var fullName: String
     var avatar: URL?
     var currentUserFollowsThisUser: Bool
     var currentUserIsFollowedByThisUser: Bool
-    var followsCount: Int?
-    var followedByCoun: Int?
+    var followsCount: Int
+    var followedByCount: Int
 }

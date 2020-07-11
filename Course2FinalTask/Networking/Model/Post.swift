@@ -9,13 +9,13 @@
 import Foundation
 
 struct Post1: Codable {
-    var id: String?
-    var authorID: String?
-    var description: String?
-    var image: URL?
-    var createdTime: Int?
+    var id: String
+    var description: String
+    var image: URL
+    var createdTime: Date
     var currentUserLikesThisPost: Bool
-    var likedByCount: Int?
-    var authorUsername: String?
-    var authorAvatar: URL?
+    var likedByCount: Int
+    var author: String
+    var authorUsername: String
+    var authorAvatar: URL
 }

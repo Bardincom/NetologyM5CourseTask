@@ -36,6 +36,8 @@ final class FeedCollectionViewCell: UICollectionViewCell {
   }
 
   weak var delegate: FeedCollectionViewProtocol?
+  let session = SessionProvider.shared
+  let keychaine = Keychain.shared
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -45,11 +47,12 @@ final class FeedCollectionViewCell: UICollectionViewCell {
 
   }
 
-  func setupFeed(post: Post) {
+  func setupFeed(post: Post1) {
+
     dateLabel.text = post.createdTime.displayDate()
-    avatarImageView.image = post.authorAvatar
+    avatarImageView.kf.setImage(with: post.authorAvatar)
     userNameLabel.text = post.authorUsername
-    imageView.image = post.image
+    imageView.kf.setImage(with: post.image)
     likesLabel.text = "Likes: " + "\(post.likedByCount)"
     descriptionLabel.text = post.description
 

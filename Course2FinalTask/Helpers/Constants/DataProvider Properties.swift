@@ -22,9 +22,9 @@ public let photoProvider = DataProviders.shared.photoProvider
 /// Фото для новых публикаций
 public var photoNewPosts = photoProvider.photos()
 
-func selectUsers(users: [User]?) -> [User] {
+func selectUsers(users: [User1]?) -> [User1] {
     guard let users = users else {
-        return [User]()
+        return [User1]()
     }
     return users
 }
