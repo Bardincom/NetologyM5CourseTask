@@ -35,7 +35,7 @@ final class FeedViewController: UIViewController {
 
     guard let token = keychain.readToken() else { return }
 
-    session.getFeedPostsWithUserID(token) { [weak self] result in
+    session.getFeedPosts(token) { [weak self] result in
       guard let self = self else { return }
       switch result {
         case .success(let posts):
@@ -115,24 +115,27 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
   /// открывает профиль пользователя
   func openUserProfile(cell: FeedCollectionViewCell) {
+    guard let token = keychain.readToken() else { return }
 
     let profileViewController = ProfileViewController()
 
     guard let indexPath = feedCollectionView.indexPath(for: cell) else { return }
 
-    let currentPost = postsArray[indexPath.row]
+    let userID = postsArray[indexPath.row].author
     // TODO: Открыть профиль пользователя используя Ран
-//        userDataProviders.user(with: currentPost.author, queue: queue, handler: { [weak self] user in
-//          guard let user = user else {
-//            self?.displayAlert()
-//            return }
-//
-//          profileViewController.feedUserID = user.id
-//
-//          DispatchQueue.main.async {
-//            self?.navigationController?.pushViewController(profileViewController, animated: true)
-//          }
-//        })
+    session.getUserWithID(token, userID) { [weak self] result in
+      guard let self = self else { return }
+
+      switch result {
+        case .success(let user):
+          profileViewController.feedUserID = user.id
+          DispatchQueue.main.async {
+            self.navigationController?.pushViewController(profileViewController, animated: true)
+          }
+        case .fail(let error):
+          Alert.showAlert(self, error.description)
+      }
+    }
   }
 
   /// ставит лайк на публикацию
@@ -157,6 +160,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
       postsArray[indexPath.row].currentUserLikesThisPost = false
       postsArray[indexPath.row].likedByCount -= 1
       cell.tintColor = Asset.ColorAssets.lightGray.color
+
       self.feedCollectionView.reloadData()
       return
     }
@@ -181,9 +185,9 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
   /// открывает список пользователей поставивших лайк
   func userList(cell: FeedCollectionViewCell) {
-    guard let token = keychain.readToken() else { return }
-    
     ActivityIndicator.start()
+
+    guard let token = keychain.readToken() else { return }
     let userListViewController = UserListViewController()
 
     guard let indexPath = feedCollectionView.indexPath(for: cell) else { return }

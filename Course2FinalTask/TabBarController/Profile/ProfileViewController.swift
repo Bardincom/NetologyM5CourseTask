@@ -11,12 +11,12 @@ import DataProvider
 
 final class ProfileViewController: UIViewController {
 
-  var userProfile: User?
-  var feedUserID: User.Identifier?
-  var currentUser: User?
+  var userProfile: User1?
+  var feedUserID: String?
+  var currentUser: User1?
   private let keychain = Keychain.shared
   private let session = SessionProvider.shared
-  private var postsProfile: [Post]?
+  private var postsProfile: [Post1]?
   lazy var rootViewController = AppDelegate.shared.rootViewController
 
   @IBOutlet weak private var profileCollectionView: UICollectionView! {
@@ -41,8 +41,8 @@ final class ProfileViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    if let id = feedUserID {
-      loadUserByProfile(id: id)
+    if let userID = feedUserID {
+      loadUserByProfile(userID)
     } else {
       loadCurrentUser()
     }
@@ -54,7 +54,7 @@ final class ProfileViewController: UIViewController {
 extension ProfileViewController: UICollectionViewDataSource {
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    guard let postsProfile = postsProfile else { return [Post]().count }
+    guard let postsProfile = postsProfile else { return [Post1]().count }
     return postsProfile.count
   }
 
@@ -107,23 +107,34 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
 extension ProfileViewController {
 
   func setupProfileViewController() {
+    guard let token = keychain.readToken() else { return }
+    // TODO: переделать на guard
+    guard userProfile == nil else {
+      guard let userID = feedUserID else { return }
 
-    if userProfile == nil {
-      userDataProviders.currentUser(queue: queue) { [weak self] user in
-        guard let user = user else {
-          self?.displayAlert()
-          return }
-        self?.userProfile = user
+      session.getPostsWithUserID(token, userID) { [weak self] result in
+        guard let self = self else { return }
+
+        switch result {
+          case .success(let posts):
+            self.postsProfile = posts
+          case .fail(let error):
+            Alert.showAlert(self, error.description)
+        }
       }
+
+      return
     }
 
-    guard let userProfile = feedUserID else { return }
+    session.getCurrentUser(token) { [weak self] result in
+      guard let self = self else { return }
 
-    postsDataProviders.findPosts(by: userProfile, queue: queue) { [weak self] post in
-      guard let post = post else {
-        self?.displayAlert()
-        return }
-      self?.postsProfile = post
+      switch result {
+        case .success(let user):
+          self.userProfile = user
+        case .fail(let error):
+          Alert.showAlert(self, error.description)
+      }
     }
   }
 
@@ -156,51 +167,64 @@ extension ProfileViewController {
   }
 
   /// Загрузка профиля друга из ленты
-  func loadUserByProfile(id: User.Identifier) {
-
+  func loadUserByProfile(_ userID: String) {
+    guard let token = keychain.readToken() else { return }
     ActivityIndicator.start()
-    feedUserID = id
-    userDataProviders.user(with: id, queue: queue) { [weak self] user in
-      guard let self = self else { return }
-      guard let user = user else {
-        self.displayAlert()
-        return
-      }
-      self.userProfile = user
 
-      postsDataProviders.findPosts(by: user.id, queue: queue) { [weak self] posts in
-        guard let self = self else { return }
-        guard let cPosts = posts else {
-          self.displayAlert()
-          return
-        }
-        self.postsProfile = cPosts
-        self.updateUI()
+    feedUserID = userID
+
+    session.getUserWithID(token, userID) { [weak self] result in
+      guard let self = self else { return }
+
+      switch result {
+        case .success(let user):
+          self.userProfile = user
+
+          self.session.getPostsWithUserID(token, user.id) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+              case .success(let posts):
+                self.postsProfile = posts
+                self.updateUI()
+              case .fail(let error):
+                Alert.showAlert(self, error.description)
+            }
+          }
+
+        case .fail(let error):
+          Alert.showAlert(self, error.description)
       }
     }
   }
 
+
   /// Загрузка профиля текущего пользователя
   func loadCurrentUser() {
-
+    guard let token = keychain.readToken() else { return }
     ActivityIndicator.start()
-    userDataProviders.currentUser(queue: queue) { [weak self] user in
+    session.getCurrentUser(token) { [weak self] result in
       guard let self = self else { return }
-      guard let currentUser = user else {
-        self.displayAlert()
-        return
-      }
-      self.userProfile = currentUser
 
-      postsDataProviders.findPosts(by: currentUser.id, queue: queue) { [weak self] posts in
-        guard let self = self else { return }
-        guard let cPosts = posts else {
-          self.displayAlert()
-          return
-        }
-        self.setLogout()
-        self.postsProfile = cPosts
-        self.updateUI()
+      switch result {
+        case .success(let currentUser):
+          print(currentUser)
+          self.userProfile = currentUser
+
+          self.session.getPostsWithUserID(token, currentUser.id) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+              case .success(let posts):
+                self.setLogout()
+                self.postsProfile = posts
+                self.updateUI()
+              case .fail(let error):
+                Alert.showAlert(self, error.description)
+            }
+          }
+        case .fail(let error):
+          Alert.showAlert(self, error.description)
       }
     }
   }
@@ -215,20 +239,20 @@ extension ProfileViewController: ProfileHeaderDelegate {
 
     let userListViewController = UserListViewController()
 
-    guard let userID = userProfile?.id else { return }
-    userDataProviders.usersFollowingUser(with: userID, queue: queue) { [weak self] users in
-      guard let self = self else { return }
-      guard let users = users else {
-        self.displayAlert()
-        return }
-//      userListViewController.usersList = users
-
-      DispatchQueue.main.async {
-        userListViewController.navigationItemTitle = NamesItemTitle.followers
-        self.navigationController?.pushViewController(userListViewController, animated: true)
-        ActivityIndicator.stop()
-      }
-    }
+    //    guard let userID = userProfile?.id else { return }
+    //    userDataProviders.usersFollowingUser(with: userID, queue: queue) { [weak self] users in
+    //      guard let self = self else { return }
+    //      guard let users = users else {
+    //        self.displayAlert()
+    //        return }
+    ////      userListViewController.usersList = users
+    //
+    //      DispatchQueue.main.async {
+    //        userListViewController.navigationItemTitle = NamesItemTitle.followers
+    //        self.navigationController?.pushViewController(userListViewController, animated: true)
+    //        ActivityIndicator.stop()
+    //      }
+    //    }
   }
 
   /// Открывает список подписок
@@ -237,53 +261,53 @@ extension ProfileViewController: ProfileHeaderDelegate {
 
     let userListViewController = UserListViewController()
 
-    guard let userID = userProfile?.id else { return }
-
-    userDataProviders.usersFollowedByUser(with: userID, queue: queue, handler: { [weak self] users in
-      guard let users = users else {
-        self?.displayAlert()
-        return }
-
-//      userListViewController.usersList = users
-
-      DispatchQueue.main.async {
-        userListViewController.navigationItemTitle = NamesItemTitle.following
-        self?.navigationController?.pushViewController(userListViewController, animated: true)
-        ActivityIndicator.stop()
-      }
-    })
+    //    guard let userID = userProfile?.id else { return }
+    //
+    //    userDataProviders.usersFollowedByUser(with: userID, queue: queue, handler: { [weak self] users in
+    //      guard let users = users else {
+    //        self?.displayAlert()
+    //        return }
+    //
+    ////      userListViewController.usersList = users
+    //
+    //      DispatchQueue.main.async {
+    //        userListViewController.navigationItemTitle = NamesItemTitle.following
+    //        self?.navigationController?.pushViewController(userListViewController, animated: true)
+    //        ActivityIndicator.stop()
+    //      }
+    //    })
   }
 
   func followUnfollowUser() {
 
-    guard let userProfile = userProfile else { return }
-
-    if userProfile.currentUserFollowsThisUser {
-      userDataProviders.unfollow(userProfile.id, queue: queue) { [weak self] user in
-        guard let user = user else {
-          self?.displayAlert()
-          return }
-        self?.userProfile = user
-
-        DispatchQueue.main.async {
-          self?.currentUser?.followsCount -= 1
-          self?.profileCollectionView.reloadData()
-        }
-      }
-
-    } else {
-      userDataProviders.follow(userProfile.id, queue: queue) { [weak self] user in
-        guard let user = user else {
-          self?.displayAlert()
-          return }
-        self?.userProfile = user
-
-        DispatchQueue.main.async {
-          self?.currentUser?.followsCount += 1
-          self?.profileCollectionView.reloadData()
-        }
-      }
-    }
+    //    guard let userProfile = userProfile else { return }
+    //
+    //    if userProfile.currentUserFollowsThisUser {
+    //      userDataProviders.unfollow(userProfile.id, queue: queue) { [weak self] user in
+    //        guard let user = user else {
+    //          self?.displayAlert()
+    //          return }
+    //        self?.userProfile = user
+    //
+    //        DispatchQueue.main.async {
+    //          self?.currentUser?.followsCount -= 1
+    //          self?.profileCollectionView.reloadData()
+    //        }
+    //      }
+    //
+    //    } else {
+    //      userDataProviders.follow(userProfile.id, queue: queue) { [weak self] user in
+    //        guard let user = user else {
+    //          self?.displayAlert()
+    //          return }
+    //        self?.userProfile = user
+    //
+    //        DispatchQueue.main.async {
+    //          self?.currentUser?.followsCount += 1
+    //          self?.profileCollectionView.reloadData()
+    //        }
+    //      }
+    //    }
   }
 }
 
