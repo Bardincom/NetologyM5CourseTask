@@ -108,7 +108,7 @@ extension ProfileViewController {
 
   func setupProfileViewController() {
     guard let token = keychain.readToken() else { return }
-    // TODO: переделать на guard
+
     guard userProfile == nil else {
       guard let userID = feedUserID else { return }
 
@@ -198,7 +198,6 @@ extension ProfileViewController {
     }
   }
 
-
   /// Загрузка профиля текущего пользователя
   func loadCurrentUser() {
     guard let token = keychain.readToken() else { return }
@@ -234,81 +233,95 @@ extension ProfileViewController {
 extension ProfileViewController: ProfileHeaderDelegate {
   /// Открывает список подписчиков
   func openFollowersList() {
-
+    guard let token = keychain.readToken() else { return }
     ActivityIndicator.start()
 
     let userListViewController = UserListViewController()
+    guard let userID = userProfile?.id else { return }
 
-    //    guard let userID = userProfile?.id else { return }
-    //    userDataProviders.usersFollowingUser(with: userID, queue: queue) { [weak self] users in
-    //      guard let self = self else { return }
-    //      guard let users = users else {
-    //        self.displayAlert()
-    //        return }
-    ////      userListViewController.usersList = users
-    //
-    //      DispatchQueue.main.async {
-    //        userListViewController.navigationItemTitle = NamesItemTitle.followers
-    //        self.navigationController?.pushViewController(userListViewController, animated: true)
-    //        ActivityIndicator.stop()
-    //      }
-    //    }
+    session.getFollowersWithUserID(token, userID) { [weak self] result in
+      guard let self = self else { return }
+
+      switch result {
+        case .success(let users):
+          userListViewController.usersList = users
+          DispatchQueue.main.async {
+            userListViewController.navigationItemTitle = NamesItemTitle.followers
+            self.navigationController?.pushViewController(userListViewController, animated: true)
+            ActivityIndicator.stop()
+          }
+        case .fail(let error):
+          Alert.showAlert(self, error.description)
+      }
+    }
   }
 
   /// Открывает список подписок
   func openFollowingList() {
+    guard let token = keychain.readToken() else { return }
     ActivityIndicator.start()
 
     let userListViewController = UserListViewController()
 
-    //    guard let userID = userProfile?.id else { return }
-    //
-    //    userDataProviders.usersFollowedByUser(with: userID, queue: queue, handler: { [weak self] users in
-    //      guard let users = users else {
-    //        self?.displayAlert()
-    //        return }
-    //
-    ////      userListViewController.usersList = users
-    //
-    //      DispatchQueue.main.async {
-    //        userListViewController.navigationItemTitle = NamesItemTitle.following
-    //        self?.navigationController?.pushViewController(userListViewController, animated: true)
-    //        ActivityIndicator.stop()
-    //      }
-    //    })
+    guard let userID = userProfile?.id else { return }
+
+    session.getFollowingWithUserID(token, userID) { [weak self] result in
+      guard let self = self else { return }
+
+      switch result {
+        case .success(let users):
+          userListViewController.usersList = users
+          DispatchQueue.main.async {
+            userListViewController.navigationItemTitle = NamesItemTitle.followers
+            self.navigationController?.pushViewController(userListViewController, animated: true)
+            ActivityIndicator.stop()
+          }
+        case .fail(let error):
+          Alert.showAlert(self, error.description)
+      }
+    }
   }
 
   func followUnfollowUser() {
 
-    //    guard let userProfile = userProfile else { return }
-    //
-    //    if userProfile.currentUserFollowsThisUser {
-    //      userDataProviders.unfollow(userProfile.id, queue: queue) { [weak self] user in
-    //        guard let user = user else {
-    //          self?.displayAlert()
-    //          return }
-    //        self?.userProfile = user
-    //
-    //        DispatchQueue.main.async {
-    //          self?.currentUser?.followsCount -= 1
-    //          self?.profileCollectionView.reloadData()
-    //        }
-    //      }
-    //
-    //    } else {
-    //      userDataProviders.follow(userProfile.id, queue: queue) { [weak self] user in
-    //        guard let user = user else {
-    //          self?.displayAlert()
-    //          return }
-    //        self?.userProfile = user
-    //
-    //        DispatchQueue.main.async {
-    //          self?.currentUser?.followsCount += 1
-    //          self?.profileCollectionView.reloadData()
-    //        }
-    //      }
-    //    }
+    guard
+      let token = keychain.readToken(),
+      let userProfile = userProfile  else { return }
+
+    guard userProfile.currentUserFollowsThisUser else {
+        session.followCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+              case .success(let user):
+                self.userProfile = user
+                DispatchQueue.main.async {
+                  self.currentUser?.followedByCount += 1
+                  self.profileCollectionView.reloadData()
+                }
+              case .fail(let error):
+                Alert.showAlert(self, error.description)
+            }
+        }
+      return
+    }
+
+      session.unfollowCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
+        guard let self = self else { return }
+
+        switch result {
+          case .success(let user):
+            self.userProfile = user
+            DispatchQueue.main.async {
+              self.currentUser?.followsCount -= 1
+              self.profileCollectionView.reloadData()
+            }
+          case .fail(let error):
+            Alert.showAlert(self, error.description)
+        }
+      }
   }
+
 }
 
 extension ProfileViewController: UINavigationControllerDelegate {

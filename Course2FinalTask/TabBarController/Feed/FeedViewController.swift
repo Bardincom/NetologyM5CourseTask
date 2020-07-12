@@ -122,7 +122,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
     guard let indexPath = feedCollectionView.indexPath(for: cell) else { return }
 
     let userID = postsArray[indexPath.row].author
-    // TODO: Открыть профиль пользователя используя Ран
+
     session.getUserWithID(token, userID) { [weak self] result in
       guard let self = self else { return }
 

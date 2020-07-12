@@ -387,11 +387,13 @@ extension SessionProvider {
   }
 
   /// Возвращает пользователей, поставивших лайк на публикацию с запрошенным ID.
-  func getLikePostUserWithPostID(_ token: String, _ postID: String, completionHandler: @escaping (Result<[User1]>) -> Void) {
+  func getLikePostUserWithPostID(_ token: String,
+                                 _ postID: String,
+                                 completionHandler: @escaping (Result<[User1]>) -> Void) {
     guard let url = preparationURL(path: PostPath.postsSlash + "\(postID)" + PostPath.likes) else { return }
     var request = URLRequest(url: url)
     defaultHeaders["token"] = token
-    print(defaultHeaders)
+//    print(defaultHeaders)
     request.allHTTPHeaderFields = defaultHeaders
 
     let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
