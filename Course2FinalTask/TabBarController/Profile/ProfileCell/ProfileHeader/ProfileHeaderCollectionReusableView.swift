@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DataProvider
 
 protocol ProfileHeaderDelegate: class {
   func openFollowersList()

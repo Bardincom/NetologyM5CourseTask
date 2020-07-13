@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DataProvider
 
 class UserListViewController: UIViewController {
 
@@ -50,7 +49,6 @@ extension UserListViewController: UITableViewDelegate {
     let userID = selectUsers(users: usersList)[indexPath.row].id
 
     let profileViewController = ProfileViewController()
-    // ToDo: Переделать под Run
     profileViewController.feedUserID = userID
     navigationController?.pushViewController(profileViewController, animated: true)
     userListTableView.deselectRow(at: indexPath, animated: true)

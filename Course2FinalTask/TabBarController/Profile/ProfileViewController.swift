@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DataProvider
 
 final class ProfileViewController: UIViewController {
 
@@ -282,6 +281,7 @@ extension ProfileViewController: ProfileHeaderDelegate {
     }
   }
 
+  /// Подписывает и отписывает текущего пользователя от друзей
   func followUnfollowUser() {
 
     guard

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DataProvider
 
 protocol FeedCollectionViewProtocol: class {
   func openUserProfile(cell: FeedCollectionViewCell)
