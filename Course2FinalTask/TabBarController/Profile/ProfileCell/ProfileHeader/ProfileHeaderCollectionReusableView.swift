@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DataProvider
 
 protocol ProfileHeaderDelegate: class {
   func openFollowersList()
@@ -34,27 +33,22 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
     guard let token = keychain.readToken() else { return }
 
     session.getCurrentUser(token) { [weak self] currentUser in
-       guard let self = self else { return }
-           switch currentUser {
-             case .success(let user):
-              self.currentUser = user
-               print(user)
-             case .fail(let backendError):
-              print(backendError.description)
-           }
+      guard let self = self else { return }
+      switch currentUser {
+        case .success(let currentUser):
+          self.currentUser = currentUser
+          print(currentUser)
+        case .fail(let backendError):
+          print(backendError.description)
+      }
     }
-
-//    userDataProviders.currentUser(queue: queue) { [weak self] user in
-//
-//      self?.currentUser = user
-//    }
 
     followButton.layer.cornerRadius = 6
     setupTapGestureRecognizer()
   }
-// logoImageView.kf.setImage(with: urlImage)
-  func setHeader(user: User) {
-    avatarImage.image = user.avatar
+
+  func setHeader(user: User1) {
+    avatarImage.kf.setImage(with: user.avatar)
     avatarImage.layer.cornerRadius = avatarImage.frame.height / 2
     fullNameLabel.alpha = 1
     fullNameLabel.font = systemsFont
@@ -70,7 +64,7 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
 
   }
 
-  func buttonDisplay(user: User) {
+  func buttonDisplay(user: User1) {
 
     if user.currentUserFollowsThisUser {
       followButton.isHidden = false
@@ -82,7 +76,7 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
       followButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
     }
 
-    if user.id.rawValue == currentUser?.id {
+    if user.id == currentUser?.id {
       followButton.isHidden = true
     }
   }

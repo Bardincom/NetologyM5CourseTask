@@ -14,7 +14,7 @@ public let queue = DispatchQueue.global(qos: .userInitiated)
 public let postsDataProviders = DataProviders.shared.postsDataProvider
 
 /// Поставщик пользователей
-public let userDataProviders = DataProviders.shared.usersDataProvider
+//public let userDataProviders = DataProviders.shared.usersDataProvider
 
 /// Поставщик фотографий для новых публикаций
 public let photoProvider = DataProviders.shared.photoProvider

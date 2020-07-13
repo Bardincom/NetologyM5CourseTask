@@ -216,6 +216,7 @@ extension SessionProvider {
 
       do {
         let post = try self.decoder.decode(Post1.self, from: data)
+        print(post.currentUserLikesThisPost)
         completionHandler(.success(post))
       } catch {
         completionHandler(.fail(BackendError.transferError))
@@ -226,7 +227,7 @@ extension SessionProvider {
 
   /// Удаляет лайк от текущего пользователя на публикации с запрошенным ID.
   func unlikePostCurrentUserWithPostID(_ token: String, _ postID: String, _ completionHandler: @escaping (Result<Post1>) -> Void) {
-    guard let url = preparationURL(path: PostPath.like) else { return }
+    guard let url = preparationURL(path: PostPath.unlike) else { return }
 
     var request = URLRequest(url: url)
     defaultHeaders["token"] = token
@@ -267,6 +268,7 @@ extension SessionProvider {
 
       do {
         let post = try self.decoder.decode(Post1.self, from: data)
+        print(post.currentUserLikesThisPost)
         completionHandler(.success(post))
       } catch {
         completionHandler(.fail(BackendError.transferError))

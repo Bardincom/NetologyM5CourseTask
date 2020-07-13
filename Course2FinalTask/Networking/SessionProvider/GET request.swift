@@ -241,7 +241,7 @@ extension SessionProvider {
 
   /// Возвращает публикации пользователя с запрошенным ID.
   func getPostsWithUserID(_ token: String, _ userID: String, completionHandler: @escaping (Result<[Post1]>) -> Void) {
-    guard let url = preparationURL(path: UserPath.usersSlash + "\(userID)" + UserPath.following) else { return }
+    guard let url = preparationURL(path: UserPath.usersSlash + "\(userID)" + PostPath.posts) else { return }
     var request = URLRequest(url: url)
     defaultHeaders["token"] = token
     print(defaultHeaders)
@@ -289,7 +289,7 @@ extension SessionProvider {
   }
 
   /// Возвращает публикации пользователей, на которых подписан текущий пользователь.
-  func getFeedPostsWithUserID(_ token: String, completionHandler: @escaping (Result<[Post1]>) -> Void) {
+  func getFeedPosts(_ token: String, completionHandler: @escaping (Result<[Post1]>) -> Void) {
     guard let url = preparationURL(path: PostPath.feed) else { return }
     var request = URLRequest(url: url)
     defaultHeaders["token"] = token
@@ -387,11 +387,13 @@ extension SessionProvider {
   }
 
   /// Возвращает пользователей, поставивших лайк на публикацию с запрошенным ID.
-  func getLikePostUserWithPostID(_ token: String, _ postID: String, completionHandler: @escaping (Result<[User1]>) -> Void) {
+  func getLikePostUserWithPostID(_ token: String,
+                                 _ postID: String,
+                                 completionHandler: @escaping (Result<[User1]>) -> Void) {
     guard let url = preparationURL(path: PostPath.postsSlash + "\(postID)" + PostPath.likes) else { return }
     var request = URLRequest(url: url)
     defaultHeaders["token"] = token
-    print(defaultHeaders)
+//    print(defaultHeaders)
     request.allHTTPHeaderFields = defaultHeaders
 
     let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
@@ -425,7 +427,9 @@ extension SessionProvider {
       do {
         let users = try self.decoder.decode([User1].self, from: data)
         completionHandler(.success(users))
-        print(users)
+        for user in users {
+          print(user.username)
+        }
 
       } catch {
         completionHandler(.fail(BackendError.transferError))
