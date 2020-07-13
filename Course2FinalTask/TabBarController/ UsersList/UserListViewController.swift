@@ -8,9 +8,9 @@
 
 import UIKit
 
-class UserListViewController: UIViewController {
+final class UserListViewController: UIViewController {
 
-  var usersList: [User1]?
+  var usersList: [User]?
   var navigationItemTitle: String?
 
   @IBOutlet var userListTableView: UITableView! {
@@ -29,13 +29,13 @@ class UserListViewController: UIViewController {
 extension UserListViewController: UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    selectUsers(users: usersList).count
+    selectUsers(usersList).count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeue(reusable: UserListTableViewCell.self, for: indexPath)
 
-    let user = selectUsers(users: usersList)[indexPath.row]
+    let user = selectUsers(usersList)[indexPath.row]
     cell.setupList(user: user)
 
     return cell
@@ -46,7 +46,7 @@ extension UserListViewController: UITableViewDataSource {
 extension UserListViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let userID = selectUsers(users: usersList)[indexPath.row].id
+    let userID = selectUsers(usersList)[indexPath.row].id
 
     let profileViewController = ProfileViewController()
     profileViewController.feedUserID = userID

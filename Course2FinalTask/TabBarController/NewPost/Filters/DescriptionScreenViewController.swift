@@ -7,14 +7,15 @@
 //
 
 import UIKit
-import DataProvider
 
-class DescriptionScreenViewController: UIViewController {
+final class DescriptionScreenViewController: UIViewController {
 
   @IBOutlet private var publishedPhoto: UIImageView!
   @IBOutlet private var descriptionText: UITextField!
 
   public var newPublishedPhoto: UIImage?
+  private var session = SessionProvider.shared
+  private var keychain = Keychain.shared
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -41,23 +42,26 @@ extension DescriptionScreenViewController {
     guard
       let newPublishedPhoto = newPublishedPhoto,
       let descriptionText = descriptionText.text,
-      let feedPost = feedViewController.newPost else { return }
-    
-    postsDataProviders.newPost(with: newPublishedPhoto, description: descriptionText, queue: queue) { newPost in
-      guard let newPost = newPost else {
-        self.displayAlert()
-        return }
+      let feedPost = feedViewController.newPost,
+      let token = keychain.readToken() else { return }
 
-      DispatchQueue.main.async {
-        feedPost(newPost)
+    session.createPost(token, newPublishedPhoto, descriptionText) { [weak self] result in
+      guard let self = self else { return }
 
-        // переключает tabBar на первую вкладку для отображения экрана feed
-        self.tabBarController?.selectedViewController = navigationController
-        // сбрасывает стэк текущего navigationController до корневого контроллера
-        self.navigationController?.popToRootViewController(animated: true)
+      switch result {
+        case .success(let newPost):
+          DispatchQueue.main.async {
+            feedPost(newPost)
 
-        ActivityIndicator.stop()
+            // переключает tabBar на первую вкладку для отображения экрана feed
+            self.tabBarController?.selectedViewController = navigationController
+            // сбрасывает стэк текущего navigationController до корневого контроллера
+            self.navigationController?.popToRootViewController(animated: true)
 
+            ActivityIndicator.stop()
+          }
+        case .fail(let error):
+          Alert.showAlert(self, error.description)
       }
     }
   }

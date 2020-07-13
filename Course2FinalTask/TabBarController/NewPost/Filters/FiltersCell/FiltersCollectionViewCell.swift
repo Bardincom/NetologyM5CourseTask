@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FiltersCollectionViewCell: UICollectionViewCell {
+final class FiltersCollectionViewCell: UICollectionViewCell {
 
   @IBOutlet var thumbnailPhoto: UIImageView!
   @IBOutlet var filterNameLabel: UILabel!
@@ -30,5 +30,4 @@ class FiltersCollectionViewCell: UICollectionViewCell {
     }
     operationQueue.addOperation((filterOperation))
   }
-
 }

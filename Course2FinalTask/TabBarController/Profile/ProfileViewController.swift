@@ -10,12 +10,12 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
 
-  var userProfile: User1?
+  var userProfile: User?
   var feedUserID: String?
-  var currentUser: User1?
+  var currentUser: User?
   private let keychain = Keychain.shared
   private let session = SessionProvider.shared
-  private var postsProfile: [Post1]?
+  private var postsProfile: [Post]?
   lazy var rootViewController = AppDelegate.shared.rootViewController
 
   @IBOutlet weak private var profileCollectionView: UICollectionView! {
@@ -53,7 +53,7 @@ final class ProfileViewController: UIViewController {
 extension ProfileViewController: UICollectionViewDataSource {
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    guard let postsProfile = postsProfile else { return [Post1]().count }
+    guard let postsProfile = postsProfile else { return [Post]().count }
     return postsProfile.count
   }
 
@@ -206,7 +206,6 @@ extension ProfileViewController {
 
       switch result {
         case .success(let currentUser):
-          print(currentUser)
           self.userProfile = currentUser
 
           self.session.getPostsWithUserID(token, currentUser.id) { [weak self] result in
@@ -289,37 +288,37 @@ extension ProfileViewController: ProfileHeaderDelegate {
       let userProfile = userProfile  else { return }
 
     guard userProfile.currentUserFollowsThisUser else {
-        session.followCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
-            guard let self = self else { return }
-
-            switch result {
-              case .success(let user):
-                self.userProfile = user
-                DispatchQueue.main.async {
-                  self.currentUser?.followedByCount += 1
-                  self.profileCollectionView.reloadData()
-                }
-              case .fail(let error):
-                Alert.showAlert(self, error.description)
-            }
-        }
-      return
-    }
-
-      session.unfollowCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
+      session.followCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
         guard let self = self else { return }
 
         switch result {
           case .success(let user):
             self.userProfile = user
             DispatchQueue.main.async {
-              self.currentUser?.followsCount -= 1
+              self.currentUser?.followedByCount += 1
               self.profileCollectionView.reloadData()
             }
           case .fail(let error):
             Alert.showAlert(self, error.description)
         }
       }
+      return
+    }
+
+    session.unfollowCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
+      guard let self = self else { return }
+
+      switch result {
+        case .success(let user):
+          self.userProfile = user
+          DispatchQueue.main.async {
+            self.currentUser?.followsCount -= 1
+            self.profileCollectionView.reloadData()
+          }
+        case .fail(let error):
+          Alert.showAlert(self, error.description)
+      }
+    }
   }
 
 }

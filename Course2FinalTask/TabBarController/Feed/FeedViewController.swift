@@ -7,12 +7,11 @@
 //
 
 import UIKit
-import DataProvider
 
 final class FeedViewController: UIViewController {
 
-  private var postsArray: [Post1] = []
-  private var post: Post1?
+  private var postsArray: [Post] = []
+  private var post: Post?
   private var session = SessionProvider.shared
   private var keychain = Keychain.shared
   var newPost: ((Post) -> Void)?
@@ -39,7 +38,6 @@ final class FeedViewController: UIViewController {
       guard let self = self else { return }
       switch result {
         case .success(let posts):
-          print(posts)
           self.postsArray = posts
         case .fail(let error):
           Alert.showAlert(self, error.description)
@@ -59,10 +57,9 @@ final class FeedViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    // TODO: Новый пост
     // сюда попадает новая публикация и размещается вверху ленты
     newPost = { [weak self] post in
-      //      self?.postsArray.insert(post, at: 0)
+            self?.postsArray.insert(post, at: 0)
       // переходим в начало Ленты
       self?.feedCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
       self?.feedCollectionView.reloadData()

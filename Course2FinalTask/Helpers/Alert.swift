@@ -17,7 +17,6 @@ final class Alert {
   class func showAlert(_ viewController: UIViewController, _ massage: String) {
     DispatchQueue.main.async {
       let alert = UIAlertController(title: nil, message: massage, preferredStyle: .alert)
-
       alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
       viewController.present(alert, animated: true)
     }

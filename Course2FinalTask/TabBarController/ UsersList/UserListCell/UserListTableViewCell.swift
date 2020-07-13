@@ -13,7 +13,7 @@ final class UserListTableViewCell: UITableViewCell {
   @IBOutlet var avatarImage: UIImageView!
   @IBOutlet var userNameLabel: UILabel!
 
-  func setupList(user: User1) {
+  func setupList(user: User) {
     avatarImage.kf.setImage(with: user.avatar)
     userNameLabel.text = user.username
   }

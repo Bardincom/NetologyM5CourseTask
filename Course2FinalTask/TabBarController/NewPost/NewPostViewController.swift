@@ -10,6 +10,8 @@ import UIKit
 
 final class NewPostViewController: UIViewController {
 
+  let iPhoneAlbum = PhotoProvider.allPhotos()
+
   @IBOutlet private var newPostViewController: UICollectionView! {
     willSet {
       newValue.register(nibCell: ProfileCollectionViewCell.self)
@@ -25,13 +27,13 @@ final class NewPostViewController: UIViewController {
 extension NewPostViewController: UICollectionViewDataSource {
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    photoNewPosts.count
+    iPhoneAlbum.count
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeue(cell: ProfileCollectionViewCell.self, for: indexPath)
 
-    let photo = photoNewPosts[indexPath.row]
+    let photo = iPhoneAlbum[indexPath.row].image
     /// установка изображений
     cell.imageView(newPhoto: photo)
     return cell
@@ -49,7 +51,7 @@ extension NewPostViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat { 0 }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let selectPhoto = photoNewPosts[indexPath.row]
+    let selectPhoto = iPhoneAlbum[indexPath.row].image
 
     let filtersViewController = FiltersViewController()
 
