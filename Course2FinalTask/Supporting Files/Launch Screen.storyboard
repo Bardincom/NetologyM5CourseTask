@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -16,35 +15,37 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tabBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Xf-eM-GZS">
-                                <rect key="frame" x="0.0" y="519" width="320" height="49"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <items>
-                                    <tabBarItem title="Feed" image="feed" id="MB9-v1-VRn"/>
-                                    <tabBarItem title="New" image="plus" id="OFx-Rs-LHA">
-                                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="0.0"/>
-                                    </tabBarItem>
-                                    <tabBarItem title="Profile" image="profile" id="27v-8a-ZRu"/>
-                                </items>
-                            </tabBar>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="instagram" translatesAutoresizingMaskIntoConstraints="NO" id="3SO-CE-SgG">
+                                <rect key="frame" x="85" y="209" width="150" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="NHe-I0-hfO"/>
+                                    <constraint firstAttribute="height" constant="150" id="rQO-Zm-daf"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="©Bardincom" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x3v-ck-xBm">
+                                <rect key="frame" x="112" y="527" width="97" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="2Xf-eM-GZS" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" id="4O4-xb-H2Q"/>
-                            <constraint firstItem="2Xf-eM-GZS" firstAttribute="trailing" secondItem="Bcu-3y-fUS" secondAttribute="trailing" id="RLr-vG-DTr"/>
-                            <constraint firstItem="2Xf-eM-GZS" firstAttribute="bottom" secondItem="Bcu-3y-fUS" secondAttribute="bottom" id="YSO-UG-uJt"/>
+                            <constraint firstItem="x3v-ck-xBm" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" constant="112" id="PD2-R6-eyS"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="bottom" secondItem="x3v-ck-xBm" secondAttribute="bottom" constant="20" id="iWu-Y3-3z9"/>
+                            <constraint firstItem="3SO-CE-SgG" firstAttribute="centerX" secondItem="Bcu-3y-fUS" secondAttribute="centerX" id="jCW-bg-hL6"/>
+                            <constraint firstItem="3SO-CE-SgG" firstAttribute="centerY" secondItem="Bcu-3y-fUS" secondAttribute="centerY" id="vwB-Y0-Ctt"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="x3v-ck-xBm" secondAttribute="trailing" constant="111" id="wcg-jY-IPP"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52.5" y="375"/>
         </scene>
     </scenes>
     <resources>
-        <image name="feed" width="25" height="25"/>
-        <image name="plus" width="25" height="25"/>
-        <image name="profile" width="25" height="25"/>
+        <image name="instagram" width="600" height="600"/>
     </resources>
 </document>
