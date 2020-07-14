@@ -21,10 +21,11 @@ final class DescriptionScreenViewController: UIViewController {
     super.viewDidLoad()
 
     setupFiltersViewController()
+    setDelegate()
   }
 }
 
-extension DescriptionScreenViewController {
+private extension DescriptionScreenViewController {
 
   func setupFiltersViewController() {
     publishedPhoto.image = newPublishedPhoto
@@ -35,6 +36,10 @@ extension DescriptionScreenViewController {
 
   @objc
   func sharedPhoto(_ sender: UITapGestureRecognizer) {
+    sendPost()
+  }
+
+  func sendPost() {
     ActivityIndicator.start()
     guard let navigationController = tabBarController?.viewControllers?[0] as? UINavigationController else { return }
     guard let feedViewController = navigationController.viewControllers.first as? FeedViewController else { return }
@@ -64,5 +69,16 @@ extension DescriptionScreenViewController {
           Alert.showAlert(self, error.description)
       }
     }
+  }
+}
+
+extension DescriptionScreenViewController: UITextFieldDelegate {
+  func setDelegate() {
+    descriptionText.delegate = self
+  }
+
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    sendPost()
+    return true
   }
 }
