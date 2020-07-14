@@ -17,6 +17,12 @@ final class FeedViewController: UIViewController {
   var newPost: ((Post) -> Void)?
   var alertAction: ((Bool) -> Void)?
 
+  let refreshControl: UIRefreshControl = {
+    let refreshControl = UIRefreshControl()
+    refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+    return refreshControl
+  }()
+
   @IBOutlet weak private var feedCollectionView: UICollectionView! {
     willSet {
       newValue.register(nibCell: FeedCollectionViewCell.self)
@@ -57,6 +63,7 @@ final class FeedViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    feedCollectionView.refreshControl = refreshControl
     // сюда попадает новая публикация и размещается вверху ленты
     newPost = { [weak self] post in
             self?.postsArray.insert(post, at: 0)
@@ -68,7 +75,6 @@ final class FeedViewController: UIViewController {
 
     title = ControllerSet.feedViewController
   }
-
 }
 
 // MARK: DataSource
@@ -206,5 +212,29 @@ extension FeedViewController: FeedCollectionViewProtocol {
         ActivityIndicator.stop()
       }
     }
+  }
+}
+
+private extension FeedViewController {
+  @objc
+  func refresh(_ sender: UIRefreshControl) {
+     guard let token = keychain.readToken() else { return }
+
+       session.getFeedPosts(token) { [weak self] result in
+         guard let self = self else { return }
+         switch result {
+           case .success(let posts):
+             self.postsArray = posts
+           case .fail(let error):
+             Alert.showAlert(self, error.description)
+         }
+
+         DispatchQueue.main.async {
+           if self.isViewLoaded {
+             self.feedCollectionView.reloadData()
+           }
+         }
+       }
+    sender.endRefreshing()
   }
 }
