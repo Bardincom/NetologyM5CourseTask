@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FiltersViewController: UIViewController {
+final class FiltersViewController: UIViewController {
 
   @IBOutlet var bigImage: UIImageView!
 

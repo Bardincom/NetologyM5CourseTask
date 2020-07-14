@@ -46,7 +46,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
 
   }
 
-  func setupFeed(post: Post1) {
+  func setupFeed(post: Post) {
 
     dateLabel.text = post.createdTime.displayDate()
     avatarImageView.kf.setImage(with: post.authorAvatar)

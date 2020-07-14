@@ -6,12 +6,14 @@
 //  Copyright © 2020 Bardincom. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 // MARK: POST
 extension SessionProvider {
   /// Авторизует пользователя и выдает токен.
-  func signin(login: String, password: String, completionHandler: @escaping (Result<Token>) -> Void) {
+  func signin(login: String,
+              password: String,
+              completionHandler: @escaping (Result<Token>) -> Void) {
     ActivityIndicator.start()
     guard let url = preparationURL(path: TokenPath.signin) else { return }
 
@@ -72,12 +74,13 @@ extension SessionProvider {
   }
 
   /// Подписывает текущего пользователя на пользователя с запрошенным ID.
-  func followCurrentUserWithUserID(_ token: String, _ userID: String, _ completionHandler: @escaping (Result<User1>) -> Void) {
+  func followCurrentUserWithUserID(_ token: String,
+                                   _ userID: String,
+                                   _ completionHandler: @escaping (Result<User>) -> Void) {
     guard let url = preparationURL(path: UserPath.follow) else { return }
 
     var request = URLRequest(url: url)
     defaultHeaders["token"] = token
-    print(defaultHeaders)
     request.allHTTPHeaderFields = defaultHeaders
     request.httpMethod = HttpMethod.post
 
@@ -113,7 +116,7 @@ extension SessionProvider {
       guard let data = data else { return }
 
       do {
-        let user = try self.decoder.decode(User1.self, from: data)
+        let user = try self.decoder.decode(User.self, from: data)
         completionHandler(.success(user))
       } catch {
         completionHandler(.fail(BackendError.transferError))
@@ -123,12 +126,13 @@ extension SessionProvider {
   }
 
   /// Отписывает текущего пользователя от пользователя с запрошенным ID.
-  func unfollowCurrentUserWithUserID(_ token: String, _ userID: String, _ completionHandler: @escaping (Result<User1>) -> Void) {
+  func unfollowCurrentUserWithUserID(_ token: String,
+                                     _ userID: String,
+                                     _ completionHandler: @escaping (Result<User>) -> Void) {
     guard let url = preparationURL(path: UserPath.unfollow) else { return }
 
     var request = URLRequest(url: url)
     defaultHeaders["token"] = token
-    print(defaultHeaders)
     request.allHTTPHeaderFields = defaultHeaders
     request.httpMethod = HttpMethod.post
 
@@ -164,7 +168,7 @@ extension SessionProvider {
       guard let data = data else { return }
 
       do {
-        let user = try self.decoder.decode(User1.self, from: data)
+        let user = try self.decoder.decode(User.self, from: data)
         completionHandler(.success(user))
       } catch {
         completionHandler(.fail(BackendError.transferError))
@@ -174,12 +178,13 @@ extension SessionProvider {
   }
 
   /// Ставит лайк от текущего пользователя на публикации с запрошенным ID.
-  func likePostCurrentUserWithPostID(_ token: String, _ postID: String, _ completionHandler: @escaping (Result<Post1>) -> Void) {
+  func likePostCurrentUserWithPostID(_ token: String,
+                                     _ postID: String,
+                                     _ completionHandler: @escaping (Result<Post>) -> Void) {
     guard let url = preparationURL(path: PostPath.like) else { return }
 
     var request = URLRequest(url: url)
     defaultHeaders["token"] = token
-    print(defaultHeaders)
     request.allHTTPHeaderFields = defaultHeaders
     request.httpMethod = HttpMethod.post
 
@@ -215,8 +220,7 @@ extension SessionProvider {
       guard let data = data else { return }
 
       do {
-        let post = try self.decoder.decode(Post1.self, from: data)
-        print(post.currentUserLikesThisPost)
+        let post = try self.decoder.decode(Post.self, from: data)
         completionHandler(.success(post))
       } catch {
         completionHandler(.fail(BackendError.transferError))
@@ -226,12 +230,13 @@ extension SessionProvider {
   }
 
   /// Удаляет лайк от текущего пользователя на публикации с запрошенным ID.
-  func unlikePostCurrentUserWithPostID(_ token: String, _ postID: String, _ completionHandler: @escaping (Result<Post1>) -> Void) {
+  func unlikePostCurrentUserWithPostID(_ token: String,
+                                       _ postID: String,
+                                       _ completionHandler: @escaping (Result<Post>) -> Void) {
     guard let url = preparationURL(path: PostPath.unlike) else { return }
 
     var request = URLRequest(url: url)
     defaultHeaders["token"] = token
-    print(defaultHeaders)
     request.allHTTPHeaderFields = defaultHeaders
     request.httpMethod = HttpMethod.post
 
@@ -267,8 +272,7 @@ extension SessionProvider {
       guard let data = data else { return }
 
       do {
-        let post = try self.decoder.decode(Post1.self, from: data)
-        print(post.currentUserLikesThisPost)
+        let post = try self.decoder.decode(Post.self, from: data)
         completionHandler(.success(post))
       } catch {
         completionHandler(.fail(BackendError.transferError))
@@ -277,16 +281,20 @@ extension SessionProvider {
     dataTask.resume()
   }
 
-  func createPost(_ token: String, _ image: String, _ description: String, _ completionHandler: @escaping (Result<Post1>) -> Void) {
-    guard let url = preparationURL(path: PostPath.like) else { return }
+  func createPost(_ token: String,
+                  _ image: UIImage,
+                  _ description: String,
+                  _ completionHandler: @escaping (Result<Post>) -> Void) {
+    guard let url = preparationURL(path: PostPath.create) else { return }
 
     var request = URLRequest(url: url)
     defaultHeaders["token"] = token
-    print(defaultHeaders)
     request.allHTTPHeaderFields = defaultHeaders
     request.httpMethod = HttpMethod.post
 
-    let json = "{\"image\" : \"\(image)\" , \"description\" : \"\(description)\"}"
+    guard let imageData = image.jpegData(compressionQuality: 1)?.base64EncodedString() else { return }
+
+    let json = "{\"image\" : \"\(imageData)\" , \"description\" : \"\(description)\"}"
     request.httpBody = json.data(using: .utf8)
     request.allHTTPHeaderFields = defaultHeaders
 
@@ -318,7 +326,7 @@ extension SessionProvider {
       guard let data = data else { return }
 
       do {
-        let post = try self.decoder.decode(Post1.self, from: data)
+        let post = try self.decoder.decode(Post.self, from: data)
         completionHandler(.success(post))
       } catch {
         completionHandler(.fail(BackendError.transferError))

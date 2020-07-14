@@ -13,7 +13,7 @@ enum Result<T> {
   case fail(BackendError)
 }
 
-class SessionProvider {
+final class SessionProvider {
   let sharedSession = URLSession.shared
   let decoder = JSONDecoder()
   let dateFormatter: DateFormatter = .createdTime
@@ -49,7 +49,6 @@ extension SessionProvider {
     urlComponents.host = host
     urlComponents.port = port
     urlComponents.path = path
-    print(urlComponents)
     return urlComponents
   }
 
@@ -63,7 +62,6 @@ extension SessionProvider {
     request.httpMethod = httpMethod
     defaultHeaders["token"] = token
     request.allHTTPHeaderFields = defaultHeaders
-
     return request
   }
 }

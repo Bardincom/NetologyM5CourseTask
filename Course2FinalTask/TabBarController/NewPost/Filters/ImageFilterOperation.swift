@@ -6,10 +6,9 @@
 //  Copyright © 2020 Bardincom. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
-class ImageFilterOperation: Operation {
+final class ImageFilterOperation: Operation {
 
   private var _inputImage: UIImage?
 

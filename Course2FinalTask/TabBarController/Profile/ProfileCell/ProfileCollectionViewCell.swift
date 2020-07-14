@@ -12,7 +12,7 @@ final class ProfileCollectionViewCell: UICollectionViewCell {
 
   @IBOutlet private var imageView: UIImageView!
   /// заполнение ячейки для заполнения постов
-  func setImageCell(post: Post1) {
+  func setImageCell(post: Post) {
     imageView.kf.setImage(with: post.image)
   }
 

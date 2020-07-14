@@ -22,7 +22,7 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
   @IBOutlet private var followingLabel: UILabel!
   @IBOutlet private var followButton: UIButton!
 
-  var currentUser: User1?
+  var currentUser: User?
   private let session = SessionProvider.shared
   private let keychain = Keychain.shared
 
@@ -37,9 +37,8 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
       switch currentUser {
         case .success(let currentUser):
           self.currentUser = currentUser
-          print(currentUser)
-        case .fail(let backendError):
-          print(backendError.description)
+        case .fail( _):
+          break
       }
     }
 
@@ -47,7 +46,7 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
     setupTapGestureRecognizer()
   }
 
-  func setHeader(user: User1) {
+  func setHeader(user: User) {
     avatarImage.kf.setImage(with: user.avatar)
     avatarImage.layer.cornerRadius = avatarImage.frame.height / 2
     fullNameLabel.alpha = 1
@@ -64,7 +63,7 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
 
   }
 
-  func buttonDisplay(user: User1) {
+  func buttonDisplay(user: User) {
 
     if user.currentUserFollowsThisUser {
       followButton.isHidden = false
