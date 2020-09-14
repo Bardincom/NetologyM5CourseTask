@@ -88,22 +88,19 @@ private extension RootViewController {
     // если токен есть проверям действителен ли он
     session.checkToken(token) { [weak self] result in
       guard let self = self else { return }
-
-      switch result {
-        case .success(_):
-          DispatchQueue.main.async {
+      DispatchQueue.main.async {
+        switch result {
+          case .success(_):
             self.switchToFeedViewController()
             return
-          }
-
-        case .fail(_):
-          DispatchQueue.main.async {
+          case .fail(_):
             self.addChild(self.current)
             self.current.view.frame = self.view.bounds
             self.view.addSubview(self.current.view)
             self.current.didMove(toParent: self)
             return
-          }
+
+        }
       }
     }
   }

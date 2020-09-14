@@ -86,16 +86,14 @@ private extension LoginScreenViewController {
 
     session.signin(login: login, password: password) { [weak self] result in
       guard let self = self else { return }
-      switch result {
-        case .success(let token):
-          self.keychain.saveToken(token.token)
-          DispatchQueue.main.async {
+      DispatchQueue.main.async {
+        switch result {
+          case .success(let token):
+            self.keychain.saveToken(token.token)
             self.rootViewController.switchToFeedViewController()
-          }
-        case .fail(let backendError):
-          DispatchQueue.main.async {
+          case .fail(let backendError):
             Alert.showAlert(self, backendError.description)
-          }
+        }
       }
     }
   }
