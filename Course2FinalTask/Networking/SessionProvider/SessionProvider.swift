@@ -64,4 +64,39 @@ extension SessionProvider {
     request.allHTTPHeaderFields = defaultHeaders
     return request
   }
+
+  /// Проверка статуса запроса
+  func checkBackendErrorStatus<T>(httpResponse: HTTPURLResponse,
+                          completionHandler: @escaping (Result<T>) -> Void) {
+    guard httpResponse.statusCode == 200 else {
+      let backendError: BackendError
+
+      switch httpResponse.statusCode {
+        case 400: backendError = .badRequest
+        case 401: backendError = .unauthorized
+        case 404: backendError = .notFound
+        case 406: backendError = .notAcceptable
+        case 422: backendError = .unprocessable
+        default: backendError = .transferError
+      }
+
+      completionHandler(.fail(backendError))
+      ActivityIndicator.stop()
+      return
+    }
+  }
+
+  func checkResponse<T>(response: URLResponse?,
+                        completionHandler: @escaping (Result<T>) -> Void) -> HTTPURLResponse? {
+
+    guard let httpResponse = response as? HTTPURLResponse else {
+
+    let backendError = BackendError.transferError
+    completionHandler(.fail(backendError))
+    ActivityIndicator.stop()
+    return nil}
+
+    return httpResponse
+  }
+  
 }
