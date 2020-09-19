@@ -67,7 +67,7 @@ extension SessionProvider {
 
   /// Проверка статуса запроса
   func checkBackendErrorStatus<T>(httpResponse: HTTPURLResponse,
-                          completionHandler: @escaping (Result<T>) -> Void) {
+                          completionHandler: @escaping (Result<T>) -> Void) -> Bool {
     guard httpResponse.statusCode == 200 else {
       let backendError: BackendError
 
@@ -82,8 +82,10 @@ extension SessionProvider {
 
       completionHandler(.fail(backendError))
       ActivityIndicator.stop()
-      return
+      return false
     }
+
+    return true
   }
 
   func checkResponse<T>(response: URLResponse?,

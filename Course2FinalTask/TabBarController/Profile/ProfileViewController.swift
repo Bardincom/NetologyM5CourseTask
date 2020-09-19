@@ -199,6 +199,8 @@ extension ProfileViewController {
 
   /// Загрузка профиля текущего пользователя
   func loadCurrentUser() {
+    setLogout()
+
     guard let token = keychain.readToken() else { return }
     ActivityIndicator.start()
     session.getCurrentUser(token) { [weak self] result in
@@ -213,7 +215,6 @@ extension ProfileViewController {
 
             switch result {
               case .success(let posts):
-                self.setLogout()
                 self.postsProfile = posts
                 self.updateUI()
               case .fail(let error):

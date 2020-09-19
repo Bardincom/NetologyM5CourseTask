@@ -20,8 +20,8 @@ extension SessionProvider {
     let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
 
       guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-
-      self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler)
+      
+      guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
 
       completionHandler(.success(true))
     }
@@ -40,7 +40,7 @@ extension SessionProvider {
 
       guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
 
-      self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler)
+      guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
 
       guard let data = data else { return }
 
@@ -69,7 +69,7 @@ extension SessionProvider {
 
       guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
 
-      self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler)
+      guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
 
       guard let data = data else { return }
 
@@ -98,7 +98,7 @@ extension SessionProvider {
 
       guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
 
-      self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler)
+      guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
 
       guard let data = data else { return }
 
@@ -128,7 +128,7 @@ extension SessionProvider {
 
       guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
 
-      self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler)
+      guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
 
       guard let data = data else { return }
 
@@ -157,7 +157,7 @@ extension SessionProvider {
 
       guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
 
-      self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler)
+      guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
 
       guard let data = data else { return }
       do {
@@ -184,7 +184,7 @@ extension SessionProvider {
 
       guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
 
-      self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler)
+      guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
 
       guard let data = data else { return }
       do {
@@ -212,7 +212,7 @@ extension SessionProvider {
 
       guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
 
-      self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler)
+      guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
 
       guard let data = data else { return }
       do {
@@ -240,7 +240,7 @@ extension SessionProvider {
 
       guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
 
-      self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler)
+      guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
 
       guard let data = data else { return }
       do {
