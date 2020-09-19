@@ -21,3 +21,5 @@ public enum NamesItemTitle {
    static let newPost = "New Post"
    static let filters = "Filters"
 }
+
+public let cornerRadiusButton: CGFloat = 5

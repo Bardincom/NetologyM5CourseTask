@@ -12,7 +12,7 @@ whitelist_rules:
     - control_statement
     #- convenience_type
     - custom_rules
-    - cyclomatic_complexity
+    #- cyclomatic_complexity
     #- discouraged_optional_boolean
     - duplicate_imports
     - empty_count
