@@ -18,28 +18,10 @@ extension SessionProvider {
     let request = preparationRequest(url, HttpMethod.get, token)
 
     let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
-      guard let httpResponse = response as? HTTPURLResponse else {
-        let backendError = BackendError.transferError
-        ActivityIndicator.stop()
-        completionHandler(.fail(backendError))
-        return }
 
-      guard httpResponse.statusCode == 200 else {
-        let backendError: BackendError
+      guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
 
-        switch httpResponse.statusCode {
-          case 400: backendError = .badRequest
-          case 401: backendError = .unauthorized
-          case 404: backendError = .notFound
-          case 406: backendError = .notAcceptable
-          case 422: backendError = .unprocessable
-          default: backendError = .transferError
-        }
-
-        completionHandler(.fail(backendError))
-        ActivityIndicator.stop()
-        return
-      }
+      self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler)
 
       completionHandler(.success(true))
     }
@@ -56,29 +38,9 @@ extension SessionProvider {
 
     let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
 
-      guard let httpResponse = response as? HTTPURLResponse else {
+      guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
 
-        let backendError = BackendError.transferError
-        completionHandler(.fail(backendError))
-        ActivityIndicator.stop()
-        return }
-
-      guard httpResponse.statusCode == 200 else {
-        let backendError: BackendError
-
-        switch httpResponse.statusCode {
-          case 400: backendError = .badRequest
-          case 401: backendError = .unauthorized
-          case 404: backendError = .notFound
-          case 406: backendError = .notAcceptable
-          case 422: backendError = .unprocessable
-          default: backendError = .transferError
-        }
-
-        completionHandler(.fail(backendError))
-        ActivityIndicator.stop()
-        return
-      }
+      self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler)
 
       guard let data = data else { return }
 
@@ -105,29 +67,9 @@ extension SessionProvider {
 
     let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
 
-      guard let httpResponse = response as? HTTPURLResponse else {
+      guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
 
-        let backendError = BackendError.transferError
-        completionHandler(.fail(backendError))
-        ActivityIndicator.stop()
-        return }
-
-      guard httpResponse.statusCode == 200 else {
-        let backendError: BackendError
-
-        switch httpResponse.statusCode {
-          case 400: backendError = .badRequest
-          case 401: backendError = .unauthorized
-          case 404: backendError = .notFound
-          case 406: backendError = .notAcceptable
-          case 422: backendError = .unprocessable
-          default: backendError = .transferError
-        }
-
-        completionHandler(.fail(backendError))
-        ActivityIndicator.stop()
-        return
-      }
+      self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler)
 
       guard let data = data else { return }
 
@@ -154,29 +96,9 @@ extension SessionProvider {
 
     let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
 
-      guard let httpResponse = response as? HTTPURLResponse else {
+      guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
 
-        let backendError = BackendError.transferError
-        completionHandler(.fail(backendError))
-        ActivityIndicator.stop()
-        return }
-
-      guard httpResponse.statusCode == 200 else {
-        let backendError: BackendError
-
-        switch httpResponse.statusCode {
-          case 400: backendError = .badRequest
-          case 401: backendError = .unauthorized
-          case 404: backendError = .notFound
-          case 406: backendError = .notAcceptable
-          case 422: backendError = .unprocessable
-          default: backendError = .transferError
-        }
-
-        completionHandler(.fail(backendError))
-        ActivityIndicator.stop()
-        return
-      }
+      self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler)
 
       guard let data = data else { return }
 
@@ -204,29 +126,9 @@ extension SessionProvider {
 
     let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
 
-      guard let httpResponse = response as? HTTPURLResponse else {
+      guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
 
-        let backendError = BackendError.transferError
-        completionHandler(.fail(backendError))
-        ActivityIndicator.stop()
-        return }
-
-      guard httpResponse.statusCode == 200 else {
-        let backendError: BackendError
-
-        switch httpResponse.statusCode {
-          case 400: backendError = .badRequest
-          case 401: backendError = .unauthorized
-          case 404: backendError = .notFound
-          case 406: backendError = .notAcceptable
-          case 422: backendError = .unprocessable
-          default: backendError = .transferError
-        }
-
-        completionHandler(.fail(backendError))
-        ActivityIndicator.stop()
-        return
-      }
+      self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler)
 
       guard let data = data else { return }
 
@@ -253,29 +155,9 @@ extension SessionProvider {
 
     let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
 
-      guard let httpResponse = response as? HTTPURLResponse else {
+      guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
 
-        let backendError = BackendError.transferError
-        completionHandler(.fail(backendError))
-        ActivityIndicator.stop()
-        return }
-
-      guard httpResponse.statusCode == 200 else {
-        let backendError: BackendError
-
-        switch httpResponse.statusCode {
-          case 400: backendError = .badRequest
-          case 401: backendError = .unauthorized
-          case 404: backendError = .notFound
-          case 406: backendError = .notAcceptable
-          case 422: backendError = .unprocessable
-          default: backendError = .transferError
-        }
-
-        completionHandler(.fail(backendError))
-        ActivityIndicator.stop()
-        return
-      }
+      self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler)
 
       guard let data = data else { return }
       do {
@@ -300,29 +182,9 @@ extension SessionProvider {
 
     let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
 
-      guard let httpResponse = response as? HTTPURLResponse else {
+      guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
 
-        let backendError = BackendError.transferError
-        completionHandler(.fail(backendError))
-        ActivityIndicator.stop()
-        return }
-
-      guard httpResponse.statusCode == 200 else {
-        let backendError: BackendError
-
-        switch httpResponse.statusCode {
-          case 400: backendError = .badRequest
-          case 401: backendError = .unauthorized
-          case 404: backendError = .notFound
-          case 406: backendError = .notAcceptable
-          case 422: backendError = .unprocessable
-          default: backendError = .transferError
-        }
-
-        completionHandler(.fail(backendError))
-        ActivityIndicator.stop()
-        return
-      }
+      self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler)
 
       guard let data = data else { return }
       do {
@@ -348,29 +210,9 @@ extension SessionProvider {
 
     let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
 
-      guard let httpResponse = response as? HTTPURLResponse else {
+      guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
 
-        let backendError = BackendError.transferError
-        completionHandler(.fail(backendError))
-        ActivityIndicator.stop()
-        return }
-
-      guard httpResponse.statusCode == 200 else {
-        let backendError: BackendError
-
-        switch httpResponse.statusCode {
-          case 400: backendError = .badRequest
-          case 401: backendError = .unauthorized
-          case 404: backendError = .notFound
-          case 406: backendError = .notAcceptable
-          case 422: backendError = .unprocessable
-          default: backendError = .transferError
-        }
-
-        completionHandler(.fail(backendError))
-        ActivityIndicator.stop()
-        return
-      }
+      self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler)
 
       guard let data = data else { return }
       do {
@@ -396,29 +238,9 @@ extension SessionProvider {
 
     let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
 
-      guard let httpResponse = response as? HTTPURLResponse else {
+      guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
 
-        let backendError = BackendError.transferError
-        completionHandler(.fail(backendError))
-        ActivityIndicator.stop()
-        return }
-
-      guard httpResponse.statusCode == 200 else {
-        let backendError: BackendError
-
-        switch httpResponse.statusCode {
-          case 400: backendError = .badRequest
-          case 401: backendError = .unauthorized
-          case 404: backendError = .notFound
-          case 406: backendError = .notAcceptable
-          case 422: backendError = .unprocessable
-          default: backendError = .transferError
-        }
-
-        completionHandler(.fail(backendError))
-        ActivityIndicator.stop()
-        return
-      }
+      self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler)
 
       guard let data = data else { return }
       do {

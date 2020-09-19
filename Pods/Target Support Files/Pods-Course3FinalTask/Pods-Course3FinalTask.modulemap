@@ -1,0 +1,6 @@
+framework module Pods_Course3FinalTask {
+  umbrella header "Pods-Course3FinalTask-umbrella.h"
+
+  export *
+  module * { export * }
+}
