@@ -184,7 +184,7 @@ extension SessionProvider {
                   _ description: String,
                   _ completionHandler: @escaping (Result<Post>) -> Void) {
     guard let url = preparationURL(path: PostPath.create) else { return }
-    
+
     var request = URLRequest(url: url)
     defaultHeaders["token"] = token
     request.allHTTPHeaderFields = defaultHeaders

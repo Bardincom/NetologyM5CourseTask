@@ -98,5 +98,5 @@ extension SessionProvider {
 
     return httpResponse
   }
-  
+
 }
