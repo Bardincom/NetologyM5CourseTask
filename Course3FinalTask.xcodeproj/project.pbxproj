@@ -60,6 +60,7 @@
 		A2C014E52454F228001A4894 /* NewPostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2C014E32454F228001A4894 /* NewPostViewController.xib */; };
 		A2DF35EE2405C2C0008A9CD7 /* FeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DF35EC2405C2C0008A9CD7 /* FeedCollectionViewCell.swift */; };
 		A2DF35EF2405C2C0008A9CD7 /* FeedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2DF35ED2405C2C0008A9CD7 /* FeedCollectionViewCell.xib */; };
+		A2EA2D7225167BB80019190C /* DataBase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A2EA2D7025167BB80019190C /* DataBase.xcdatamodeld */; };
 		A2F7486124041B2500396045 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = A2F7486024041B2500396045 /* .gitignore */; };
 		A2F7486524041F6200396045 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F7486324041F6200396045 /* FeedViewController.swift */; };
 		A2F7486624041F6200396045 /* FeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2F7486424041F6200396045 /* FeedViewController.xib */; };
@@ -139,6 +140,7 @@
 		A2C014E32454F228001A4894 /* NewPostViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewPostViewController.xib; sourceTree = "<group>"; };
 		A2DF35EC2405C2C0008A9CD7 /* FeedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		A2DF35ED2405C2C0008A9CD7 /* FeedCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedCollectionViewCell.xib; sourceTree = "<group>"; };
+		A2EA2D7125167BB80019190C /* DataBase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataBase.xcdatamodel; sourceTree = "<group>"; };
 		A2F7486024041B2500396045 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		A2F7486324041F6200396045 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		A2F7486424041F6200396045 /* FeedViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedViewController.xib; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 			children = (
 				74B7927B202B3427006BCB41 /* Code */,
 				A248FD6724AF006F002E24C9 /* Networking */,
+				A2EA2D6F25167ACE0019190C /* OfflineWorking */,
 				A262D14524AB85A200022684 /* RootViewController */,
 				A262D14724AB85A200022684 /* LoginViewController */,
 				A2F7486224041F1700396045 /* TabBarController */,
@@ -434,6 +437,14 @@
 				A2C014E32454F228001A4894 /* NewPostViewController.xib */,
 			);
 			path = NewPost;
+			sourceTree = "<group>";
+		};
+		A2EA2D6F25167ACE0019190C /* OfflineWorking */ = {
+			isa = PBXGroup;
+			children = (
+				A2EA2D7025167BB80019190C /* DataBase.xcdatamodeld */,
+			);
+			path = OfflineWorking;
 			sourceTree = "<group>";
 		};
 		A2F7486224041F1700396045 /* TabBarController */ = {
@@ -681,6 +692,7 @@
 				A277FCEF246B068E008E14E7 /* UIImage + Extension.swift in Sources */,
 				A277FCEA2469B7E4008E14E7 /* FiltersCollectionViewCell.swift in Sources */,
 				A262D14C24AB85A200022684 /* LoginScreenViewController.swift in Sources */,
+				A2EA2D7225167BB80019190C /* DataBase.xcdatamodeld in Sources */,
 				A26A16CE24B376AB00A40273 /* Alert.swift in Sources */,
 				A2C014E42454F228001A4894 /* NewPostViewController.swift in Sources */,
 				A259FDF624B90D86001B8030 /* DateFormatter + Extension.swift in Sources */,
@@ -887,6 +899,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		A2EA2D7025167BB80019190C /* DataBase.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A2EA2D7125167BB80019190C /* DataBase.xcdatamodel */,
+			);
+			currentVersion = A2EA2D7125167BB80019190C /* DataBase.xcdatamodel */;
+			path = DataBase.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 74B7924C202B3254006BCB41 /* Project object */;
 }
