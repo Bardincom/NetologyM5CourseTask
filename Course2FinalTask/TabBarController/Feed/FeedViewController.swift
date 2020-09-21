@@ -17,6 +17,10 @@ final class FeedViewController: UIViewController {
   var newPost: ((Post) -> Void)?
   var alertAction: ((Bool) -> Void)?
 
+  lazy var coreDataManager = CoreDataManager.shared
+  private var offlinePostsArray = [PostOffline]()
+  private var offlinePost: Post?
+
   let refreshControl: UIRefreshControl = {
     let refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
@@ -45,6 +49,11 @@ final class FeedViewController: UIViewController {
       switch result {
         case .success(let posts):
           self.postsArray = posts
+          // Сохранение в CoreData
+          posts.forEach { post in
+            self.savePostOffline(post: post)
+        }
+
         case .fail(let error):
           Alert.showAlert(self, error.description)
       }
@@ -66,7 +75,7 @@ final class FeedViewController: UIViewController {
     feedCollectionView.refreshControl = refreshControl
     // сюда попадает новая публикация и размещается вверху ленты
     newPost = { [weak self] post in
-            self?.postsArray.insert(post, at: 0)
+      self?.postsArray.insert(post, at: 0)
       // переходим в начало Ленты
       self?.feedCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
       self?.feedCollectionView.reloadData()
@@ -132,10 +141,12 @@ extension FeedViewController: FeedCollectionViewProtocol {
       switch result {
         case .success(let user):
           profileViewController.feedUserID = user.id
+          //          print("OnLINE \(self.session.isOnline)")
           DispatchQueue.main.async {
             self.navigationController?.pushViewController(profileViewController, animated: true)
-          }
+        }
         case .fail(let error):
+          //          print("OnLINE \(self.session.isOnline)")
           Alert.showAlert(self, error.description)
       }
     }
@@ -218,23 +229,46 @@ extension FeedViewController: FeedCollectionViewProtocol {
 private extension FeedViewController {
   @objc
   func refresh(_ sender: UIRefreshControl) {
-     guard let token = keychain.readToken() else { return }
+    guard let token = keychain.readToken() else { return }
 
-       session.getFeedPosts(token) { [weak self] result in
-         guard let self = self else { return }
-         switch result {
-           case .success(let posts):
-             self.postsArray = posts
-           case .fail(let error):
-             Alert.showAlert(self, error.description)
-         }
+    session.getFeedPosts(token) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+        case .success(let posts):
+          self.postsArray = posts
+        case .fail(let error):
+          Alert.showAlert(self, error.description)
+      }
 
-         DispatchQueue.main.async {
-           if self.isViewLoaded {
-             self.feedCollectionView.reloadData()
-           }
-         }
-       }
+      DispatchQueue.main.async {
+        if self.isViewLoaded {
+          self.feedCollectionView.reloadData()
+        }
+      }
+    }
     sender.endRefreshing()
+  }
+}
+
+// MARK: CoreData
+
+extension FeedViewController {
+  func savePostOffline(post: Post) {
+    let context = coreDataManager.getContext()
+    let postOff = coreDataManager.createObject(from: PostOffline.self)
+    let postAuthorAvatarImageData = try? Data(contentsOf: post.authorAvatar)
+    let postImageData = try? Data(contentsOf: post.image)
+
+    postOff.author = post.author
+    postOff.authorAvatar = postAuthorAvatarImageData
+    postOff.authorUsername = post.authorUsername
+    postOff.createdTime = post.createdTime
+    postOff.currentUserLikesThisPost = post.currentUserLikesThisPost
+    postOff.descript = post.description
+    postOff.likedByCount = Int16(post.likedByCount)
+    postOff.id = post.id
+    postOff.image = postImageData
+
+    coreDataManager.save(context: context)
   }
 }

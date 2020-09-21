@@ -32,6 +32,7 @@ final class SessionProvider {
     static let post = "POST"
   }
 
+  public var isOnline = true
   static var shared = SessionProvider()
 
   private init() {
@@ -79,12 +80,13 @@ extension SessionProvider {
         case 422: backendError = .unprocessable
         default: backendError = .transferError
       }
-
+//      isOnline = true
+//      print("isOffline - \(isOnline)")
       completionHandler(.fail(backendError))
       ActivityIndicator.stop()
       return false
     }
-
+//    isOnline = false
     return true
   }
 
@@ -95,9 +97,10 @@ extension SessionProvider {
 
     let backendError = BackendError.transferError
     completionHandler(.fail(backendError))
+    isOnline = false
     ActivityIndicator.stop()
     return nil}
-
+    isOnline = true
     return httpResponse
   }
 

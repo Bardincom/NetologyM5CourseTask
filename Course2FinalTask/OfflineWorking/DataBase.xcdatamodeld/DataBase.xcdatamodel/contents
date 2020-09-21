@@ -10,6 +10,11 @@
         <attribute name="id" attributeType="String" defaultValueString=""/>
         <attribute name="image" optional="YES" attributeType="Binary"/>
         <attribute name="likedByCount" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="UserOffline" representedClassName="UserOffline" syncable="YES" codeGenerationType="class">
         <attribute name="avatar" optional="YES" attributeType="Binary"/>
@@ -20,9 +25,14 @@
         <attribute name="fullName" attributeType="String" defaultValueString=""/>
         <attribute name="id" attributeType="String" defaultValueString=""/>
         <attribute name="username" attributeType="String" defaultValueString=""/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="UserOffline" positionX="-45" positionY="0" width="128" height="28"/>
-        <element name="PostOffline" positionX="-18" positionY="27" width="128" height="28"/>
+        <element name="PostOffline" positionX="-18" positionY="27" width="128" height="178"/>
+        <element name="UserOffline" positionX="-45" positionY="0" width="128" height="163"/>
     </elements>
 </model>
