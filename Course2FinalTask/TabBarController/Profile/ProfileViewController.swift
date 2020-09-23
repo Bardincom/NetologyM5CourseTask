@@ -18,6 +18,9 @@ final class ProfileViewController: UIViewController {
   private var postsProfile: [Post]?
   lazy var rootViewController = AppDelegate.shared.rootViewController
 
+  lazy var coreDataManager = CoreDataManager.shared
+  private var offlineCurrentUser: UserOffline?
+
   @IBOutlet weak private var profileCollectionView: UICollectionView! {
     willSet {
       newValue.register(nibCell: ProfileCollectionViewCell.self)
@@ -35,6 +38,8 @@ final class ProfileViewController: UIViewController {
     view.backgroundColor = Asset.ColorAssets.viewBackground.color
 
     updateUI()
+
+
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -104,38 +109,6 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: setViewController
 extension ProfileViewController {
-
-  func setupProfileViewController() {
-    guard let token = keychain.readToken() else { return }
-
-    guard userProfile == nil else {
-      guard let userID = feedUserID else { return }
-
-      session.getPostsWithUserID(token, userID) { [weak self] result in
-        guard let self = self else { return }
-
-        switch result {
-          case .success(let posts):
-            self.postsProfile = posts
-          case .fail(let error):
-            Alert.showAlert(self, error.description)
-        }
-      }
-
-      return
-    }
-
-    session.getCurrentUser(token) { [weak self] result in
-      guard let self = self else { return }
-
-      switch result {
-        case .success(let user):
-          self.userProfile = user
-        case .fail(let error):
-          Alert.showAlert(self, error.description)
-      }
-    }
-  }
 
   func updateUI() {
     DispatchQueue.main.async {
@@ -209,6 +182,11 @@ extension ProfileViewController {
       switch result {
         case .success(let currentUser):
           self.userProfile = currentUser
+          
+          //MARK: Сохраняются данные текущего пользователя в core data
+          // Сохраняются данные текущего пользователя в core data
+          self.saveCurrentUserOffline(user: currentUser)
+
 
           self.session.getPostsWithUserID(token, currentUser.id) { [weak self] result in
             guard let self = self else { return }
@@ -340,5 +318,23 @@ extension ProfileViewController: UITabBarControllerDelegate {
       feedUserID = nil
       navigationController?.popToRootViewController(animated: false)
     }
+  }
+}
+
+extension ProfileViewController {
+  func saveCurrentUserOffline(user: User) {
+    let context = coreDataManager.getContext()
+    let userAvatarImageData = try? Data(contentsOf: user.avatar)
+    let currentUserOffline = coreDataManager.createObject(from: UserOffline.self)
+    currentUserOffline.avatar = userAvatarImageData
+    currentUserOffline.currentUserFollowsThisUser = user.currentUserFollowsThisUser
+    currentUserOffline.currentUserIsFollowedByThisUser = user.currentUserIsFollowedByThisUser
+    currentUserOffline.followedByCount = Int16(user.followedByCount)
+    currentUserOffline.followsCount = Int16(user.followsCount)
+    currentUserOffline.fullName = user.fullName
+    currentUserOffline.id = user.id
+    currentUserOffline.username = user.username
+
+    coreDataManager.save(context: context)
   }
 }

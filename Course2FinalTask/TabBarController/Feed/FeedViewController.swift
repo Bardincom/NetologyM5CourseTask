@@ -19,7 +19,7 @@ final class FeedViewController: UIViewController {
 
   lazy var coreDataManager = CoreDataManager.shared
   private var offlinePostsArray = [PostOffline]()
-  private var offlinePost: Post?
+  private var offlinePost: PostOffline?
 
   let refreshControl: UIRefreshControl = {
     let refreshControl = UIRefreshControl()
@@ -52,7 +52,7 @@ final class FeedViewController: UIViewController {
           // Сохранение в CoreData
           posts.forEach { post in
             self.savePostOffline(post: post)
-        }
+          }
 
         case .fail(let error):
           Alert.showAlert(self, error.description)
@@ -76,6 +76,7 @@ final class FeedViewController: UIViewController {
     // сюда попадает новая публикация и размещается вверху ленты
     newPost = { [weak self] post in
       self?.postsArray.insert(post, at: 0)
+      self?.savePostOffline(post: post)
       // переходим в начало Ленты
       self?.feedCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
       self?.feedCollectionView.reloadData()
@@ -144,7 +145,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
           //          print("OnLINE \(self.session.isOnline)")
           DispatchQueue.main.async {
             self.navigationController?.pushViewController(profileViewController, animated: true)
-        }
+          }
         case .fail(let error):
           //          print("OnLINE \(self.session.isOnline)")
           Alert.showAlert(self, error.description)
@@ -258,7 +259,7 @@ extension FeedViewController {
     let postOff = coreDataManager.createObject(from: PostOffline.self)
     let postAuthorAvatarImageData = try? Data(contentsOf: post.authorAvatar)
     let postImageData = try? Data(contentsOf: post.image)
-
+    
     postOff.author = post.author
     postOff.authorAvatar = postAuthorAvatarImageData
     postOff.authorUsername = post.authorUsername
