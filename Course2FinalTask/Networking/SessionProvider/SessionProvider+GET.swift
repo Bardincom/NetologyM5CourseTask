@@ -19,6 +19,11 @@ extension SessionProvider {
 
     let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
 
+      if let error = error {
+        self.isOnline = false
+        print("Возникла ошибка: \(error.localizedDescription)")
+      }
+
       guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
 
       guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }

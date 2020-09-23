@@ -61,7 +61,6 @@ final class CoreDataManager {
 
   func createObject<T: NSManagedObject>(from entity: T.Type) -> T {
     let context = getContext()
-//    context.mergePolicy = NSMergePolicy(merge: .mergeByPropertyObjectTrumpMergePolicyType)
     let object = NSEntityDescription.insertNewObject(forEntityName: String(describing: entity), into: context) as! T
     return object
   }
@@ -80,6 +79,28 @@ final class CoreDataManager {
     request = entity.fetchRequest() as! NSFetchRequest<T>
 
     let timeSortDescriptor = NSSortDescriptor(key: #keyPath(PostOffline.createdTime),
+                                             ascending: false)
+
+    request.predicate = predicate
+    request.sortDescriptors = [timeSortDescriptor]
+
+    do {
+      fetchResult = try context.fetch(request)
+    } catch {
+      debugPrint("Could not fetch: \(error.localizedDescription)")
+    }
+
+    return fetchResult
+  }
+
+  func fetchData1<T: NSManagedObject>(for entity: T.Type, predicate: NSCompoundPredicate? = nil) -> [T] {
+    let context = getContext()
+    let request: NSFetchRequest<T>
+    var fetchResult = [T]()
+
+    request = entity.fetchRequest() as! NSFetchRequest<T>
+
+    let timeSortDescriptor = NSSortDescriptor(key: #keyPath(UserOffline.id),
                                              ascending: true)
 
     request.predicate = predicate
@@ -93,4 +114,5 @@ final class CoreDataManager {
 
     return fetchResult
   }
+
 }

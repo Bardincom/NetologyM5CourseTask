@@ -10,7 +10,7 @@ import UIKit
 
 final class FeedViewController: UIViewController {
 
-  private var postsArray: [Post] = []
+  private var postsArray = [Post]()
   private var post: Post?
   private var session = SessionProvider.shared
   private var keychain = Keychain.shared
@@ -19,7 +19,7 @@ final class FeedViewController: UIViewController {
 
   lazy var coreDataManager = CoreDataManager.shared
   private var offlinePostsArray = [PostOffline]()
-  private var offlinePost: PostOffline?
+//  private var offlinePost: PostOffline?
 
   let refreshControl: UIRefreshControl = {
     let refreshControl = UIRefreshControl()
@@ -85,22 +85,33 @@ final class FeedViewController: UIViewController {
 
     title = ControllerSet.feedViewController
   }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    offlinePostsArray = coreDataManager.fetchData(for: PostOffline.self)
+  }
 }
 
 // MARK: DataSource
 extension FeedViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return postsArray.count
+    return  session.isOnline ? postsArray.count : offlinePostsArray.count
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
     let cell = collectionView.dequeue(cell: FeedCollectionViewCell.self, for: indexPath)
-    let post = postsArray[indexPath.row]
 
-    cell.setupFeed(post: post)
+    if session.isOnline {
+      let post = postsArray[indexPath.row]
+      cell.setupFeed(post: post)
+    } else {
+      let post = offlinePostsArray[indexPath.row]
+      cell.setupFeed(post: post)
+    }
+
     cell.delegate = self
-
     return cell
   }
 }
@@ -111,10 +122,15 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     let width = collectionView.bounds.width
 
-    let post = postsArray[indexPath.row]
-
-    let estimatedFrame = NSString(string: post.description).boundingRect(with: CGSize(width: width - 8, height: width - 8), options: .usesLineFragmentOrigin, attributes: nil, context: nil)
-    return CGSize(width: width, height: estimatedFrame.height + width + 130)
+    if session.isOnline {
+      let post = postsArray[indexPath.row]
+      let estimatedFrame = NSString(string: post.description).boundingRect(with: CGSize(width: width - 8, height: width - 8), options: .usesLineFragmentOrigin, attributes: nil, context: nil)
+      return CGSize(width: width, height: estimatedFrame.height + width + 130)
+    } else {
+      let post = offlinePostsArray[indexPath.row]
+      let estimatedFrame = NSString(string: post.description).boundingRect(with: CGSize(width: width - 8, height: width - 8), options: .usesLineFragmentOrigin, attributes: nil, context: nil)
+      return CGSize(width: width, height: estimatedFrame.height + width + 130)
+    }
   }
 
   /// убираю отступ между ячейками
@@ -128,6 +144,10 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
   /// открывает профиль пользователя
   func openUserProfile(cell: FeedCollectionViewCell) {
+    guard session.isOnline else {
+      Alert.showAlert(self, BackendError.transferError.description)
+      return
+    }
     guard let token = keychain.readToken() else { return }
 
     let profileViewController = ProfileViewController()
@@ -155,6 +175,11 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
   /// ставит лайк на публикацию
   func likePost(cell: FeedCollectionViewCell) {
+    guard session.isOnline else {
+      Alert.showAlert(self, BackendError.transferError.description)
+      return
+    }
+
     guard let token = keychain.readToken() else { return }
     guard let indexPath = feedCollectionView.indexPath(for: cell) else { return }
 
@@ -200,6 +225,10 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
   /// открывает список пользователей поставивших лайк
   func userList(cell: FeedCollectionViewCell) {
+    guard session.isOnline else {
+      Alert.showAlert(self, BackendError.transferError.description)
+      return
+    }
     ActivityIndicator.start()
 
     guard let token = keychain.readToken() else { return }
@@ -230,6 +259,11 @@ extension FeedViewController: FeedCollectionViewProtocol {
 private extension FeedViewController {
   @objc
   func refresh(_ sender: UIRefreshControl) {
+    guard session.isOnline else {
+      Alert.showAlert(self, BackendError.transferError.description)
+      return
+    }
+    
     guard let token = keychain.readToken() else { return }
 
     session.getFeedPosts(token) { [weak self] result in
@@ -259,7 +293,7 @@ extension FeedViewController {
     let postOff = coreDataManager.createObject(from: PostOffline.self)
     let postAuthorAvatarImageData = try? Data(contentsOf: post.authorAvatar)
     let postImageData = try? Data(contentsOf: post.image)
-    
+
     postOff.author = post.author
     postOff.authorAvatar = postAuthorAvatarImageData
     postOff.authorUsername = post.authorUsername

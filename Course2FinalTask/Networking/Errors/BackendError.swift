@@ -23,7 +23,7 @@ enum BackendError: Error, CustomStringConvertible {
       case .unauthorized: return "Unauthorized"
       case .notAcceptable: return "Not acceptable"
       case .unprocessable: return "Unprocessable"
-      case .transferError: return "Transfer error"
+      case .transferError: return "Offline mode"
     }
   }
 }

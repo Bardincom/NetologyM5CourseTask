@@ -44,7 +44,8 @@ final class SessionProvider {
 // MARK: Helpers
 extension SessionProvider {
 
-  func preparationURLComponents(path: String) -> URLComponents {
+  func preparationURLComponents(path: String) -> URLComponents? {
+    guard isOnline else { return nil }
     var urlComponents = URLComponents()
     urlComponents.scheme = scheme
     urlComponents.host = host
@@ -54,7 +55,7 @@ extension SessionProvider {
   }
 
   func preparationURL(path: String) -> URL? {
-    guard let url = preparationURLComponents(path: path).url else { return nil }
+    guard let url = preparationURLComponents(path: path)?.url else { return nil }
     return url
   }
 
@@ -80,13 +81,11 @@ extension SessionProvider {
         case 422: backendError = .unprocessable
         default: backendError = .transferError
       }
-//      isOnline = true
-//      print("isOffline - \(isOnline)")
+
       completionHandler(.fail(backendError))
       ActivityIndicator.stop()
       return false
     }
-//    isOnline = false
     return true
   }
 

@@ -10,7 +10,6 @@
         <attribute name="id" attributeType="String" defaultValueString=""/>
         <attribute name="image" optional="YES" attributeType="Binary"/>
         <attribute name="likedByCount" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="userOffline" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserOffline" inverseName="postsOffline" inverseEntity="UserOffline"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
@@ -26,7 +25,6 @@
         <attribute name="fullName" attributeType="String" defaultValueString=""/>
         <attribute name="id" attributeType="String" defaultValueString=""/>
         <attribute name="username" attributeType="String" defaultValueString=""/>
-        <relationship name="postsOffline" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PostOffline" inverseName="userOffline" inverseEntity="PostOffline"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
@@ -34,7 +32,7 @@
         </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="PostOffline" positionX="289.125" positionY="-16.546875" width="128" height="193"/>
-        <element name="UserOffline" positionX="-45" positionY="0" width="128" height="178"/>
+        <element name="PostOffline" positionX="289.125" positionY="-16.546875" width="128" height="178"/>
+        <element name="UserOffline" positionX="-45.33203125" positionY="-0.87890625" width="128" height="163"/>
     </elements>
 </model>

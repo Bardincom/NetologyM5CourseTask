@@ -16,13 +16,14 @@ final class ProfileCollectionViewCell: UICollectionViewCell {
     imageView.kf.setImage(with: post.image)
   }
 
-//  func setImmCell(postOffline: PostOffline) {
-//    guard
-//        let postImage = postOffline.image,
-//        let image = UIImage(data: postImage)
-//        else { return }
-//    imageView.image = image
-//  }
+  func setImmCell(postOffline: PostOffline) {
+    guard
+      let postImage = postOffline.image,
+        let image = UIImage(data: postImage)
+        else { return }
+    imageView.image = image
+  }
+
 
   /// заполнение ячейки для отображение фотографий для публикации
   func imageView(newPhoto: UIImage) {

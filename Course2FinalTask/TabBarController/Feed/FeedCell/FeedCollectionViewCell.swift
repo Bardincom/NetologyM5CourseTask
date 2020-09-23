@@ -63,6 +63,25 @@ final class FeedCollectionViewCell: UICollectionViewCell {
     likeButton.tintColor = Asset.ColorAssets.defaultTint.color
   }
 
+  func setupFeed(post: PostOffline) {
+
+    dateLabel.text = post.createdTime?.displayDate()
+    userNameLabel.text = post.authorUsername
+    likesLabel.text = "Likes: " + "\(post.likedByCount)"
+    descriptionLabel.text = post.descript
+
+    guard
+      let avatar = post.authorAvatar,
+      let avatarImage = UIImage(data: avatar) else { return }
+    avatarImageView.image = avatarImage
+
+    guard
+      let image = post.image,
+      let postImage = UIImage(data: image) else { return }
+    imageView.image = postImage
+
+  }
+
 }
 
 // MARK: Selector
