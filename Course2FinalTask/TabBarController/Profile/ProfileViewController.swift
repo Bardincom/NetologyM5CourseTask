@@ -18,7 +18,7 @@ final class ProfileViewController: UIViewController {
   private var postsProfile = [Post]()
   lazy var rootViewController = AppDelegate.shared.rootViewController
 
-  lazy var coreDataManager = CoreDataManager.shared
+  lazy var coreDataProvider = CoreDataProvider.shared
   private var offlineCurrentUser: UserOffline?
   private var offlinePostsProfile = [PostOffline]()
 
@@ -44,19 +44,7 @@ final class ProfileViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    guard session.isOnline else {
-      offlineCurrentUser = coreDataManager.fetchData1(for: UserOffline.self).first
-      offlinePostsProfile = coreDataManager.fetchData(for: PostOffline.self).filter({ (postOffline) -> Bool in
-        postOffline.author == offlineCurrentUser?.id
-      })
-      DispatchQueue.main.async {
-        self.title = self.offlineCurrentUser?.username
-        self.tabBarItem.title = ControllerSet.profileViewController
-        self.setLogout()
-      }
-
-      return
-    }
+    guard checkOnlineSession() else { return }
 
     if let userID = feedUserID {
       loadUserByProfile(userID)
@@ -64,14 +52,12 @@ final class ProfileViewController: UIViewController {
       loadCurrentUser()
     }
   }
-
 }
 
 // MARK: DataSourse
 extension ProfileViewController: UICollectionViewDataSource {
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//    guard let postsProfile = postsProfile else { return [Post]().count }
     return session.isOnline ? postsProfile.count : offlinePostsProfile.count
   }
 
@@ -79,13 +65,12 @@ extension ProfileViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeue(cell: ProfileCollectionViewCell.self, for: indexPath)
 
-//    guard let postsProfile = postsProfile else { return cell }
     if session.isOnline {
       let post = postsProfile[indexPath.row]
       cell.setImageCell(post: post)
     } else {
       let post = offlinePostsProfile[indexPath.row]
-      cell.setImmCell(postOffline: post)
+      cell.setImageCell(postOffline: post)
     }
 
     return cell
@@ -105,7 +90,7 @@ extension ProfileViewController: UICollectionViewDataSource {
       view.setHeader(user: userProfile)
     } else {
       guard let userProfile = offlineCurrentUser else { return view }
-      view.setHeader(user: userProfile)
+      view.setHeader(userOffline: userProfile)
     }
 
     view.delegate = self
@@ -220,10 +205,9 @@ extension ProfileViewController {
       switch result {
         case .success(let currentUser):
           self.userProfile = currentUser
-          
-          //MARK: Сохраняются данные текущего пользователя в core data
+
           // Сохраняются данные текущего пользователя в core data
-          self.saveCurrentUserOffline(user: currentUser)
+          self.coreDataProvider.saveCurrentUserOffline(user: currentUser)
 
           self.session.getPostsWithUserID(token, currentUser.id) { [weak self] result in
             guard let self = self else { return }
@@ -373,20 +357,27 @@ extension ProfileViewController: UITabBarControllerDelegate {
 }
 
 extension ProfileViewController {
-  func saveCurrentUserOffline(user: User) {
-    let context = coreDataManager.getContext()
-    let userAvatarImageData = try? Data(contentsOf: user.avatar)
-    let currentUserOffline = coreDataManager.createObject(from: UserOffline.self)
-    currentUserOffline.avatar = userAvatarImageData
-    currentUserOffline.currentUserFollowsThisUser = user.currentUserFollowsThisUser
-    currentUserOffline.currentUserIsFollowedByThisUser = user.currentUserIsFollowedByThisUser
-    currentUserOffline.followedByCount = Int16(user.followedByCount)
-    currentUserOffline.followsCount = Int16(user.followsCount)
-    currentUserOffline.fullName = user.fullName
-    currentUserOffline.id = user.id
-    currentUserOffline.username = user.username
+  func checkOnlineSession() -> Bool {
+    guard session.isOnline else {
 
-    coreDataManager.save(context: context)
+      coreDataProvider.fetchData(for: UserOffline.self) { userOffline in
+        offlineCurrentUser = userOffline.first
+      }
+
+      coreDataProvider.fetchData(for: PostOffline.self) { (postOffline) in
+        offlinePostsProfile = postOffline.filter({ post -> Bool in
+          post.author == offlineCurrentUser?.id
+        })
+      }
+
+      DispatchQueue.main.async {
+        self.title = self.offlineCurrentUser?.username
+        self.tabBarItem.title = ControllerSet.profileViewController
+        self.setLogout()
+      }
+
+      return false
+    }
+    return true
   }
-
 }

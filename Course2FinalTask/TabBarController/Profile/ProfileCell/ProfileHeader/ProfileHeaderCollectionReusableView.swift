@@ -80,30 +80,30 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
     }
   }
 
-  func setHeader(user: UserOffline) {
+  func setHeader(userOffline: UserOffline) {
     avatarImage.layer.cornerRadius = avatarImage.frame.height / 2
     fullNameLabel.alpha = 1
     fullNameLabel.font = systemsFont
-    fullNameLabel.text = user.fullName
+    fullNameLabel.text = userOffline.fullName
     followersLabel.alpha = 1
     followersLabel.font = systemsBoldFont
-    followersLabel.text = "Followers: \(user.followedByCount)"
+    followersLabel.text = "Followers: \(userOffline.followedByCount)"
     followingLabel.alpha = 1
     followingLabel.font = systemsBoldFont
-    followingLabel.text = "Following: \(user.followsCount)"
+    followingLabel.text = "Following: \(userOffline.followsCount)"
 
     guard
-      let avatarData = user.avatar,
+      let avatarData = userOffline.avatar,
       let userAvatarImage = UIImage(data: avatarData) else { return }
     avatarImage.image = userAvatarImage
 
-    buttonDisplay(user: user)
+    buttonDisplay(userOffline: userOffline)
 
   }
 
-  func buttonDisplay(user: UserOffline) {
+  func buttonDisplay(userOffline: UserOffline) {
 
-    if user.currentUserFollowsThisUser {
+    if userOffline.currentUserFollowsThisUser {
       followButton.isHidden = false
       followButton.setTitle("Unfollow", for: .normal)
       followButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)

@@ -2,13 +2,13 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19G2021" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="PostOffline" representedClassName="PostOffline" syncable="YES" codeGenerationType="class">
         <attribute name="author" attributeType="String" defaultValueString=""/>
-        <attribute name="authorAvatar" optional="YES" attributeType="Binary"/>
+        <attribute name="authorAvatar" attributeType="Binary"/>
         <attribute name="authorUsername" attributeType="String" defaultValueString=""/>
         <attribute name="createdTime" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="currentUserLikesThisPost" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="descript" attributeType="String" defaultValueString=""/>
         <attribute name="id" attributeType="String" defaultValueString=""/>
-        <attribute name="image" optional="YES" attributeType="Binary"/>
+        <attribute name="image" attributeType="Binary"/>
         <attribute name="likedByCount" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>

@@ -24,8 +24,6 @@ final class FeedCollectionViewCell: UICollectionViewCell {
   @IBOutlet private var avatarImageView: UIImageView!
   @IBOutlet private var imageView: UIImageView!
   @IBOutlet private var containerStackView: UIStackView!
-  @IBOutlet var feedActivityIndicatorView: UIActivityIndicatorView!
-
   @IBOutlet private var bigLike: UIImageView!
 
   @IBOutlet private var cellConstraintsWidthConstraint: NSLayoutConstraint! {

@@ -17,9 +17,8 @@ final class FeedViewController: UIViewController {
   var newPost: ((Post) -> Void)?
   var alertAction: ((Bool) -> Void)?
 
-  lazy var coreDataManager = CoreDataManager.shared
+  lazy var coreDataProvider = CoreDataProvider.shared
   private var offlinePostsArray = [PostOffline]()
-//  private var offlinePost: PostOffline?
 
   let refreshControl: UIRefreshControl = {
     let refreshControl = UIRefreshControl()
@@ -51,7 +50,7 @@ final class FeedViewController: UIViewController {
           self.postsArray = posts
           // Сохранение в CoreData
           posts.forEach { post in
-            self.savePostOffline(post: post)
+            self.coreDataProvider.savePostOffline(post: post)
           }
 
         case .fail(let error):
@@ -76,7 +75,7 @@ final class FeedViewController: UIViewController {
     // сюда попадает новая публикация и размещается вверху ленты
     newPost = { [weak self] post in
       self?.postsArray.insert(post, at: 0)
-      self?.savePostOffline(post: post)
+      self?.coreDataProvider.savePostOffline(post: post)
       // переходим в начало Ленты
       self?.feedCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
       self?.feedCollectionView.reloadData()
@@ -89,7 +88,7 @@ final class FeedViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    offlinePostsArray = coreDataManager.fetchData(for: PostOffline.self)
+    checkOnlineSession()
   }
 }
 
@@ -162,12 +161,10 @@ extension FeedViewController: FeedCollectionViewProtocol {
       switch result {
         case .success(let user):
           profileViewController.feedUserID = user.id
-          //          print("OnLINE \(self.session.isOnline)")
           DispatchQueue.main.async {
             self.navigationController?.pushViewController(profileViewController, animated: true)
           }
         case .fail(let error):
-          //          print("OnLINE \(self.session.isOnline)")
           Alert.showAlert(self, error.description)
       }
     }
@@ -288,22 +285,12 @@ private extension FeedViewController {
 // MARK: CoreData
 
 extension FeedViewController {
-  func savePostOffline(post: Post) {
-    let context = coreDataManager.getContext()
-    let postOff = coreDataManager.createObject(from: PostOffline.self)
-    let postAuthorAvatarImageData = try? Data(contentsOf: post.authorAvatar)
-    let postImageData = try? Data(contentsOf: post.image)
-
-    postOff.author = post.author
-    postOff.authorAvatar = postAuthorAvatarImageData
-    postOff.authorUsername = post.authorUsername
-    postOff.createdTime = post.createdTime
-    postOff.currentUserLikesThisPost = post.currentUserLikesThisPost
-    postOff.descript = post.description
-    postOff.likedByCount = Int16(post.likedByCount)
-    postOff.id = post.id
-    postOff.image = postImageData
-
-    coreDataManager.save(context: context)
+  func checkOnlineSession() {
+    guard session.isOnline else {
+          coreDataProvider.fetchData(for: PostOffline.self, hendler: { (offlinePost) in
+      offlinePostsArray = offlinePost
+      })
+      return
+    }
   }
 }

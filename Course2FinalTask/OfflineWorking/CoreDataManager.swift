@@ -71,17 +71,18 @@ final class CoreDataManager {
     save(context: context)
   }
 
-  func fetchData<T: NSManagedObject>(for entity: T.Type, predicate: NSCompoundPredicate? = nil) -> [T] {
+  func fetchData<T: NSManagedObject>(for entity: T.Type) -> [T] {
     let context = getContext()
     let request: NSFetchRequest<T>
     var fetchResult = [T]()
+    var timeSortDescriptor = NSSortDescriptor(key: #keyPath(PostOffline.createdTime), ascending: false)
 
     request = entity.fetchRequest() as! NSFetchRequest<T>
 
-    let timeSortDescriptor = NSSortDescriptor(key: #keyPath(PostOffline.createdTime),
-                                             ascending: false)
+    if T() is UserOffline {
+      timeSortDescriptor = NSSortDescriptor(key: #keyPath(UserOffline.id), ascending: true)
+    }
 
-    request.predicate = predicate
     request.sortDescriptors = [timeSortDescriptor]
 
     do {
@@ -92,27 +93,4 @@ final class CoreDataManager {
 
     return fetchResult
   }
-
-  func fetchData1<T: NSManagedObject>(for entity: T.Type, predicate: NSCompoundPredicate? = nil) -> [T] {
-    let context = getContext()
-    let request: NSFetchRequest<T>
-    var fetchResult = [T]()
-
-    request = entity.fetchRequest() as! NSFetchRequest<T>
-
-    let timeSortDescriptor = NSSortDescriptor(key: #keyPath(UserOffline.id),
-                                             ascending: true)
-
-    request.predicate = predicate
-    request.sortDescriptors = [timeSortDescriptor]
-
-    do {
-      fetchResult = try context.fetch(request)
-    } catch {
-      debugPrint("Could not fetch: \(error.localizedDescription)")
-    }
-
-    return fetchResult
-  }
-
 }

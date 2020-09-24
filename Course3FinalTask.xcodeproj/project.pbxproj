@@ -19,6 +19,7 @@
 		A2385A2B24BDAB2300936B61 /* NewPostRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2385A2A24BDAB2300936B61 /* NewPostRequest.swift */; };
 		A23BC8A82419046E00640E54 /* Methods Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A23BC8A72419046E00640E54 /* Methods Helper.swift */; };
 		A23BC8AA2419054400640E54 /* UIFont+Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A23BC8A92419054400640E54 /* UIFont+Properties.swift */; };
+		A244C8B3251C9C230017C11A /* CoreDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A244C8B2251C9C230017C11A /* CoreDataProvider.swift */; };
 		A248FD6A24AF00F7002E24C9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A248FD6924AF00F7002E24C9 /* User.swift */; };
 		A248FD6C24AF0103002E24C9 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = A248FD6B24AF0103002E24C9 /* Post.swift */; };
 		A25685BD2433307400A09C0D /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F7486724041F7700396045 /* ProfileViewController.swift */; };
@@ -61,7 +62,7 @@
 		A2DF35EE2405C2C0008A9CD7 /* FeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DF35EC2405C2C0008A9CD7 /* FeedCollectionViewCell.swift */; };
 		A2DF35EF2405C2C0008A9CD7 /* FeedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2DF35ED2405C2C0008A9CD7 /* FeedCollectionViewCell.xib */; };
 		A2EA2D7225167BB80019190C /* DataBase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A2EA2D7025167BB80019190C /* DataBase.xcdatamodeld */; };
-		A2EA2D74251684800019190C /* CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EA2D73251684800019190C /* CoreData.swift */; };
+		A2EA2D74251684800019190C /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EA2D73251684800019190C /* CoreDataManager.swift */; };
 		A2EA2D76251685CB0019190C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EA2D75251685CB0019190C /* Constants.swift */; };
 		A2F7486124041B2500396045 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = A2F7486024041B2500396045 /* .gitignore */; };
 		A2F7486524041F6200396045 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F7486324041F6200396045 /* FeedViewController.swift */; };
@@ -102,6 +103,7 @@
 		A2385A2A24BDAB2300936B61 /* NewPostRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostRequest.swift; sourceTree = "<group>"; };
 		A23BC8A72419046E00640E54 /* Methods Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Methods Helper.swift"; sourceTree = "<group>"; };
 		A23BC8A92419054400640E54 /* UIFont+Properties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Properties.swift"; sourceTree = "<group>"; };
+		A244C8B2251C9C230017C11A /* CoreDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataProvider.swift; sourceTree = "<group>"; };
 		A248FD6924AF00F7002E24C9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		A248FD6B24AF0103002E24C9 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		A259FDF524B90D86001B8030 /* DateFormatter + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter + Extension.swift"; sourceTree = "<group>"; };
@@ -143,7 +145,7 @@
 		A2DF35EC2405C2C0008A9CD7 /* FeedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		A2DF35ED2405C2C0008A9CD7 /* FeedCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedCollectionViewCell.xib; sourceTree = "<group>"; };
 		A2EA2D7125167BB80019190C /* DataBase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataBase.xcdatamodel; sourceTree = "<group>"; };
-		A2EA2D73251684800019190C /* CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreData.swift; sourceTree = "<group>"; };
+		A2EA2D73251684800019190C /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		A2EA2D75251685CB0019190C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A2F7486024041B2500396045 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		A2F7486324041F6200396045 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
@@ -447,7 +449,8 @@
 			isa = PBXGroup;
 			children = (
 				A2EA2D7025167BB80019190C /* DataBase.xcdatamodeld */,
-				A2EA2D73251684800019190C /* CoreData.swift */,
+				A2EA2D73251684800019190C /* CoreDataManager.swift */,
+				A244C8B2251C9C230017C11A /* CoreDataProvider.swift */,
 			);
 			path = OfflineWorking;
 			sourceTree = "<group>";
@@ -674,6 +677,7 @@
 				A26A16CC24B24C9F00A40273 /* Keychain.swift in Sources */,
 				A26C5EEF24B8B481002FA10B /* SessionProvider+POST.swift in Sources */,
 				A25685BF24335B7F00A09C0D /* UserListViewController.swift in Sources */,
+				A244C8B3251C9C230017C11A /* CoreDataProvider.swift in Sources */,
 				A26A16C924B2450700A40273 /* SessionProvider.swift in Sources */,
 				A277FCF5246C1B57008E14E7 /* DescriptionScreenViewController.swift in Sources */,
 				A2385A2B24BDAB2300936B61 /* NewPostRequest.swift in Sources */,
@@ -703,7 +707,7 @@
 				A26A16CE24B376AB00A40273 /* Alert.swift in Sources */,
 				A2C014E42454F228001A4894 /* NewPostViewController.swift in Sources */,
 				A259FDF624B90D86001B8030 /* DateFormatter + Extension.swift in Sources */,
-				A2EA2D74251684800019190C /* CoreData.swift in Sources */,
+				A2EA2D74251684800019190C /* CoreDataManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
