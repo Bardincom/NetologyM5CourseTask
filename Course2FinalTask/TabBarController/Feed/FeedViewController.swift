@@ -10,12 +10,15 @@ import UIKit
 
 final class FeedViewController: UIViewController {
 
-  private var postsArray: [Post] = []
+  private var postsArray = [Post]()
   private var post: Post?
   private var session = SessionProvider.shared
   private var keychain = Keychain.shared
   var newPost: ((Post) -> Void)?
   var alertAction: ((Bool) -> Void)?
+
+  lazy var coreDataProvider = CoreDataProvider.shared
+  private var offlinePostsArray = [PostOffline]()
 
   let refreshControl: UIRefreshControl = {
     let refreshControl = UIRefreshControl()
@@ -45,6 +48,11 @@ final class FeedViewController: UIViewController {
       switch result {
         case .success(let posts):
           self.postsArray = posts
+          // Сохранение в CoreData
+          posts.forEach { post in
+            self.coreDataProvider.savePostOffline(post: post)
+          }
+
         case .fail(let error):
           Alert.showAlert(self, error.description)
       }
@@ -66,7 +74,8 @@ final class FeedViewController: UIViewController {
     feedCollectionView.refreshControl = refreshControl
     // сюда попадает новая публикация и размещается вверху ленты
     newPost = { [weak self] post in
-            self?.postsArray.insert(post, at: 0)
+      self?.postsArray.insert(post, at: 0)
+      self?.coreDataProvider.savePostOffline(post: post)
       // переходим в начало Ленты
       self?.feedCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
       self?.feedCollectionView.reloadData()
@@ -75,22 +84,33 @@ final class FeedViewController: UIViewController {
 
     title = ControllerSet.feedViewController
   }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    checkOnlineSession()
+  }
 }
 
 // MARK: DataSource
 extension FeedViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return postsArray.count
+    return  session.isOnline ? postsArray.count : offlinePostsArray.count
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
     let cell = collectionView.dequeue(cell: FeedCollectionViewCell.self, for: indexPath)
-    let post = postsArray[indexPath.row]
 
-    cell.setupFeed(post: post)
+    if session.isOnline {
+      let post = postsArray[indexPath.row]
+      cell.setupFeed(post: post)
+    } else {
+      let post = offlinePostsArray[indexPath.row]
+      cell.setupFeed(post: post)
+    }
+
     cell.delegate = self
-
     return cell
   }
 }
@@ -101,10 +121,15 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     let width = collectionView.bounds.width
 
-    let post = postsArray[indexPath.row]
-
-    let estimatedFrame = NSString(string: post.description).boundingRect(with: CGSize(width: width - 8, height: width - 8), options: .usesLineFragmentOrigin, attributes: nil, context: nil)
-    return CGSize(width: width, height: estimatedFrame.height + width + 130)
+    if session.isOnline {
+      let post = postsArray[indexPath.row]
+      let estimatedFrame = NSString(string: post.description).boundingRect(with: CGSize(width: width - 8, height: width - 8), options: .usesLineFragmentOrigin, attributes: nil, context: nil)
+      return CGSize(width: width, height: estimatedFrame.height + width + 130)
+    } else {
+      let post = offlinePostsArray[indexPath.row]
+      let estimatedFrame = NSString(string: post.description).boundingRect(with: CGSize(width: width - 8, height: width - 8), options: .usesLineFragmentOrigin, attributes: nil, context: nil)
+      return CGSize(width: width, height: estimatedFrame.height + width + 130)
+    }
   }
 
   /// убираю отступ между ячейками
@@ -118,6 +143,10 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
   /// открывает профиль пользователя
   func openUserProfile(cell: FeedCollectionViewCell) {
+    guard session.isOnline else {
+      Alert.showAlert(self, BackendError.transferError.description)
+      return
+    }
     guard let token = keychain.readToken() else { return }
 
     let profileViewController = ProfileViewController()
@@ -143,6 +172,11 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
   /// ставит лайк на публикацию
   func likePost(cell: FeedCollectionViewCell) {
+    guard session.isOnline else {
+      Alert.showAlert(self, BackendError.transferError.description)
+      return
+    }
+
     guard let token = keychain.readToken() else { return }
     guard let indexPath = feedCollectionView.indexPath(for: cell) else { return }
 
@@ -188,6 +222,10 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
   /// открывает список пользователей поставивших лайк
   func userList(cell: FeedCollectionViewCell) {
+    guard session.isOnline else {
+      Alert.showAlert(self, BackendError.transferError.description)
+      return
+    }
     ActivityIndicator.start()
 
     guard let token = keychain.readToken() else { return }
@@ -218,23 +256,41 @@ extension FeedViewController: FeedCollectionViewProtocol {
 private extension FeedViewController {
   @objc
   func refresh(_ sender: UIRefreshControl) {
-     guard let token = keychain.readToken() else { return }
+    guard session.isOnline else {
+      Alert.showAlert(self, BackendError.transferError.description)
+      return
+    }
+    
+    guard let token = keychain.readToken() else { return }
 
-       session.getFeedPosts(token) { [weak self] result in
-         guard let self = self else { return }
-         switch result {
-           case .success(let posts):
-             self.postsArray = posts
-           case .fail(let error):
-             Alert.showAlert(self, error.description)
-         }
+    session.getFeedPosts(token) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+        case .success(let posts):
+          self.postsArray = posts
+        case .fail(let error):
+          Alert.showAlert(self, error.description)
+      }
 
-         DispatchQueue.main.async {
-           if self.isViewLoaded {
-             self.feedCollectionView.reloadData()
-           }
-         }
-       }
+      DispatchQueue.main.async {
+        if self.isViewLoaded {
+          self.feedCollectionView.reloadData()
+        }
+      }
+    }
     sender.endRefreshing()
+  }
+}
+
+// MARK: CoreData
+
+extension FeedViewController {
+  func checkOnlineSession() {
+    guard session.isOnline else {
+          coreDataProvider.fetchData(for: PostOffline.self, hendler: { (offlinePost) in
+      offlinePostsArray = offlinePost
+      })
+      return
+    }
   }
 }

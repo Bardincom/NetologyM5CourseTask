@@ -32,6 +32,7 @@ final class SessionProvider {
     static let post = "POST"
   }
 
+  public var isOnline = true
   static var shared = SessionProvider()
 
   private init() {
@@ -43,7 +44,8 @@ final class SessionProvider {
 // MARK: Helpers
 extension SessionProvider {
 
-  func preparationURLComponents(path: String) -> URLComponents {
+  func preparationURLComponents(path: String) -> URLComponents? {
+    guard isOnline else { return nil }
     var urlComponents = URLComponents()
     urlComponents.scheme = scheme
     urlComponents.host = host
@@ -53,7 +55,7 @@ extension SessionProvider {
   }
 
   func preparationURL(path: String) -> URL? {
-    guard let url = preparationURLComponents(path: path).url else { return nil }
+    guard let url = preparationURLComponents(path: path)?.url else { return nil }
     return url
   }
 
@@ -84,7 +86,6 @@ extension SessionProvider {
       ActivityIndicator.stop()
       return false
     }
-
     return true
   }
 
@@ -95,9 +96,10 @@ extension SessionProvider {
 
     let backendError = BackendError.transferError
     completionHandler(.fail(backendError))
+    isOnline = false
     ActivityIndicator.stop()
     return nil}
-
+    isOnline = true
     return httpResponse
   }
 

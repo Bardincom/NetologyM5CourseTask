@@ -15,8 +15,12 @@ final class ProfileViewController: UIViewController {
   var currentUser: User?
   private let keychain = Keychain.shared
   private let session = SessionProvider.shared
-  private var postsProfile: [Post]?
+  private var postsProfile = [Post]()
   lazy var rootViewController = AppDelegate.shared.rootViewController
+
+  lazy var coreDataProvider = CoreDataProvider.shared
+  private var offlineCurrentUser: UserOffline?
+  private var offlinePostsProfile = [PostOffline]()
 
   @IBOutlet weak private var profileCollectionView: UICollectionView! {
     willSet {
@@ -40,31 +44,34 @@ final class ProfileViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
+    guard checkOnlineSession() else { return }
+
     if let userID = feedUserID {
       loadUserByProfile(userID)
     } else {
       loadCurrentUser()
     }
   }
-
 }
 
 // MARK: DataSourse
 extension ProfileViewController: UICollectionViewDataSource {
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    guard let postsProfile = postsProfile else { return [Post]().count }
-    return postsProfile.count
+    return session.isOnline ? postsProfile.count : offlinePostsProfile.count
   }
 
   /// установка изображений
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeue(cell: ProfileCollectionViewCell.self, for: indexPath)
 
-    guard let postsProfile = postsProfile else { return cell }
-    let post = postsProfile[indexPath.row]
-
-    cell.setImageCell(post: post)
+    if session.isOnline {
+      let post = postsProfile[indexPath.row]
+      cell.setImageCell(post: post)
+    } else {
+      let post = offlinePostsProfile[indexPath.row]
+      cell.setImageCell(postOffline: post)
+    }
 
     return cell
   }
@@ -78,9 +85,14 @@ extension ProfileViewController: UICollectionViewDataSource {
                                       kind: kind,
                                       for: indexPath)
 
-    guard let userProfile = userProfile else { return view }
+    if session.isOnline {
+      guard let userProfile = userProfile else { return view }
+      view.setHeader(user: userProfile)
+    } else {
+      guard let userProfile = offlineCurrentUser else { return view }
+      view.setHeader(userOffline: userProfile)
+    }
 
-    view.setHeader(user: userProfile)
     view.delegate = self
 
     return view
@@ -105,38 +117,6 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
 // MARK: setViewController
 extension ProfileViewController {
 
-  func setupProfileViewController() {
-    guard let token = keychain.readToken() else { return }
-
-    guard userProfile == nil else {
-      guard let userID = feedUserID else { return }
-
-      session.getPostsWithUserID(token, userID) { [weak self] result in
-        guard let self = self else { return }
-
-        switch result {
-          case .success(let posts):
-            self.postsProfile = posts
-          case .fail(let error):
-            Alert.showAlert(self, error.description)
-        }
-      }
-
-      return
-    }
-
-    session.getCurrentUser(token) { [weak self] result in
-      guard let self = self else { return }
-
-      switch result {
-        case .success(let user):
-          self.userProfile = user
-        case .fail(let error):
-          Alert.showAlert(self, error.description)
-      }
-    }
-  }
-
   func updateUI() {
     DispatchQueue.main.async {
       ActivityIndicator.stop()
@@ -159,6 +139,11 @@ extension ProfileViewController {
 
   @objc
   private func logout() {
+    guard session.isOnline else {
+      Alert.showAlert(self, BackendError.transferError.description)
+      return
+    }
+
     guard let token = keychain.readToken() else { return }
     session.signout(token)
     keychain.deleteToken()
@@ -167,6 +152,11 @@ extension ProfileViewController {
 
   /// Загрузка профиля друга из ленты
   func loadUserByProfile(_ userID: String) {
+    guard session.isOnline else {
+      Alert.showAlert(self, BackendError.transferError.description)
+      return
+    }
+
     guard let token = keychain.readToken() else { return }
     ActivityIndicator.start()
 
@@ -199,10 +189,16 @@ extension ProfileViewController {
 
   /// Загрузка профиля текущего пользователя
   func loadCurrentUser() {
+    guard session.isOnline else {
+      Alert.showAlert(self, BackendError.transferError.description)
+      return
+    }
     setLogout()
 
     guard let token = keychain.readToken() else { return }
+
     ActivityIndicator.start()
+
     session.getCurrentUser(token) { [weak self] result in
       guard let self = self else { return }
 
@@ -210,12 +206,15 @@ extension ProfileViewController {
         case .success(let currentUser):
           self.userProfile = currentUser
 
+          // Сохраняются данные текущего пользователя в core data
+          self.coreDataProvider.saveCurrentUserOffline(user: currentUser)
+
           self.session.getPostsWithUserID(token, currentUser.id) { [weak self] result in
             guard let self = self else { return }
-
             switch result {
               case .success(let posts):
                 self.postsProfile = posts
+
                 self.updateUI()
               case .fail(let error):
                 Alert.showAlert(self, error.description)
@@ -232,6 +231,11 @@ extension ProfileViewController {
 extension ProfileViewController: ProfileHeaderDelegate {
   /// Открывает список подписчиков
   func openFollowersList() {
+    guard session.isOnline else {
+      Alert.showAlert(self, BackendError.transferError.description)
+      return
+    }
+
     guard let token = keychain.readToken() else { return }
     ActivityIndicator.start()
 
@@ -257,6 +261,11 @@ extension ProfileViewController: ProfileHeaderDelegate {
 
   /// Открывает список подписок
   func openFollowingList() {
+    guard session.isOnline else {
+      Alert.showAlert(self, BackendError.transferError.description)
+      return
+    }
+
     guard let token = keychain.readToken() else { return }
     ActivityIndicator.start()
 
@@ -283,7 +292,11 @@ extension ProfileViewController: ProfileHeaderDelegate {
 
   /// Подписывает и отписывает текущего пользователя от друзей
   func followUnfollowUser() {
-
+    guard session.isOnline else {
+      Alert.showAlert(self, BackendError.transferError.description)
+      return
+    }
+    
     guard
       let token = keychain.readToken(),
       let userProfile = userProfile  else { return }
@@ -340,5 +353,31 @@ extension ProfileViewController: UITabBarControllerDelegate {
       feedUserID = nil
       navigationController?.popToRootViewController(animated: false)
     }
+  }
+}
+
+extension ProfileViewController {
+  func checkOnlineSession() -> Bool {
+    guard session.isOnline else {
+
+      coreDataProvider.fetchData(for: UserOffline.self) { userOffline in
+        offlineCurrentUser = userOffline.first
+      }
+
+      coreDataProvider.fetchData(for: PostOffline.self) { (postOffline) in
+        offlinePostsProfile = postOffline.filter({ post -> Bool in
+          post.author == offlineCurrentUser?.id
+        })
+      }
+
+      DispatchQueue.main.async {
+        self.title = self.offlineCurrentUser?.username
+        self.tabBarItem.title = ControllerSet.profileViewController
+        self.setLogout()
+      }
+
+      return false
+    }
+    return true
   }
 }

@@ -15,9 +15,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+    _ = CoreDataManager.shared
+
     assembly()
 
     return true
+  }
+
+  func applicationWillTerminate(_ application: UIApplication) {
+      CoreDataManager.shared.save()
   }
 }
 

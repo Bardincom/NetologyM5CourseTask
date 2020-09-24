@@ -93,7 +93,15 @@ private extension RootViewController {
           case .success(_):
             self.switchToFeedViewController()
             return
-          case .fail(_):
+          case .fail(let backendError):
+            
+            //TODO: переход в оффлайн
+            guard backendError != .transferError else {
+              print("Сеть не доступна: \(self.session.isOnline)")
+              self.switchToFeedViewController()
+              return
+            }
+
             self.addChild(self.current)
             self.current.view.frame = self.view.bounds
             self.view.addSubview(self.current.view)

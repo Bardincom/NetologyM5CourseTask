@@ -40,6 +40,11 @@ private extension DescriptionScreenViewController {
   }
 
   func sendPost() {
+    guard session.isOnline else {
+         Alert.showAlert(self, BackendError.transferError.description)
+         return
+       }
+    
     ActivityIndicator.start()
     guard let navigationController = tabBarController?.viewControllers?[0] as? UINavigationController else { return }
     guard let feedViewController = navigationController.viewControllers.first as? FeedViewController else { return }
