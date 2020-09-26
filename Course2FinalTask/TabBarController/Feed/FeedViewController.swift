@@ -51,7 +51,7 @@ final class FeedViewController: UIViewController {
           // Сохранение в CoreData
           posts.forEach { post in
             self.coreDataProvider.savePostOffline(post: post)
-          }
+        }
 
         case .fail(let error):
           Alert.showAlert(self, error.description)
@@ -71,6 +71,7 @@ final class FeedViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    view.backgroundColor = .systemBackground
     feedCollectionView.refreshControl = refreshControl
     // сюда попадает новая публикация и размещается вверху ленты
     newPost = { [weak self] post in
@@ -163,7 +164,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
           profileViewController.feedUserID = user.id
           DispatchQueue.main.async {
             self.navigationController?.pushViewController(profileViewController, animated: true)
-          }
+        }
         case .fail(let error):
           Alert.showAlert(self, error.description)
       }
@@ -182,8 +183,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
     let postID = postsArray[indexPath.row].id
 
-    guard cell.likeButton.tintColor == Asset.ColorAssets.lightGray.color else {
-
+    guard !postsArray[indexPath.row].currentUserLikesThisPost else {
       session.unlikePostCurrentUserWithPostID(token, postID) { [weak self] result in
         guard let self = self else { return }
         switch result {
@@ -196,7 +196,9 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
       postsArray[indexPath.row].currentUserLikesThisPost = false
       postsArray[indexPath.row].likedByCount -= 1
-      cell.tintColor = Asset.ColorAssets.lightGray.color
+//      cell.tintColor = Asset.ColorAssets.lightGray.color
+//      cell.likeButton.imageView?.image = Button.heart
+      cell.tintColor = .systemGray
 
       self.feedCollectionView.reloadData()
       return
@@ -215,7 +217,9 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
     postsArray[indexPath.row].currentUserLikesThisPost = true
     postsArray[indexPath.row].likedByCount += 1
-    cell.tintColor = Asset.ColorAssets.defaultTint.color
+//    cell.tintColor = Asset.ColorAssets.defaultTint.color
+//    cell.likeButton.imageView?.image = Button.heartFill
+    cell.tintColor = .systemPink
 
     self.feedCollectionView.reloadData()
   }
@@ -287,8 +291,8 @@ private extension FeedViewController {
 extension FeedViewController {
   func checkOnlineSession() {
     guard session.isOnline else {
-          coreDataProvider.fetchData(for: PostOffline.self, hendler: { (offlinePost) in
-      offlinePostsArray = offlinePost
+      coreDataProvider.fetchData(for: PostOffline.self, hendler: { (offlinePost) in
+        offlinePostsArray = offlinePost
       })
       return
     }

@@ -71,7 +71,7 @@ private extension RootViewController {
     let newNavigationController = UINavigationController(rootViewController: newPostViewController)
 
     let tabBarController = UITabBarController()
-    tabBarController.tabBar.backgroundColor = Asset.ColorAssets.viewBackground.color
+    tabBarController.tabBar.backgroundColor = .systemBackground
     tabBarController.setViewControllers([feedNavigationController, newNavigationController, profileNavigationController], animated: false)
 
     return tabBarController

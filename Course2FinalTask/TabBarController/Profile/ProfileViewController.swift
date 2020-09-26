@@ -31,12 +31,11 @@ final class ProfileViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.backgroundColor = Asset.ColorAssets.viewBackground.color
 
     navigationController?.delegate = self
     tabBarController?.delegate = self
 
-    view.backgroundColor = Asset.ColorAssets.viewBackground.color
+    view.backgroundColor = .systemBackground
 
     updateUI()
   }
@@ -120,7 +119,7 @@ extension ProfileViewController {
   func updateUI() {
     DispatchQueue.main.async {
       ActivityIndicator.stop()
-      self.view.backgroundColor = Asset.ColorAssets.viewBackground.color
+      self.view.backgroundColor = .systemBackground
       self.title = self.userProfile?.username
       self.tabBarItem.title = ControllerSet.profileViewController
       self.profileCollectionView.reloadData()
