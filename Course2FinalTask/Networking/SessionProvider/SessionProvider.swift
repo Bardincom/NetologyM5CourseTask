@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+// TODO: передалать на встроенный Result<T, BackendError>
 enum Result<T> {
   case success(T)
   case fail(BackendError)

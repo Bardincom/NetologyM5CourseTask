@@ -57,21 +57,22 @@ final class RootViewController: UIViewController {
 private extension RootViewController {
   func assemblyTabBarController() -> UITabBarController {
     let feedViewController = FeedViewController()
-    feedViewController.tabBarItem.image = Asset.IconAssets.feed.image
+    feedViewController.tabBarItem.title = ControllerSet.feedViewController
+    feedViewController.tabBarItem.image = TabBarButton.feed
     let feedNavigationController = UINavigationController(rootViewController: feedViewController)
 
     let profileViewController = ProfileViewController()
     profileViewController.tabBarItem.title = ControllerSet.profileViewController
-    profileViewController.tabBarItem.image = Asset.IconAssets.profile.image
+    profileViewController.tabBarItem.image = TabBarButton.profile
     let profileNavigationController = UINavigationController(rootViewController: profileViewController)
 
     let newPostViewController = NewPostViewController()
     newPostViewController.tabBarItem.title = ControllerSet.newPostViewController
-    newPostViewController.tabBarItem.image = Asset.IconAssets.plus.image
+    newPostViewController.tabBarItem.image = TabBarButton.newPost
     let newNavigationController = UINavigationController(rootViewController: newPostViewController)
 
     let tabBarController = UITabBarController()
-    tabBarController.tabBar.backgroundColor = .systemBackground
+    tabBarController.tabBar.tintColor = Asset.ColorAssets.appearance.color
     tabBarController.setViewControllers([feedNavigationController, newNavigationController, profileNavigationController], animated: false)
 
     return tabBarController

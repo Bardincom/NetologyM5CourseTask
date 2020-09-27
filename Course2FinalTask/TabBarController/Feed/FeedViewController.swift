@@ -71,7 +71,7 @@ final class FeedViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.backgroundColor = .systemBackground
+    view.backgroundColor = SystemColors.backgroundColor
     feedCollectionView.refreshControl = refreshControl
     // сюда попадает новая публикация и размещается вверху ленты
     newPost = { [weak self] post in
@@ -83,7 +83,14 @@ final class FeedViewController: UIViewController {
     }
     alertAction?(isViewLoaded)
 
-    title = ControllerSet.feedViewController
+    configureNavigation()
+  }
+
+  func configureNavigation() {
+    self.navigationItem.title = "Instagram"
+    let attributes = [NSAttributedString.Key.foregroundColor: Asset.ColorAssets.appearance.color, NSAttributedString.Key.font: UIFont(name: "Noteworthy", size: 20)]
+      self.navigationController?.navigationBar.titleTextAttributes = attributes as [NSAttributedString.Key: Any]
+
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -196,9 +203,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
       postsArray[indexPath.row].currentUserLikesThisPost = false
       postsArray[indexPath.row].likedByCount -= 1
-//      cell.tintColor = Asset.ColorAssets.lightGray.color
-//      cell.likeButton.imageView?.image = Button.heart
-      cell.tintColor = .systemGray
+      cell.tintColor = SystemColors.grayColor
 
       self.feedCollectionView.reloadData()
       return
@@ -217,9 +222,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
     postsArray[indexPath.row].currentUserLikesThisPost = true
     postsArray[indexPath.row].likedByCount += 1
-//    cell.tintColor = Asset.ColorAssets.defaultTint.color
-//    cell.likeButton.imageView?.image = Button.heartFill
-    cell.tintColor = .systemPink
+    cell.tintColor = SystemColors.pinkColor
 
     self.feedCollectionView.reloadData()
   }

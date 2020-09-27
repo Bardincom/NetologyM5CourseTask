@@ -35,7 +35,7 @@ final class ProfileViewController: UIViewController {
     navigationController?.delegate = self
     tabBarController?.delegate = self
 
-    view.backgroundColor = .systemBackground
+    view.backgroundColor = SystemColors.backgroundColor
 
     updateUI()
   }

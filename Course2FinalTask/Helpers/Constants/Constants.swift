@@ -13,9 +13,32 @@ enum Model {
     static let name = "DataBase"
 }
 
-//let withConfiguration = UIImage.SymbolConfiguration(weight: .regular)
-//
-//enum Button {
-//    static let heart = UIImage(systemName: "suit.heart", withConfiguration: withConfiguration)
-//    static let heartFill = UIImage(systemName: "suit.heart.fill", withConfiguration: withConfiguration)
-//}
+enum SystemColors {
+  static let backgroundColor = UIColor.systemBackground
+  static let grayColor = UIColor.systemGray
+  static let pinkColor = UIColor.systemPink
+}
+
+let withConfiguration = UIImage.SymbolConfiguration(weight: .regular)
+
+enum TabBarButton {
+    static let feed = UIImage(systemName: "house.fill", withConfiguration: withConfiguration)
+    static let newPost = UIImage(systemName: "plus.app.fill", withConfiguration: withConfiguration)
+    static let profile = UIImage(systemName: "person.fill", withConfiguration: withConfiguration)
+}
+
+public enum ControllerSet {
+    static let feedViewController = "Feed"
+    static let profileViewController = "Profile"
+    static let newPostViewController = "New"
+}
+
+public enum NamesItemTitle {
+   static let likes = "Likes"
+   static let followers = "Followers"
+   static let following = "Following"
+   static let newPost = "New Post"
+   static let filters = "Filters"
+}
+
+public let cornerRadiusButton: CGFloat = 5

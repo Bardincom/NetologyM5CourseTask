@@ -55,14 +55,11 @@ final class FeedCollectionViewCell: UICollectionViewCell {
 
     /// отображение лайка на публикации текущего пользователя
     guard post.currentUserLikesThisPost else {
-//      likeButton.tintColor = Asset.ColorAssets.lightGray.color
-//      likeButton.imageView?.image = Button.heartFill
-      likeButton.tintColor = .systemGray
+      likeButton.tintColor = SystemColors.grayColor
       return
     }
-//    likeButton.tintColor = Asset.ColorAssets.defaultTint.color
-//    likeButton.imageView?.image = Button.heart
-    likeButton.tintColor = .systemPink
+
+    likeButton.tintColor = SystemColors.pinkColor
   }
 
   func setupFeed(post: PostOffline) {
