@@ -37,6 +37,7 @@ extension SessionProvider {
         ActivityIndicator.stop()
       } catch {
         completionHandler(.fail(BackendError.unauthorized))
+        ActivityIndicator.stop()
       }
     }
     dataTask.resume()

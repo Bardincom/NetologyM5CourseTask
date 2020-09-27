@@ -80,6 +80,11 @@ private extension LoginScreenViewController {
   }
 
   func authorization() {
+    guard session.isOnline else {
+      Alert.showAlert(self, BackendError.transferError.description)
+      return
+    }
+    
     guard
       let login = login.text,
       let password = password.text else { return }
