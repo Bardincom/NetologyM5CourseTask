@@ -20,7 +20,7 @@ final class LoginScreenViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    signInButton.layer.cornerRadius = cornerRadiusButton
+    signInButton.layer.cornerRadius = Constants.cornerRadiusButton
     disableSignInButton()
     setDelegate()
   }

@@ -50,14 +50,14 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
     avatarImage.kf.setImage(with: user.avatar)
     avatarImage.layer.cornerRadius = avatarImage.frame.height / 2
     fullNameLabel.alpha = 1
-    fullNameLabel.font = systemsFont
+    fullNameLabel.font = Fonts.systemsFont
     fullNameLabel.text = user.fullName
     followersLabel.alpha = 1
-    followersLabel.font = systemsBoldFont
-    followersLabel.text = "Followers: \(user.followedByCount)"
+    followersLabel.font = Fonts.systemsBoldFont
+    followersLabel.text = "\(Names.followers): \(user.followedByCount)"
     followingLabel.alpha = 1
-    followingLabel.font = systemsBoldFont
-    followingLabel.text = "Following: \(user.followsCount)"
+    followingLabel.font = Fonts.systemsBoldFont
+    followingLabel.text = "\(Names.following): \(user.followsCount)"
 
     buttonDisplay(user: user)
 
@@ -67,11 +67,11 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
 
     if user.currentUserFollowsThisUser {
       followButton.isHidden = false
-      followButton.setTitle("Unfollow", for: .normal)
+      followButton.setTitle("\(Names.unfollow)", for: .normal)
       followButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
     } else {
       followButton.isHidden = false
-      followButton.setTitle("Follow", for: .normal)
+      followButton.setTitle("\(Names.follow)", for: .normal)
       followButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
     }
 
@@ -83,14 +83,14 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
   func setHeader(userOffline: UserOffline) {
     avatarImage.layer.cornerRadius = avatarImage.frame.height / 2
     fullNameLabel.alpha = 1
-    fullNameLabel.font = systemsFont
+    fullNameLabel.font = Fonts.systemsFont
     fullNameLabel.text = userOffline.fullName
     followersLabel.alpha = 1
-    followersLabel.font = systemsBoldFont
-    followersLabel.text = "Followers: \(userOffline.followedByCount)"
+    followersLabel.font = Fonts.systemsBoldFont
+    followersLabel.text = "\(Names.followers): \(userOffline.followedByCount)"
     followingLabel.alpha = 1
-    followingLabel.font = systemsBoldFont
-    followingLabel.text = "Following: \(userOffline.followsCount)"
+    followingLabel.font = Fonts.systemsBoldFont
+    followingLabel.text = "\(Names.following): \(userOffline.followsCount)"
 
     guard
       let avatarData = userOffline.avatar,
@@ -105,11 +105,11 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
 
     if userOffline.currentUserFollowsThisUser {
       followButton.isHidden = false
-      followButton.setTitle("Unfollow", for: .normal)
+      followButton.setTitle("\(Names.unfollow)", for: .normal)
       followButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
     } else {
       followButton.isHidden = false
-      followButton.setTitle("Follow", for: .normal)
+      followButton.setTitle("\(Names.follow)", for: .normal)
       followButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
     }
 

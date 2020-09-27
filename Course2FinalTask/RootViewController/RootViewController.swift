@@ -58,17 +58,17 @@ private extension RootViewController {
   func assemblyTabBarController() -> UITabBarController {
     let feedViewController = FeedViewController()
     feedViewController.tabBarItem.title = ControllerSet.feedViewController
-    feedViewController.tabBarItem.image = TabBarButton.feed
+    feedViewController.tabBarItem.image = Buttons.feed
     let feedNavigationController = UINavigationController(rootViewController: feedViewController)
 
     let profileViewController = ProfileViewController()
     profileViewController.tabBarItem.title = ControllerSet.profileViewController
-    profileViewController.tabBarItem.image = TabBarButton.profile
+    profileViewController.tabBarItem.image = Buttons.profile
     let profileNavigationController = UINavigationController(rootViewController: profileViewController)
 
     let newPostViewController = NewPostViewController()
     newPostViewController.tabBarItem.title = ControllerSet.newPostViewController
-    newPostViewController.tabBarItem.image = TabBarButton.newPost
+    newPostViewController.tabBarItem.image = Buttons.newPost
     let newNavigationController = UINavigationController(rootViewController: newPostViewController)
 
     let tabBarController = UITabBarController()
@@ -95,8 +95,6 @@ private extension RootViewController {
             self.switchToFeedViewController()
             return
           case .fail(let backendError):
-            
-            //TODO: переход в оффлайн
             guard backendError != .transferError else {
               print("Сеть не доступна: \(self.session.isOnline)")
               self.switchToFeedViewController()

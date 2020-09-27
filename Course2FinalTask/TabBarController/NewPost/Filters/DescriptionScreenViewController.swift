@@ -21,6 +21,7 @@ final class DescriptionScreenViewController: UIViewController {
     super.viewDidLoad()
     view.backgroundColor = SystemColors.backgroundColor
     setupFiltersViewController()
+    setupBackButton()
     setDelegate()
   }
 }
@@ -31,7 +32,15 @@ private extension DescriptionScreenViewController {
     publishedPhoto.image = newPublishedPhoto
 
     descriptionText.placeholder = "Enter you description"
-    navigationItem.rightBarButtonItem = .init(title: "Shared", style: .plain, target: self, action: #selector(sharedPhoto(_:)))
+    let shared = UIBarButtonItem(image: Buttons.sharedPost,
+                                 style: .done,
+                                 target: self,
+                                 action: #selector(self.sharedPhoto(_:)))
+    shared.tintColor = Asset.ColorAssets.buttonBackground.color
+    self.navigationItem.rightBarButtonItem = .some(shared)
+    self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+    self.navigationController?.navigationBar.shadowImage = UIImage()
+    self.navigationItem.setRightBarButton(shared, animated: true)
   }
 
   @objc

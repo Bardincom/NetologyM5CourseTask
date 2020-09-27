@@ -83,15 +83,16 @@ final class FeedViewController: UIViewController {
     }
     alertAction?(isViewLoaded)
 
-    configureNavigation()
+//    configureNavigation()
+    navigationItem.title = "Instagram"
+    configureTitle()
   }
 
-  func configureNavigation() {
-    self.navigationItem.title = "Instagram"
-    let attributes = [NSAttributedString.Key.foregroundColor: Asset.ColorAssets.appearance.color, NSAttributedString.Key.font: UIFont(name: "Noteworthy", size: 20)]
-      self.navigationController?.navigationBar.titleTextAttributes = attributes as [NSAttributedString.Key: Any]
-
-  }
+//  func configureNavigation() {
+//
+//    let attributes = [NSAttributedString.Key.foregroundColor: Asset.ColorAssets.appearance.color, NSAttributedString.Key.font: UIFont(name: "Noteworthy", size: 20)]
+//      self.navigationController?.navigationBar.titleTextAttributes = attributes as [NSAttributedString.Key: Any]
+//  }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -252,7 +253,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
       }
 
       DispatchQueue.main.async {
-        userListViewController.navigationItemTitle = NamesItemTitle.likes
+        userListViewController.navigationItemTitle = Names.likes
         self.navigationController?.pushViewController(userListViewController, animated: true)
         ActivityIndicator.stop()
       }

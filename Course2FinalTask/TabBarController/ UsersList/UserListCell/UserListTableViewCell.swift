@@ -15,6 +15,7 @@ final class UserListTableViewCell: UITableViewCell {
 
   func setupList(user: User) {
     avatarImage.kf.setImage(with: user.avatar)
+    avatarImage.layer.cornerRadius = avatarImage.frame.height / 2
     userNameLabel.text = user.username
   }
 }

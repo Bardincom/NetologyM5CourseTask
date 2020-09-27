@@ -35,8 +35,7 @@ final class ProfileViewController: UIViewController {
     navigationController?.delegate = self
     tabBarController?.delegate = self
 
-    view.backgroundColor = SystemColors.backgroundColor
-
+    configureTitle()
     updateUI()
   }
 
@@ -47,6 +46,7 @@ final class ProfileViewController: UIViewController {
 
     if let userID = feedUserID {
       loadUserByProfile(userID)
+      setupBackButton()
     } else {
       loadCurrentUser()
     }
@@ -119,7 +119,7 @@ extension ProfileViewController {
   func updateUI() {
     DispatchQueue.main.async {
       ActivityIndicator.stop()
-      self.view.backgroundColor = .systemBackground
+      self.view.backgroundColor = SystemColors.backgroundColor
       self.title = self.userProfile?.username
       self.tabBarItem.title = ControllerSet.profileViewController
       self.profileCollectionView.reloadData()
@@ -128,10 +128,11 @@ extension ProfileViewController {
 
   func setLogout() {
     DispatchQueue.main.async {
-      let logoutButton = UIBarButtonItem(title: "Log out",
-                                         style: .done,
-                                         target: self,
-                                         action: #selector(self.logout))
+      let logoutButton = UIBarButtonItem(image: Buttons.exit, style: .done, target: self, action: #selector(self.logout))
+      logoutButton.tintColor = SystemColors.redColor
+      self.navigationItem.rightBarButtonItem = .some(logoutButton)
+      self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+      self.navigationController?.navigationBar.shadowImage = UIImage()
       self.navigationItem.setRightBarButton(logoutButton, animated: true)
     }
   }
@@ -248,7 +249,7 @@ extension ProfileViewController: ProfileHeaderDelegate {
         case .success(let users):
           userListViewController.usersList = users
           DispatchQueue.main.async {
-            userListViewController.navigationItemTitle = NamesItemTitle.followers
+            userListViewController.navigationItemTitle = Names.followers
             self.navigationController?.pushViewController(userListViewController, animated: true)
             ActivityIndicator.stop()
           }
@@ -279,7 +280,7 @@ extension ProfileViewController: ProfileHeaderDelegate {
         case .success(let users):
           userListViewController.usersList = users
           DispatchQueue.main.async {
-            userListViewController.navigationItemTitle = NamesItemTitle.followers
+            userListViewController.navigationItemTitle = Names.followers
             self.navigationController?.pushViewController(userListViewController, animated: true)
             ActivityIndicator.stop()
           }

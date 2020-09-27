@@ -26,7 +26,7 @@ final class FiltersViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
+    setupBackButton()
     setupFiltersViewController()
   }
 }
@@ -76,9 +76,17 @@ extension FiltersViewController: UICollectionViewDataSource {
 private extension FiltersViewController {
 
   func setupFiltersViewController() {
-    navigationItem.rightBarButtonItem = .init(title: "Next", style: .plain, target: self, action: #selector(pressNextButton(_:)))
+    let nextButton = UIBarButtonItem(image: Buttons.next,
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(pressNextButton(_:)))
+    nextButton.tintColor = Asset.ColorAssets.appearance.color
+    navigationItem.rightBarButtonItem = .some(nextButton)
+    navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+    navigationController?.navigationBar.shadowImage = UIImage()
+
     bigImage.image = selectPhoto
-    title = NamesItemTitle.filters
+    title = Names.filters
   }
 
   @objc

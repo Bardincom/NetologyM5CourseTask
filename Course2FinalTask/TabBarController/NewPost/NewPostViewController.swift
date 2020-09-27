@@ -20,7 +20,8 @@ final class NewPostViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    navigationItem.title = NamesItemTitle.newPost
+    navigationItem.title = Names.newPost
+    configureTitle()
   }
 }
 

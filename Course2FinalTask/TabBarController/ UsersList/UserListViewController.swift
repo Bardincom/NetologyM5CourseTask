@@ -10,19 +10,23 @@ import UIKit
 
 final class UserListViewController: UIViewController {
 
-  var usersList: [User]?
+  var usersList = [User]()
   var navigationItemTitle: String?
 
   @IBOutlet var userListTableView: UITableView! {
     willSet {
       newValue.register(nibCell: UserListTableViewCell.self)
+      newValue.tableFooterView = UIView()
     }
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    configureTitle()
+    setupBackButton()
+    title = navigationItemTitle
+
     view.backgroundColor = SystemColors.backgroundColor
-    navigationItemTitle = navigationItem.title
   }
 }
 
@@ -30,13 +34,13 @@ final class UserListViewController: UIViewController {
 extension UserListViewController: UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    selectUsers(usersList).count
+    usersList.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeue(reusable: UserListTableViewCell.self, for: indexPath)
 
-    let user = selectUsers(usersList)[indexPath.row]
+    let user = usersList[indexPath.row]
     cell.setupList(user: user)
 
     return cell
@@ -47,7 +51,7 @@ extension UserListViewController: UITableViewDataSource {
 extension UserListViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let userID = selectUsers(usersList)[indexPath.row].id
+    let userID = usersList[indexPath.row].id
 
     let profileViewController = ProfileViewController()
     profileViewController.feedUserID = userID

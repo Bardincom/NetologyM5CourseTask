@@ -48,6 +48,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
 
     dateLabel.text = post.createdTime.displayDate()
     avatarImageView.kf.setImage(with: post.authorAvatar)
+    avatarImageView.layer.cornerRadius = avatarImageView.frame.height / 2
     userNameLabel.text = post.authorUsername
     imageView.kf.setImage(with: post.image)
     likesLabel.text = "Likes: " + "\(post.likedByCount)"
@@ -127,10 +128,10 @@ extension FeedCollectionViewCell {
 private extension FeedCollectionViewCell {
 
   func setupFonts() {
-    dateLabel.font = systemsFont
-    userNameLabel.font = systemsBoldFont
-    likesLabel.font = systemsBoldFont
-    descriptionLabel.font = systemsFont
+    dateLabel.font = Fonts.systemsFont
+    userNameLabel.font = Fonts.systemsBoldFont
+    likesLabel.font = Fonts.systemsBoldFont
+    descriptionLabel.font = Fonts.systemsFont
     likeButton.tintColor = Asset.ColorAssets.defaultTint.color
   }
 }
