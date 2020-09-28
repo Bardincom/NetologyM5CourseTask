@@ -353,14 +353,14 @@
 			path = Errors;
 			sourceTree = "<group>";
 		};
-		A27133AD2413B195007E13BC /*  UsersList */ = {
+		A27133AD2413B195007E13BC /* UsersList */ = {
 			isa = PBXGroup;
 			children = (
 				A27133B22413B266007E13BC /* UserListCell */,
 				A27133AE2413B259007E13BC /* UserListViewController.swift */,
 				A27133AF2413B259007E13BC /* UserListViewController.xib */,
 			);
-			path = " UsersList";
+			path = UsersList;
 			sourceTree = "<group>";
 		};
 		A27133B22413B266007E13BC /* UserListCell */ = {
@@ -450,7 +450,7 @@
 			children = (
 				A25E545C240C269F00478BC5 /* Feed */,
 				A25E545D240C26B500478BC5 /* Profile */,
-				A27133AD2413B195007E13BC /*  UsersList */,
+				A27133AD2413B195007E13BC /* UsersList */,
 				A2C014DE2454F16F001A4894 /* NewPost */,
 			);
 			path = TabBarController;

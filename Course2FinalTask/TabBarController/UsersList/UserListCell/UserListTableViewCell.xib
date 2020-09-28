@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -29,11 +30,27 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hJb-ml-EZR">
+                        <rect key="frame" x="224" y="7" width="80" height="30"/>
+                        <color key="backgroundColor" name="buttonBackground"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="gNK-Zg-kt2"/>
+                        </constraints>
+                        <state key="normal">
+                            <color key="titleColor" name="buttonText"/>
+                        </state>
+                        <connections>
+                            <action selector="followButtonAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="w47-V3-yqd"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="ddO-nh-Z7K" firstAttribute="leading" secondItem="AAT-TH-iSf" secondAttribute="trailing" constant="16" id="1QM-ZN-6Yv"/>
                     <constraint firstItem="ddO-nh-Z7K" firstAttribute="centerY" secondItem="AAT-TH-iSf" secondAttribute="centerY" id="Awh-s3-zsS"/>
                     <constraint firstAttribute="trailingMargin" secondItem="ddO-nh-Z7K" secondAttribute="trailing" constant="-17" id="FIY-Lb-3Vw"/>
+                    <constraint firstAttribute="bottom" secondItem="hJb-ml-EZR" secondAttribute="bottom" constant="8" id="NUb-6S-vak"/>
+                    <constraint firstItem="hJb-ml-EZR" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7" id="YNH-FC-aAz"/>
+                    <constraint firstAttribute="trailing" secondItem="hJb-ml-EZR" secondAttribute="trailing" constant="16" id="cfP-0Y-l7c"/>
                     <constraint firstItem="AAT-TH-iSf" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="gFW-3l-Obg"/>
                     <constraint firstItem="ddO-nh-Z7K" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="1.5" id="pyx-pK-j4W"/>
                     <constraint firstItem="AAT-TH-iSf" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="sFW-Fi-5rd"/>
@@ -42,9 +59,18 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="avatarImage" destination="AAT-TH-iSf" id="wmo-ZT-9NR"/>
+                <outlet property="followButton" destination="hJb-ml-EZR" id="xZe-nL-r5p"/>
                 <outlet property="userNameLabel" destination="ddO-nh-Z7K" id="Dlz-h7-esk"/>
             </connections>
             <point key="canvasLocation" x="138.75" y="104.04929577464789"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <namedColor name="buttonBackground">
+            <color red="0.0" green="0.58823531866073608" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="buttonText">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>

@@ -33,6 +33,7 @@ public enum Buttons {
   static let next = UIImage(systemName: "arrowshape.turn.up.right.fill", withConfiguration: Constants.simbolWeight)
   static let exit = UIImage(systemName: "multiply.circle", withConfiguration: Constants.simbolWeight)
   static let sharedPost = UIImage(systemName: "checkmark.circle.fill", withConfiguration: Constants.simbolWeight)
+  static let camera = UIImage(systemName: "camera", withConfiguration: Constants.simbolWeight)
 }
 
 public enum ControllerSet {

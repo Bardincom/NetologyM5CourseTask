@@ -20,7 +20,7 @@ extension UIViewController {
     let backButton = UIBarButtonItem(image: Buttons.back,
                                      style: .plain,
                                      target: self,
-                                     action: #selector(goToMainViewController))
+                                     action: #selector(popViewController))
     backButton.tintColor = Asset.ColorAssets.appearance.color
     navigationItem.leftBarButtonItem = .some(backButton)
     navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
@@ -28,7 +28,7 @@ extension UIViewController {
   }
 
   @objc
-  func goToMainViewController() {
+  func popViewController() {
     navigationController?.popViewController(animated: true)
   }
 }

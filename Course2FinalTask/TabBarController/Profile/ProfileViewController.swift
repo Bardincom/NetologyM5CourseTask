@@ -280,7 +280,7 @@ extension ProfileViewController: ProfileHeaderDelegate {
         case .success(let users):
           userListViewController.usersList = users
           DispatchQueue.main.async {
-            userListViewController.navigationItemTitle = Names.followers
+            userListViewController.navigationItemTitle = Names.following
             self.navigationController?.pushViewController(userListViewController, animated: true)
             ActivityIndicator.stop()
           }
@@ -299,7 +299,7 @@ extension ProfileViewController: ProfileHeaderDelegate {
     
     guard
       let token = keychain.readToken(),
-      let userProfile = userProfile  else { return }
+      let userProfile = userProfile else { return }
 
     guard userProfile.currentUserFollowsThisUser else {
       session.followCurrentUserWithUserID(token, userProfile.id) { [weak self] result in

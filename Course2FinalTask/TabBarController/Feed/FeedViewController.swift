@@ -14,8 +14,8 @@ final class FeedViewController: UIViewController {
   private var post: Post?
   private var session = SessionProvider.shared
   private var keychain = Keychain.shared
-  var newPost: ((Post) -> Void)?
-  var alertAction: ((Bool) -> Void)?
+  public var newPost: ((Post) -> Void)?
+  public var alertAction: ((Bool) -> Void)?
 
   lazy var coreDataProvider = CoreDataProvider.shared
   private var offlinePostsArray = [PostOffline]()
@@ -83,16 +83,10 @@ final class FeedViewController: UIViewController {
     }
     alertAction?(isViewLoaded)
 
-//    configureNavigation()
+    addCameraButton()
     navigationItem.title = "Instagram"
     configureTitle()
   }
-
-//  func configureNavigation() {
-//
-//    let attributes = [NSAttributedString.Key.foregroundColor: Asset.ColorAssets.appearance.color, NSAttributedString.Key.font: UIFont(name: "Noteworthy", size: 20)]
-//      self.navigationController?.navigationBar.titleTextAttributes = attributes as [NSAttributedString.Key: Any]
-//  }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -262,6 +256,23 @@ extension FeedViewController: FeedCollectionViewProtocol {
 }
 
 private extension FeedViewController {
+
+  func addCameraButton() {
+    let backButton = UIBarButtonItem(image: Buttons.camera,
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(addNewFoto))
+    backButton.tintColor = Asset.ColorAssets.appearance.color
+    navigationItem.leftBarButtonItem = .some(backButton)
+    navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+    navigationController?.navigationBar.shadowImage = UIImage()
+  }
+
+  @objc
+  func addNewFoto() {
+    print("Открываю камеру")
+  }
+
   @objc
   func refresh(_ sender: UIRefreshControl) {
     guard session.isOnline else {
