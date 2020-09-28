@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -41,10 +41,10 @@
                 </label>
                 <button hidden="YES" opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xtf-DK-Sgp">
                     <rect key="frame" x="274" y="8" width="30" height="30"/>
-                    <color key="backgroundColor" name="buttonBackgroundColor"/>
+                    <color key="backgroundColor" name="buttonBackground"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <state key="normal">
-                        <color key="titleColor" name="buttonTextColor"/>
+                        <color key="titleColor" name="buttonText"/>
                     </state>
                     <connections>
                         <action selector="followButtonAction:" destination="U6b-Vx-4bR" eventType="touchUpInside" id="BpB-Hz-a25"/>
@@ -75,10 +75,10 @@
         </collectionReusableView>
     </objects>
     <resources>
-        <namedColor name="buttonBackgroundColor">
+        <namedColor name="buttonBackground">
             <color red="0.0" green="0.58823531866073608" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="buttonTextColor">
+        <namedColor name="buttonText">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>

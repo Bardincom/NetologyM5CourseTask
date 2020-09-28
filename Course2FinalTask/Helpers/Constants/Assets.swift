@@ -22,19 +22,14 @@ internal typealias AssetImageTypeAlias = ImageAsset.Image
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 internal enum Asset {
   internal enum ColorAssets {
+    internal static let appearance = ColorAsset(name: "appearance")
     internal static let buttonBackground = ColorAsset(name: "buttonBackground")
     internal static let buttonText = ColorAsset(name: "buttonText")
     internal static let defaultTint = ColorAsset(name: "defaultTint")
     internal static let lightGray = ColorAsset(name: "lightGray")
-    internal static let viewBackground = ColorAsset(name: "viewBackground")
   }
   internal enum IconAssets {
-    internal static let bigLike = ImageAsset(name: "bigLike")
-    internal static let feed = ImageAsset(name: "feed")
     internal static let instagram = ImageAsset(name: "instagram")
-    internal static let like = ImageAsset(name: "like")
-    internal static let plus = ImageAsset(name: "plus")
-    internal static let profile = ImageAsset(name: "profile")
   }
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
