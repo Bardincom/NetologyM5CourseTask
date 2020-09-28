@@ -9,6 +9,6 @@
 import Foundation
 
 struct NewPostRequest: Encodable {
-  let image: String
-  let description: String
+    let image: String
+    let description: String
 }

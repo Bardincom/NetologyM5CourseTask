@@ -10,47 +10,47 @@ import UIKit
 
 final class ImageFilterOperation: Operation {
 
-  private var _inputImage: UIImage?
+    private var _inputImage: UIImage?
 
-  private(set) var outputImage: UIImage? {
-    didSet {
-      cancel()
+    private(set) var outputImage: UIImage? {
+        didSet {
+            cancel()
+        }
     }
-  }
 
-  private var _chosenFilter: String?
+    private var _chosenFilter: String?
 
-  init(inputImage: UIImage?, filter: String) {
-    self._chosenFilter = filter
-    self._inputImage = inputImage
-  }
+    init(inputImage: UIImage?, filter: String) {
+        self._chosenFilter = filter
+        self._inputImage = inputImage
+    }
 
-  override func main() {
-    guard !isCancelled else { return }
+    override func main() {
+        guard !isCancelled else { return }
 
-    guard let inputImage = _inputImage, let chosenFilter = _chosenFilter else { return }
+        guard let inputImage = _inputImage, let chosenFilter = _chosenFilter else { return }
 
-    /// Создаем контекст
-    let context = CIContext()
+        /// Создаем контекст
+        let context = CIContext()
 
-    // Создаем CIImage
-    guard let coreImage = CIImage(image: inputImage) else { return }
+        // Создаем CIImage
+        guard let coreImage = CIImage(image: inputImage) else { return }
 
-    // Создаем фильтр
-    guard let filter = CIFilter(name: chosenFilter) else { return }
-    filter.setValue(coreImage, forKey: kCIInputImageKey)
+        // Создаем фильтр
+        guard let filter = CIFilter(name: chosenFilter) else { return }
+        filter.setValue(coreImage, forKey: kCIInputImageKey)
 
-    // Добавляем фильтр к изображению
-    guard let filteredImage = filter.outputImage else { return }
+        // Добавляем фильтр к изображению
+        guard let filteredImage = filter.outputImage else { return }
 
-    guard !isCancelled else { return }
+        guard !isCancelled else { return }
 
-    // Применяем фильтр
-    guard let cgImage = context.createCGImage(filteredImage,
-                                              from: filteredImage.extent) else { return }
+        // Применяем фильтр
+        guard let cgImage = context.createCGImage(filteredImage,
+                                                  from: filteredImage.extent) else { return }
 
-    /// результат фильтрайии
-    outputImage = UIImage(cgImage: cgImage)
+        /// результат фильтрайии
+        outputImage = UIImage(cgImage: cgImage)
 
-  }
+    }
 }

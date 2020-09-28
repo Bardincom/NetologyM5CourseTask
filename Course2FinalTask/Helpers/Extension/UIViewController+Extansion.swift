@@ -9,26 +9,26 @@
 import UIKit
 
 extension UIViewController {
-  func configureTitle() {
-    let attributes = [NSAttributedString.Key.foregroundColor: Asset.ColorAssets.appearance.color, NSAttributedString.Key.font: Fonts.titleFont]
-    self.navigationController?.navigationBar.titleTextAttributes = attributes as [NSAttributedString.Key: Any]
-  }
+    func configureTitle() {
+        let attributes = [NSAttributedString.Key.foregroundColor: Asset.ColorAssets.appearance.color, NSAttributedString.Key.font: Fonts.titleFont]
+        self.navigationController?.navigationBar.titleTextAttributes = attributes as [NSAttributedString.Key: Any]
+    }
 }
 
 extension UIViewController {
-  func setupBackButton() {
-    let backButton = UIBarButtonItem(image: Buttons.back,
-                                     style: .plain,
-                                     target: self,
-                                     action: #selector(popViewController))
-    backButton.tintColor = Asset.ColorAssets.appearance.color
-    navigationItem.leftBarButtonItem = .some(backButton)
-    navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-    navigationController?.navigationBar.shadowImage = UIImage()
-  }
+    func setupBackButton() {
+        let backButton = UIBarButtonItem(image: Buttons.back,
+                                         style: .plain,
+                                         target: self,
+                                         action: #selector(popViewController))
+        backButton.tintColor = Asset.ColorAssets.appearance.color
+        navigationItem.leftBarButtonItem = .some(backButton)
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+    }
 
-  @objc
-  func popViewController() {
-    navigationController?.popViewController(animated: true)
-  }
+    @objc
+    func popViewController() {
+        navigationController?.popViewController(animated: true)
+    }
 }

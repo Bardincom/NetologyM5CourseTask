@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -27,8 +26,11 @@
                     </constraints>
                 </imageView>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="7wN-Td-bVz">
-                    <rect key="frame" x="0.0" y="320" width="320" height="248"/>
+                    <rect key="frame" x="0.0" y="320" width="320" height="171"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="7wN-Td-bVz" secondAttribute="height" multiplier="320:171" id="XMN-p2-VVT"/>
+                    </constraints>
                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Fhu-Wg-keG">
                         <size key="itemSize" width="128" height="128"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -47,7 +49,6 @@
                 <constraint firstItem="7wN-Td-bVz" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="BQO-Mv-TZf"/>
                 <constraint firstItem="RMu-n5-oly" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="DWA-cu-u0G"/>
                 <constraint firstItem="RMu-n5-oly" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="cNc-eg-2yl"/>
-                <constraint firstItem="7wN-Td-bVz" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="iSJ-2S-DW6"/>
                 <constraint firstItem="7wN-Td-bVz" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="kuh-zV-JiK"/>
                 <constraint firstItem="7wN-Td-bVz" firstAttribute="top" secondItem="RMu-n5-oly" secondAttribute="bottom" id="ywQ-MW-gZe"/>
             </constraints>

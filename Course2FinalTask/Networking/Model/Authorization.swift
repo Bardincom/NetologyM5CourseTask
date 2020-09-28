@@ -9,6 +9,6 @@
 import Foundation
 
 struct Authorization: Encodable {
-  let login: String
-  let password: String
+    let login: String
+    let password: String
 }

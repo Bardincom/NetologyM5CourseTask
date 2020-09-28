@@ -9,5 +9,5 @@
 import Foundation
 
 struct UserIDRequest: Encodable {
-  let userID: String
+    let userID: String
 }

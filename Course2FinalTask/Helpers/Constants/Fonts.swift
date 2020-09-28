@@ -9,7 +9,7 @@
 import UIKit
 
 enum Fonts {
-  static let systemsBoldFont: UIFont = .systemFont(ofSize: 14, weight: .semibold)
-  static let systemsFont: UIFont = .systemFont(ofSize: 14)
-  static let titleFont = UIFont(name: "Noteworthy", size: 20) ?? .systemFont(ofSize: 20)
+    static let systemsBoldFont: UIFont = .systemFont(ofSize: 14, weight: .semibold)
+    static let systemsFont: UIFont = .systemFont(ofSize: 14)
+    static let titleFont = UIFont(name: "Noteworthy", size: 20) ?? .systemFont(ofSize: 20)
 }
