@@ -21,6 +21,10 @@
 	<string>Dark</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Application needs access to camera</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Application needs access to photo library</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>

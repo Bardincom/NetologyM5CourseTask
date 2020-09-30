@@ -80,7 +80,7 @@ final class CoreDataManager {
         request = entity.fetchRequest() as! NSFetchRequest<T>
 
         if T() is UserOffline {
-            timeSortDescriptor = NSSortDescriptor(key: #keyPath(UserOffline.id), ascending: true)
+            timeSortDescriptor = NSSortDescriptor(key: #keyPath(UserOffline.fullName), ascending: true)
         }
 
         request.sortDescriptors = [timeSortDescriptor]
