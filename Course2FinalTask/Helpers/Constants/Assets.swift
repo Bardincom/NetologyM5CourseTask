@@ -24,9 +24,7 @@ internal enum Asset {
   internal enum ColorAssets {
     internal static let appearance = ColorAsset(name: "appearance")
     internal static let buttonBackground = ColorAsset(name: "buttonBackground")
-    internal static let buttonText = ColorAsset(name: "buttonText")
     internal static let defaultTint = ColorAsset(name: "defaultTint")
-    internal static let lightGray = ColorAsset(name: "lightGray")
   }
   internal enum IconAssets {
     internal static let instagram = ImageAsset(name: "instagram")

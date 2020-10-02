@@ -23,13 +23,3 @@ xcassets:
 #        publicAccess: 1
 #        noComments: 0
 
-#Assets.xcassets/color
-
-#Assets.xcassets/icon
-
-#xcassets:
-#paths:
-# - Resources/Images.xcassets
-# - Resources/MoreImages.xcassets
-#templateName: swift3
-#output: Generated/assets-images.swift

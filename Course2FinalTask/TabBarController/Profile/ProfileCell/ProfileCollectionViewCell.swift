@@ -24,9 +24,4 @@ final class ProfileCollectionViewCell: UICollectionViewCell {
             else { return }
         imageView.image = image
     }
-
-    /// заполнение ячейки для отображение фотографий для публикации
-    func imageView(newPhoto: UIImage) {
-        imageView.image = newPhoto
-    }
 }

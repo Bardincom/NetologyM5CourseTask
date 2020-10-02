@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import Photos
 
 final class FiltersViewController: UIViewController {
 
+    var asset: PHAsset?
     @IBOutlet var bigImage: UIImageView!
 
     @IBOutlet private var filterViewController: UICollectionView! {
@@ -18,7 +20,12 @@ final class FiltersViewController: UIViewController {
         }
     }
 
-    public var selectPhoto: UIImage?
+    var targetSize: CGSize {
+        let scale = UIScreen.main.scale
+        return CGSize(width: bigImage.bounds.width * scale, height: bigImage.bounds.height * scale)
+    }
+
+    private var filterPhoto: UIImage?
 
     let filters = Filters().filterArray
 
@@ -28,6 +35,12 @@ final class FiltersViewController: UIViewController {
         super.viewDidLoad()
         setupBackButton()
         setupFiltersViewController()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+//        selectPhoto = bigImage.image
+        updateStaticImage()
     }
 }
 
@@ -41,7 +54,7 @@ extension FiltersViewController: UICollectionViewDataSource, UICollectionViewDel
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(cell: FiltersCollectionViewCell.self, for: indexPath)
 
-        guard let thumbnailPhotos = selectPhoto else { return cell }
+        guard let thumbnailPhotos = filterPhoto else { return cell }
         let filterName = filters[indexPath.row]
 
         cell.setFilter(filterName, for: thumbnailPhotos)
@@ -52,7 +65,7 @@ extension FiltersViewController: UICollectionViewDataSource, UICollectionViewDel
         ActivityIndicator.start()
         let selectFilter = filters[indexPath.row]
 
-        let applyFilter = ImageFilterOperation(inputImage: selectPhoto, filter: selectFilter)
+        let applyFilter = ImageFilterOperation(inputImage: filterPhoto, filter: selectFilter)
 
         applyFilter.completionBlock = { [weak self] in
             guard let self = self else { return }
@@ -79,7 +92,7 @@ private extension FiltersViewController {
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
 
-        bigImage.image = selectPhoto
+        bigImage.image = filterPhoto
         title = Names.filters
     }
 
@@ -89,5 +102,29 @@ private extension FiltersViewController {
         guard let publishedPhoto = bigImage.image else { return }
         descriptionScreenViewController.newPublishedPhoto = publishedPhoto
         self.navigationController?.pushViewController(descriptionScreenViewController, animated: true)
+    }
+
+    func updateStaticImage() {
+        // Prepare the options to pass when fetching the (photo, or video preview) image.
+        let options = PHImageRequestOptions()
+//        options.deliveryMode = .highQualityFormat
+//        options.isNetworkAccessAllowed = true
+//        options.progressHandler = { progress, _, _, _ in
+//            // The handler may originate on a background queue, so
+//            // re-dispatch to the main queue for UI work.
+//            DispatchQueue.main.sync {
+//                self.progressView.progress = Float(progress)
+//            }
+//        }
+
+        guard let asset = asset else { return }
+
+        PHImageManager.default().requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFill, options: options,
+                                              resultHandler: { image, _ in
+
+                                                guard let image = image else { return }
+                                                self.bigImage.image = image
+                                                self.filterPhoto = image
+        })
     }
 }

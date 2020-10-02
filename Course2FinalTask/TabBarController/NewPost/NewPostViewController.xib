@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewPostViewController" customModule="Course3FinalTask" customModuleProvider="target">
             <connections>
+                <outlet property="collectionViewFlowLayout" destination="BaX-cC-4mt" id="jlY-m1-DsT"/>
                 <outlet property="newPostViewController" destination="bDv-W2-H5p" id="b0a-MZ-V6D"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
