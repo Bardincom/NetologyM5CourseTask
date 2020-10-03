@@ -11,6 +11,7 @@ import Photos
 
 final class NewPostViewController: UIViewController {
 
+//    var newPhotoprovider = NewPhotoProvider.shared
     var fetchResult = PHFetchResult<PHAsset>()
     fileprivate let imageManager = PHCachingImageManager()
     fileprivate var thumbnailSize: CGSize?
@@ -31,6 +32,10 @@ final class NewPostViewController: UIViewController {
         navigationItem.title = Names.newPost
         configureTitle()
         getImages()
+    }
+
+    deinit {
+        PHPhotoLibrary.shared().unregisterChangeObserver(self)
     }
 
     override func viewWillLayoutSubviews() {
@@ -176,25 +181,23 @@ extension NewPostViewController {
 
 extension NewPostViewController: PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_ changeInstance: PHChange) {
-        guard let changes = changeInstance.changeDetails(for: fetchResult) else {
-            DispatchQueue.main.async {
-                self.newPostViewController.reloadData()
-            }
-            return }
+        guard let changes = changeInstance.changeDetails(for: fetchResult) else { return }
 
         DispatchQueue.main.async {
             self.fetchResult = changes.fetchResultAfterChanges
 
-            guard changes.hasIncrementalChanges else { return }
+            guard changes.hasIncrementalChanges else {
+                self.newPostViewController.reloadData()
+                return }
 
             self.newPostViewController.performBatchUpdates {
                 if let removed = changes.removedIndexes, !removed.isEmpty {
                     self.newPostViewController.deleteItems(at: removed.map { IndexPath(item: $0, section: 0) })
                 }
-                if let inserted = changes.removedIndexes, !inserted.isEmpty {
+                if let inserted = changes.insertedIndexes, !inserted.isEmpty {
                     self.newPostViewController.insertItems(at: inserted.map { IndexPath(item: $0, section: 0) })
                 }
-                if let changed = changes.removedIndexes, !changed.isEmpty {
+                if let changed = changes.changedIndexes, !changed.isEmpty {
                     self.newPostViewController.reloadItems(at: changed.map { IndexPath(item: $0, section: 0) })
                 }
 
