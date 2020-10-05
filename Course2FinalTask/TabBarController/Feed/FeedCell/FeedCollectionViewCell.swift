@@ -69,6 +69,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         userNameLabel.text = post.authorUsername
         likesLabel.text = "Likes: " + "\(post.likedByCount)"
         descriptionLabel.text = post.descript
+        likeButton.tintColor = SystemColors.pinkColor
 
         guard
             let avatar = post.authorAvatar,
@@ -118,7 +119,7 @@ extension FeedCollectionViewCell {
             }, completion: nil)
         })
 
-        if likeButton.tintColor == UIColor.systemGray {
+        if likeButton.tintColor == SystemColors.grayColor {
             delegate?.likePost(cell: self)
         }
     }

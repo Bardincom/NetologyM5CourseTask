@@ -24,9 +24,7 @@ internal enum Asset {
   internal enum ColorAssets {
     internal static let appearance = ColorAsset(name: "appearance")
     internal static let buttonBackground = ColorAsset(name: "buttonBackground")
-    internal static let buttonText = ColorAsset(name: "buttonText")
     internal static let defaultTint = ColorAsset(name: "defaultTint")
-    internal static let lightGray = ColorAsset(name: "lightGray")
   }
   internal enum IconAssets {
     internal static let instagram = ImageAsset(name: "instagram")
@@ -81,7 +79,8 @@ internal struct ImageAsset {
     #if os(iOS) || os(tvOS)
     let image = Image(named: name, in: bundle, compatibleWith: nil)
     #elseif os(macOS)
-    let image = bundle.image(forResource: NSImage.Name(name))
+    let name = NSImage.Name(self.name)
+    let image = (bundle == .main) ? NSImage(named: name) : bundle.image(forResource: name)
     #elseif os(watchOS)
     let image = Image(named: name)
     #endif

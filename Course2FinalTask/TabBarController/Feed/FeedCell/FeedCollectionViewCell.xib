@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -26,7 +28,7 @@
                                     <constraint firstAttribute="width" constant="35" id="mat-r3-LGs"/>
                                 </constraints>
                             </imageView>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SfU-eq-VZD">
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SfU-eq-VZD">
                                 <rect key="frame" x="0.0" y="50.5" width="320" height="320"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -39,7 +41,7 @@
                                     <constraint firstAttribute="width" constant="44" id="bCM-oa-eqz"/>
                                     <constraint firstAttribute="height" constant="44" id="uF1-QZ-gUd"/>
                                 </constraints>
-                                <color key="tintColor" systemColor="systemFillColor" red="0.47058823529999999" green="0.47058823529999999" blue="0.50196078430000002" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" systemColor="systemFillColor"/>
                                 <state key="normal" image="suit.heart.fill" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
                                 </state>
@@ -91,7 +93,7 @@
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="black"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="zAj-tk-cU6" secondAttribute="trailing" constant="15" id="2zq-Dr-Q75"/>
                             <constraint firstAttribute="trailing" secondItem="SfU-eq-VZD" secondAttribute="trailing" id="4y6-Tb-yuv"/>
@@ -118,13 +120,13 @@
                     </view>
                 </subviews>
             </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="DGW-zf-RJA" secondAttribute="trailing" id="39t-l0-7gs"/>
                 <constraint firstAttribute="bottom" secondItem="DGW-zf-RJA" secondAttribute="bottom" id="Cwj-al-ZtV"/>
                 <constraint firstItem="DGW-zf-RJA" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="TEn-St-sCk"/>
                 <constraint firstItem="DGW-zf-RJA" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="hj7-Cx-R43"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="273" height="456"/>
             <connections>
                 <outlet property="avatarImageView" destination="mxu-1l-XIR" id="PbQ-o7-fch"/>
@@ -145,5 +147,11 @@
         <image name="heart" catalog="system" width="128" height="109"/>
         <image name="heart.fill" catalog="system" width="128" height="109"/>
         <image name="suit.heart.fill" catalog="system" width="128" height="109"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemFillColor">
+            <color red="0.47058823529411764" green="0.47058823529411764" blue="0.50196078431372548" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

@@ -1,43 +1,31 @@
 //
-//  PhotoProvider.swift
+//  NewPhotoProvider.swift
 //  Course3FinalTask
 //
-//  Created by Aleksey Bardin on 13.07.2020.
+//  Created by Aleksey Bardin on 02.10.2020.
 //  Copyright © 2020 Bardincom. All rights reserved.
 //
 
+import Foundation
 import UIKit
+import Photos
 
-struct PhotoProvider {
-    var image: UIImage
+class PhotoProvider: PhotoDataSourse {
 
-    init(image: UIImage) {
-        self.image = image
+    var fetchResult = PHFetchResult<PHAsset>()
+
+    func getImages() {
+        let allPhotosOptions = PHFetchOptions()
+        allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        fetchResult = PHAsset.fetchAssets(with: allPhotosOptions)
     }
 
-    init?(dictionary: [String: String]) {
-        guard
-            let photo = dictionary["Photo"],
-            let image = UIImage(named: photo)
-            else {
-                return nil
-        }
-        self.init(image: image)
+    func getCountImage() -> Int {
+        fetchResult.count
     }
 
-    static func allPhotos() -> [PhotoProvider] {
-        var photos: [PhotoProvider] = []
-        guard
-            let URL = Bundle.main.url(forResource: "Photos", withExtension: "plist"),
-            let photosFromPlist = NSArray(contentsOf: URL) as? [[String: String]]
-            else {
-                return photos
-        }
-        for dictionary in photosFromPlist {
-            if let photo = PhotoProvider(dictionary: dictionary) {
-                photos.append(photo)
-            }
-        }
-        return photos
+    func getFetchResult() -> PHFetchResult<PHAsset> {
+        fetchResult
     }
+
 }

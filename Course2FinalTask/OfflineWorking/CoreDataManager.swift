@@ -75,15 +75,15 @@ final class CoreDataManager {
         let context = getContext()
         let request: NSFetchRequest<T>
         var fetchResult = [T]()
-        var timeSortDescriptor = NSSortDescriptor(key: #keyPath(PostOffline.createdTime), ascending: false)
+        var sortDescriptor = NSSortDescriptor(key: #keyPath(PostOffline.createdTime), ascending: false)
 
         request = entity.fetchRequest() as! NSFetchRequest<T>
 
-        if T() is UserOffline {
-            timeSortDescriptor = NSSortDescriptor(key: #keyPath(UserOffline.id), ascending: true)
+        if entity is UserOffline.Type {
+            sortDescriptor = NSSortDescriptor(key: #keyPath(UserOffline.fullName), ascending: true)
         }
 
-        request.sortDescriptors = [timeSortDescriptor]
+        request.sortDescriptors = [sortDescriptor]
 
         do {
             fetchResult = try context.fetch(request)

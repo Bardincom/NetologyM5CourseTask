@@ -65,7 +65,7 @@ extension ProfileViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeue(cell: ProfileCollectionViewCell.self, for: indexPath)
 
         if session.isOnline {
-            let post = postsProfile[indexPath.row]
+            let post = postsProfile.sorted { $0.createdTime > $1.createdTime }[indexPath.row]
             cell.setImageCell(post: post)
         } else {
             let post = offlinePostsProfile[indexPath.row]
@@ -106,8 +106,10 @@ extension ProfileViewController: UICollectionViewDataSource {
 // MARK: Delegate FlowLayout
 extension ProfileViewController: UICollectionViewDelegateFlowLayout {
 
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat { 1 }
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = profileCollectionView.bounds.width / 3
+        let size = (profileCollectionView.bounds.width - 1) / 3
         return CGSize(width: size, height: size)
     }
 

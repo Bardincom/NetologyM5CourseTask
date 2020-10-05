@@ -7,10 +7,11 @@
 //
 
 import UIKit
+//import Photos
 
 final class ProfileCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet var imageView: UIImageView!
     /// заполнение ячейки для заполнения постов
     func setImageCell(post: Post) {
         imageView.kf.setImage(with: post.image)
@@ -22,10 +23,5 @@ final class ProfileCollectionViewCell: UICollectionViewCell {
             let image = UIImage(data: postImage)
             else { return }
         imageView.image = image
-    }
-
-    /// заполнение ячейки для отображение фотографий для публикации
-    func imageView(newPhoto: UIImage) {
-        imageView.image = newPhoto
     }
 }
