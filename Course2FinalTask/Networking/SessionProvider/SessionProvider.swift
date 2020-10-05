@@ -7,11 +7,6 @@
 //
 
 import Foundation
-// TODO: передалать на встроенный Result<T, BackendError>
-//enum Result<T> {
-//    case success(T)
-//    case fail(BackendError)
-//}
 
 final class SessionProvider {
     let sharedSession = URLSession.shared
@@ -59,7 +54,7 @@ extension SessionProvider {
         return url
     }
 
-    func preparationRequest(_ url: URL, _ httpMethod: String, _ token: String) -> URLRequest {
+    func preparationRequest(_ url: URL, _ httpMethod: String, _ token: String? = nil) -> URLRequest {
         var request = URLRequest(url: url)
         request.httpMethod = httpMethod
         defaultHeaders["token"] = token

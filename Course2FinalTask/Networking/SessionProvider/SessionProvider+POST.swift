@@ -18,17 +18,13 @@ extension SessionProvider {
         guard let url = preparationURL(path: TokenPath.signin) else { return }
         let authorization = Authorization(login: login, password: password)
 
-        var request = URLRequest(url: url)
-        request.httpMethod = HttpMethod.post
+        var request = preparationRequest(url, HttpMethod.post)
         request.httpBody = try? encoder.encode(authorization)
-        request.allHTTPHeaderFields = defaultHeaders
 
         let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
 
             guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-
             guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
-
             guard let data = data else { return }
 
             do {
@@ -59,19 +55,14 @@ extension SessionProvider {
                                      _ completionHandler: @escaping (Result<User, BackendError>) -> Void) {
         guard let url = preparationURL(path: UserPath.follow) else { return }
         let userIDRequest = UserIDRequest(userID: userID)
-        var request = URLRequest(url: url)
-        defaultHeaders["token"] = token
-        request.allHTTPHeaderFields = defaultHeaders
-        request.httpMethod = HttpMethod.post
+
+        var request = preparationRequest(url, HttpMethod.post, token)
         request.httpBody = try? encoder.encode(userIDRequest)
-        request.allHTTPHeaderFields = defaultHeaders
 
         let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
 
             guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-
             guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
-
             guard let data = data else { return }
 
             do {
@@ -90,20 +81,13 @@ extension SessionProvider {
                                        _ completionHandler: @escaping (Result<User, BackendError>) -> Void) {
         guard let url = preparationURL(path: UserPath.unfollow) else { return }
         let userIDRequest = UserIDRequest(userID: userID)
-
-        var request = URLRequest(url: url)
-        defaultHeaders["token"] = token
-        request.allHTTPHeaderFields = defaultHeaders
-        request.httpMethod = HttpMethod.post
+        var request = preparationRequest(url, HttpMethod.post, token)
         request.httpBody = try? encoder.encode(userIDRequest)
-        request.allHTTPHeaderFields = defaultHeaders
 
         let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
 
             guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-
             guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
-
             guard let data = data else { return }
 
             do {
@@ -123,19 +107,13 @@ extension SessionProvider {
         guard let url = preparationURL(path: PostPath.like) else { return }
         let postIDRequest = PostIDRequest(postID: postID)
 
-        var request = URLRequest(url: url)
-        defaultHeaders["token"] = token
-        request.allHTTPHeaderFields = defaultHeaders
-        request.httpMethod = HttpMethod.post
+        var request = preparationRequest(url, HttpMethod.post, token)
         request.httpBody = try? encoder.encode(postIDRequest)
-        request.allHTTPHeaderFields = defaultHeaders
 
         let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
 
             guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-
             guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
-
             guard let data = data else { return }
 
             do {
@@ -155,19 +133,13 @@ extension SessionProvider {
         guard let url = preparationURL(path: PostPath.unlike) else { return }
         let postIDRequest = PostIDRequest(postID: postID)
 
-        var request = URLRequest(url: url)
-        defaultHeaders["token"] = token
-        request.allHTTPHeaderFields = defaultHeaders
-        request.httpMethod = HttpMethod.post
+        var request = preparationRequest(url, HttpMethod.post, token)
         request.httpBody = try? encoder.encode(postIDRequest)
-        request.allHTTPHeaderFields = defaultHeaders
 
         let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
 
             guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-
             guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
-
             guard let data = data else { return }
 
             do {
@@ -185,23 +157,16 @@ extension SessionProvider {
                     _ description: String,
                     _ completionHandler: @escaping (Result<Post, BackendError>) -> Void) {
         guard let url = preparationURL(path: PostPath.create) else { return }
-
-        var request = URLRequest(url: url)
-        defaultHeaders["token"] = token
-        request.allHTTPHeaderFields = defaultHeaders
-        request.httpMethod = HttpMethod.post
-
         guard let imageData = image.jpegData(compressionQuality: 1)?.base64EncodedString() else { return }
         let newPostRequest = NewPostRequest(image: imageData, description: description)
+
+        var request = preparationRequest(url, HttpMethod.post, token)
         request.httpBody = try? encoder.encode(newPostRequest)
-        request.allHTTPHeaderFields = defaultHeaders
 
         let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
 
             guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-
             guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
-
             guard let data = data else { return }
 
             do {
@@ -213,5 +178,4 @@ extension SessionProvider {
         }
         dataTask.resume()
     }
-
 }
