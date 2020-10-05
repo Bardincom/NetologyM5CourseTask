@@ -65,7 +65,7 @@ extension ProfileViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeue(cell: ProfileCollectionViewCell.self, for: indexPath)
 
         if session.isOnline {
-            let post = postsProfile[indexPath.row]
+            let post = postsProfile.sorted { $0.createdTime > $1.createdTime }[indexPath.row]
             cell.setImageCell(post: post)
         } else {
             let post = offlinePostsProfile[indexPath.row]

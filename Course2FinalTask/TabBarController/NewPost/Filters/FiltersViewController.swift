@@ -39,7 +39,7 @@ final class FiltersViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        selectPhoto = bigImage.image
+
         updateStaticImage()
     }
 }
@@ -105,21 +105,14 @@ private extension FiltersViewController {
     }
 
     func updateStaticImage() {
-        // Prepare the options to pass when fetching the (photo, or video preview) image.
-        let options = PHImageRequestOptions()
-//        options.deliveryMode = .highQualityFormat
-//        options.isNetworkAccessAllowed = true
-//        options.progressHandler = { progress, _, _, _ in
-//            // The handler may originate on a background queue, so
-//            // re-dispatch to the main queue for UI work.
-//            DispatchQueue.main.sync {
-//                self.progressView.progress = Float(progress)
-//            }
-//        }
+//        let options = PHImageRequestOptions()
 
         guard let asset = asset else { return }
 
-        PHImageManager.default().requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFill, options: options,
+        PHImageManager.default().requestImage(for: asset,
+                                              targetSize: targetSize,
+                                              contentMode: .aspectFill,
+                                              options: nil,
                                               resultHandler: { image, _ in
 
                                                 guard let image = image else { return }

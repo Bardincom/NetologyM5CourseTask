@@ -9,14 +9,30 @@
 import UIKit
 import Photos
 
+protocol PhotoDataSourse: AnyObject {
+    var fetchResult: PHFetchResult<PHAsset> { get set }
+    func getImages()
+    func getCountImage() -> Int
+    func getFetchResult() -> PHFetchResult<PHAsset>
+}
+
 final class NewPostViewController: UIViewController {
 
-//    var newPhotoprovider = NewPhotoProvider.shared
-    var fetchResult = PHFetchResult<PHAsset>()
+    let photoDataSourse: PhotoDataSourse
+
     fileprivate let imageManager = PHCachingImageManager()
     fileprivate var thumbnailSize: CGSize?
     fileprivate var availableWidth: CGFloat = 0
     fileprivate var previousPreheatRect = CGRect.zero
+
+    init(photoDataSourse: PhotoDataSourse) {
+        self.photoDataSourse = photoDataSourse
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     @IBOutlet private var newPostViewController: UICollectionView! {
         willSet {
@@ -31,7 +47,8 @@ final class NewPostViewController: UIViewController {
 
         navigationItem.title = Names.newPost
         configureTitle()
-        getImages()
+        PHPhotoLibrary.shared().register(self)
+        photoDataSourse.getImages()
     }
 
     deinit {
@@ -92,10 +109,10 @@ final class NewPostViewController: UIViewController {
         let (addedRects, removedRects) = differencesBetweenRects(previousPreheatRect, preheatRect)
         let addedAssets = addedRects
             .flatMap { rect in newPostViewController.indexPathsForElements(in: rect) }
-            .map { indexPath in fetchResult.object(at: indexPath.item) }
+            .map { indexPath in photoDataSourse.getFetchResult().object(at: indexPath.item) }
         let removedAssets = removedRects
             .flatMap { rect in newPostViewController.indexPathsForElements(in: rect) }
-            .map { indexPath in fetchResult.object(at: indexPath.item) }
+            .map { indexPath in photoDataSourse.getFetchResult().object(at: indexPath.item) }
 
         guard let thumbnailSize = thumbnailSize else { return }
 
@@ -133,13 +150,13 @@ final class NewPostViewController: UIViewController {
 extension NewPostViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        fetchResult.count
+        return photoDataSourse.getCountImage()
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        let asset = fetchResult.object(at: indexPath.item)
         let cell = collectionView.dequeue(cell: NewPostCollectionViewCell.self, for: indexPath)
+        let asset = photoDataSourse.getFetchResult().object(at: indexPath.item)
         guard let thumbnailSize = thumbnailSize else { return cell }
         cell.representedAssetIdentifier = asset.localIdentifier
 
@@ -158,33 +175,24 @@ extension NewPostViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
-            let filtersViewController = FiltersViewController()
-            let selectAsset = fetchResult.object(at: indexPath.item)
+        let filtersViewController = FiltersViewController()
+        let selectAsset = photoDataSourse.getFetchResult().object(at: indexPath.item)
 
-            filtersViewController.asset = selectAsset
+        filtersViewController.asset = selectAsset
 
-            self.navigationController?.pushViewController(filtersViewController, animated: true)
-            newPostViewController.deselectItem(at: indexPath, animated: true)
-        }
-
-}
-
-extension NewPostViewController {
-
-    func getImages() {
-        PHPhotoLibrary.shared().register(self)
-        let allPhotosOptions = PHFetchOptions()
-        allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        fetchResult = PHAsset.fetchAssets(with: allPhotosOptions)
+        self.navigationController?.pushViewController(filtersViewController, animated: true)
+        resetCachedAssets()
+        newPostViewController.deselectItem(at: indexPath, animated: true)
     }
+
 }
 
 extension NewPostViewController: PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_ changeInstance: PHChange) {
-        guard let changes = changeInstance.changeDetails(for: fetchResult) else { return }
+        guard let changes = changeInstance.changeDetails(for: photoDataSourse.getFetchResult()) else { return }
 
         DispatchQueue.main.async {
-            self.fetchResult = changes.fetchResultAfterChanges
+            self.photoDataSourse.fetchResult = changes.fetchResultAfterChanges
 
             guard changes.hasIncrementalChanges else {
                 self.newPostViewController.reloadData()

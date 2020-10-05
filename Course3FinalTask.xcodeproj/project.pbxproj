@@ -12,10 +12,7 @@
 		74B7925F202B3254006BCB41 /* IconAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 74B7925E202B3254006BCB41 /* IconAssets.xcassets */; };
 		A228127125278E34005C3642 /* NewPostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A228126F25278E34005C3642 /* NewPostCollectionViewCell.swift */; };
 		A228127225278E34005C3642 /* NewPostCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A228127025278E34005C3642 /* NewPostCollectionViewCell.xib */; };
-		A228127425279BF3005C3642 /* NewPhotoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A228127325279BF3005C3642 /* NewPhotoProvider.swift */; };
-		A2385A1F24BC817800936B61 /* PhotoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2385A1E24BC817800936B61 /* PhotoProvider.swift */; };
-		A2385A2124BC87D400936B61 /* Photos.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2385A2024BC87D400936B61 /* Photos.xcassets */; };
-		A2385A2324BC88FD00936B61 /* Photos.plist in Resources */ = {isa = PBXBuildFile; fileRef = A2385A2224BC88FD00936B61 /* Photos.plist */; };
+		A228127425279BF3005C3642 /* PhotoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A228127325279BF3005C3642 /* PhotoProvider.swift */; };
 		A2385A2524BDA54600936B61 /* Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2385A2424BDA54600936B61 /* Authorization.swift */; };
 		A2385A2724BDA76F00936B61 /* UserIDRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2385A2624BDA76F00936B61 /* UserIDRequest.swift */; };
 		A2385A2924BDAA7A00936B61 /* PostIDRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2385A2824BDAA7A00936B61 /* PostIDRequest.swift */; };
@@ -98,10 +95,7 @@
 		93C59B665E88D6DC1F116179 /* Pods_Course3FinalTask.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Course3FinalTask.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A228126F25278E34005C3642 /* NewPostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostCollectionViewCell.swift; sourceTree = "<group>"; };
 		A228127025278E34005C3642 /* NewPostCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewPostCollectionViewCell.xib; sourceTree = "<group>"; };
-		A228127325279BF3005C3642 /* NewPhotoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPhotoProvider.swift; sourceTree = "<group>"; };
-		A2385A1E24BC817800936B61 /* PhotoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoProvider.swift; sourceTree = "<group>"; };
-		A2385A2024BC87D400936B61 /* Photos.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Photos.xcassets; sourceTree = "<group>"; };
-		A2385A2224BC88FD00936B61 /* Photos.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Photos.plist; sourceTree = "<group>"; };
+		A228127325279BF3005C3642 /* PhotoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoProvider.swift; sourceTree = "<group>"; };
 		A2385A2424BDA54600936B61 /* Authorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authorization.swift; sourceTree = "<group>"; };
 		A2385A2624BDA76F00936B61 /* UserIDRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserIDRequest.swift; sourceTree = "<group>"; };
 		A2385A2824BDAA7A00936B61 /* PostIDRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostIDRequest.swift; sourceTree = "<group>"; };
@@ -263,10 +257,7 @@
 		A2385A1B24BC806D00936B61 /* PhotoProvider */ = {
 			isa = PBXGroup;
 			children = (
-				A2385A1E24BC817800936B61 /* PhotoProvider.swift */,
-				A2385A2024BC87D400936B61 /* Photos.xcassets */,
-				A2385A2224BC88FD00936B61 /* Photos.plist */,
-				A228127325279BF3005C3642 /* NewPhotoProvider.swift */,
+				A228127325279BF3005C3642 /* PhotoProvider.swift */,
 			);
 			path = PhotoProvider;
 			sourceTree = "<group>";
@@ -443,10 +434,10 @@
 		A2C014DE2454F16F001A4894 /* NewPost */ = {
 			isa = PBXGroup;
 			children = (
+				A2385A1B24BC806D00936B61 /* PhotoProvider */,
 				A228126E25278DB8005C3642 /* NewPostCell */,
 				A2C014E22454F228001A4894 /* NewPostViewController.swift */,
 				A2C014E32454F228001A4894 /* NewPostViewController.xib */,
-				A2385A1B24BC806D00936B61 /* PhotoProvider */,
 				A277FCDE24694D88008E14E7 /* Filters */,
 			);
 			path = NewPost;
@@ -566,7 +557,6 @@
 				A27133B62413B2B0007E13BC /* UserListTableViewCell.xib in Resources */,
 				A2C014E52454F228001A4894 /* NewPostViewController.xib in Resources */,
 				A2FE06D72473076B0051CC9E /* swiftgen.yml in Resources */,
-				A2385A2124BC87D400936B61 /* Photos.xcassets in Resources */,
 				A262D14B24AB85A200022684 /* LoginScreenViewController.xib in Resources */,
 				A2F7486124041B2500396045 /* .gitignore in Resources */,
 				A2F7486624041F6200396045 /* FeedViewController.xib in Resources */,
@@ -581,7 +571,6 @@
 				A2F7486C240420CF00396045 /* Launch Screen.storyboard in Resources */,
 				A277FCE624694DF3008E14E7 /* FiltersViewController.xib in Resources */,
 				74B7925F202B3254006BCB41 /* IconAssets.xcassets in Resources */,
-				A2385A2324BC88FD00936B61 /* Photos.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -700,9 +689,8 @@
 				A293F70C240BE7A8003D5A96 /* ProfileCollectionViewCell.swift in Sources */,
 				A26A16D024B3CB2F00A40273 /* BackendError.swift in Sources */,
 				A2385A2524BDA54600936B61 /* Authorization.swift in Sources */,
-				A228127425279BF3005C3642 /* NewPhotoProvider.swift in Sources */,
+				A228127425279BF3005C3642 /* PhotoProvider.swift in Sources */,
 				A2385A2924BDAA7A00936B61 /* PostIDRequest.swift in Sources */,
-				A2385A1F24BC817800936B61 /* PhotoProvider.swift in Sources */,
 				A248FD6C24AF0103002E24C9 /* Post.swift in Sources */,
 				A2385A2724BDA76F00936B61 /* UserIDRequest.swift in Sources */,
 				A2F7486524041F6200396045 /* FeedViewController.swift in Sources */,
