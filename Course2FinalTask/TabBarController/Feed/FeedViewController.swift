@@ -53,7 +53,7 @@ final class FeedViewController: UIViewController {
                         self.coreDataProvider.savePostOffline(post: post)
                     }
 
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
 
@@ -167,7 +167,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
                     DispatchQueue.main.async {
                         self.navigationController?.pushViewController(profileViewController, animated: true)
                     }
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
         }
@@ -191,7 +191,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
                 switch result {
                     case .success(let unlikePost):
                         self.post = unlikePost
-                    case .fail(let error):
+                    case .failure(let error):
                         Alert.showAlert(self, error.description)
                 }
             }
@@ -210,7 +210,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
             switch result {
                 case .success(let likePost):
                     self.post = likePost
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
         }
@@ -242,7 +242,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
             switch result {
                 case .success(let users):
                     userListViewController.usersList = users
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
 
@@ -287,7 +287,7 @@ private extension FeedViewController {
             switch result {
                 case .success(let posts):
                     self.postsArray = posts
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
 

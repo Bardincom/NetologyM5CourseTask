@@ -215,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				74B79257202B3254006BCB41 /* AppDelegate.swift */,
+				A26A16CA24B24C5D00A40273 /* Safety */,
 				A248FD6724AF006F002E24C9 /* Networking */,
 				A2EA2D6F25167ACE0019190C /* OfflineWorking */,
 				A262D14524AB85A200022684 /* RootViewController */,
@@ -266,7 +267,6 @@
 			isa = PBXGroup;
 			children = (
 				A248FD6824AF00E3002E24C9 /* Model */,
-				A26A16CA24B24C5D00A40273 /* Safety */,
 				A26C5EEC24B8B389002FA10B /* SessionProvider */,
 				A26C5EED24B8B3B2002FA10B /* Errors */,
 			);

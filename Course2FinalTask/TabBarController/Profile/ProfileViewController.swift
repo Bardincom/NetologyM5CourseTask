@@ -178,12 +178,12 @@ extension ProfileViewController {
                             case .success(let posts):
                                 self.postsProfile = posts
                                 self.updateUI()
-                            case .fail(let error):
+                            case .failure(let error):
                                 Alert.showAlert(self, error.description)
                         }
                     }
 
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
         }
@@ -218,11 +218,11 @@ extension ProfileViewController {
                                 self.postsProfile = posts
 
                                 self.updateUI()
-                            case .fail(let error):
+                            case .failure(let error):
                                 Alert.showAlert(self, error.description)
                         }
                     }
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
         }
@@ -255,7 +255,7 @@ extension ProfileViewController: ProfileHeaderDelegate {
                         self.navigationController?.pushViewController(userListViewController, animated: true)
                         ActivityIndicator.stop()
                     }
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
         }
@@ -286,7 +286,7 @@ extension ProfileViewController: ProfileHeaderDelegate {
                         self.navigationController?.pushViewController(userListViewController, animated: true)
                         ActivityIndicator.stop()
                     }
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
         }
@@ -314,7 +314,7 @@ extension ProfileViewController: ProfileHeaderDelegate {
                             self.currentUser?.followedByCount += 1
                             self.profileCollectionView.reloadData()
                         }
-                    case .fail(let error):
+                    case .failure(let error):
                         Alert.showAlert(self, error.description)
                 }
             }
@@ -331,7 +331,7 @@ extension ProfileViewController: ProfileHeaderDelegate {
                         self.currentUser?.followsCount -= 1
                         self.profileCollectionView.reloadData()
                     }
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
         }

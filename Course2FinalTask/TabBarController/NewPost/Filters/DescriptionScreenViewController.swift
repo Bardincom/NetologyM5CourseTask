@@ -79,7 +79,7 @@ private extension DescriptionScreenViewController {
 
                         ActivityIndicator.stop()
                     }
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
         }

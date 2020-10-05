@@ -93,7 +93,7 @@ extension UserListViewController: UserListTableViewCellDelegate {
                             self.usersList.insert(user, at: index)
                             self.userListTableView.reloadData()
                         }
-                    case .fail(let error):
+                    case .failure(let error):
                         Alert.showAlert(self, error.description)
                 }
             }
@@ -112,7 +112,7 @@ extension UserListViewController: UserListTableViewCellDelegate {
                         self.usersList.insert(user, at: index)
                         self.userListTableView.reloadData()
                     }
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
         }

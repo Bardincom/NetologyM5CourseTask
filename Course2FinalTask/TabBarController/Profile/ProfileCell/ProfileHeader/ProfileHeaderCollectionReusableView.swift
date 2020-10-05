@@ -37,7 +37,7 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
             switch currentUser {
                 case .success(let currentUser):
                     self.currentUser = currentUser
-                case .fail( _):
+                case .failure( _):
                     break
             }
         }

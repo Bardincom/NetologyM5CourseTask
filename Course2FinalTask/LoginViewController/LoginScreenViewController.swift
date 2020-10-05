@@ -96,7 +96,7 @@ private extension LoginScreenViewController {
                     case .success(let token):
                         self.keychain.saveToken(token.token)
                         self.rootViewController.switchToFeedViewController()
-                    case .fail(let backendError):
+                    case .failure(let backendError):
                         Alert.showAlert(self, backendError.description)
                 }
             }

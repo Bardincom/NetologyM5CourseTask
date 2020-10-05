@@ -12,7 +12,7 @@ extension SessionProvider {
 
     /// Проверяет валидность токена.
     func checkToken(_ token: String,
-                    completionHandler: @escaping (Result<Bool>) -> Void) {
+                    completionHandler: @escaping (Result<Bool, BackendError>) -> Void) {
         guard let url = preparationURL(path: TokenPath.check) else { return }
 
         let request = preparationRequest(url, HttpMethod.get, token)
@@ -36,7 +36,7 @@ extension SessionProvider {
 
     /// Возвращает информацию о текущем пользователе.
     func getCurrentUser(_ token: String,
-                        completionHandler: @escaping (Result<User>) -> Void) {
+                        completionHandler: @escaping (Result<User, BackendError>) -> Void) {
         guard let url = preparationURL(path: UserPath.currentUser) else { return }
 
         let request = preparationRequest(url, HttpMethod.get, token)
@@ -54,7 +54,7 @@ extension SessionProvider {
                 completionHandler(.success(currentUser))
                 ActivityIndicator.stop()
             } catch {
-                completionHandler(.fail(BackendError.unauthorized))
+                completionHandler(.failure(.unauthorized))
             }
         }
 
@@ -64,7 +64,7 @@ extension SessionProvider {
     /// Возвращает информацию о пользователе с запрошенным ID.
     func getUserWithID (_ token: String,
                         _ userID: String,
-                        completionHandler: @escaping (Result<User>) -> Void) {
+                        completionHandler: @escaping (Result<User, BackendError>) -> Void) {
         guard let url = preparationURL(path: UserPath.users + userID) else { return }
         var request = URLRequest(url: url)
         defaultHeaders["token"] = token
@@ -82,7 +82,7 @@ extension SessionProvider {
                 let user = try self.decoder.decode(User.self, from: data)
                 completionHandler(.success(user))
             } catch {
-                completionHandler(.fail(BackendError.transferError))
+                completionHandler(.failure(.transferError))
             }
         }
 
@@ -92,7 +92,7 @@ extension SessionProvider {
     /// Возвращает подписчиков пользователя с запрошенным ID
     func getFollowersWithUserID(_ token: String,
                                 _ userID: String,
-                                completionHandler: @escaping (Result<[User]>) -> Void) {
+                                completionHandler: @escaping (Result<[User], BackendError>) -> Void) {
         guard let url = preparationURL(path: UserPath.users + "\(userID)" + UserPath.followers) else { return }
 
         var request = URLRequest(url: url)
@@ -111,7 +111,7 @@ extension SessionProvider {
                 let users = try self.decoder.decode([User].self, from: data)
                 completionHandler(.success(users))
             } catch {
-                completionHandler(.fail(BackendError.transferError))
+                completionHandler(.failure(.transferError))
             }
         }
 
@@ -121,7 +121,7 @@ extension SessionProvider {
     /// Возвращает подписки пользователя с запрошенным ID
     func getFollowingWithUserID(_ token: String,
                                 _ userID: String,
-                                completionHandler: @escaping (Result<[User]>) -> Void) {
+                                completionHandler: @escaping (Result<[User], BackendError>) -> Void) {
 
         guard let url = preparationURL(path: UserPath.users + "\(userID)" + UserPath.following) else { return }
 
@@ -141,7 +141,7 @@ extension SessionProvider {
                 let users = try self.decoder.decode([User].self, from: data)
                 completionHandler(.success(users))
             } catch {
-                completionHandler(.fail(BackendError.transferError))
+                completionHandler(.failure(.transferError))
             }
         }
 
@@ -151,7 +151,7 @@ extension SessionProvider {
     /// Возвращает публикации пользователя с запрошенным ID.
     func getPostsWithUserID(_ token: String,
                             _ userID: String,
-                            completionHandler: @escaping (Result<[Post]>) -> Void) {
+                            completionHandler: @escaping (Result<[Post], BackendError>) -> Void) {
         guard let url = preparationURL(path: UserPath.users + "\(userID)" + PostPath.posts) else { return }
 
         var request = URLRequest(url: url)
@@ -169,7 +169,7 @@ extension SessionProvider {
                 let posts = try self.decoder.decode([Post].self, from: data)
                 completionHandler(.success(posts))
             } catch {
-                completionHandler(.fail(BackendError.transferError))
+                completionHandler(.failure(.transferError))
             }
         }
 
@@ -178,7 +178,7 @@ extension SessionProvider {
 
     /// Возвращает публикации пользователей, на которых подписан текущий пользователь.
     func getFeedPosts(_ token: String,
-                      completionHandler: @escaping (Result<[Post]>) -> Void) {
+                      completionHandler: @escaping (Result<[Post], BackendError>) -> Void) {
         guard let url = preparationURL(path: PostPath.feed) else { return }
 
         var request = URLRequest(url: url)
@@ -196,7 +196,7 @@ extension SessionProvider {
                 let posts = try self.decoder.decode([Post].self, from: data)
                 completionHandler(.success(posts))
             } catch {
-                completionHandler(.fail(BackendError.transferError))
+                completionHandler(.failure(.transferError))
             }
         }
 
@@ -206,7 +206,7 @@ extension SessionProvider {
     /// Возвращает публикацию с запрошенным ID.
     func getPostsWithID (_ token: String,
                          _ postsID: String,
-                         completionHandler: @escaping (Result<Post>) -> Void) {
+                         completionHandler: @escaping (Result<Post, BackendError>) -> Void) {
         guard let url = preparationURL(path: PostPath.posts + postsID) else { return }
 
         var request = URLRequest(url: url)
@@ -224,7 +224,7 @@ extension SessionProvider {
                 let post = try self.decoder.decode(Post.self, from: data)
                 completionHandler(.success(post))
             } catch {
-                completionHandler(.fail(BackendError.transferError))
+                completionHandler(.failure(.transferError))
             }
         }
 
@@ -234,7 +234,7 @@ extension SessionProvider {
     /// Возвращает пользователей, поставивших лайк на публикацию с запрошенным ID.
     func getLikePostUserWithPostID(_ token: String,
                                    _ postID: String,
-                                   completionHandler: @escaping (Result<[User]>) -> Void) {
+                                   completionHandler: @escaping (Result<[User], BackendError>) -> Void) {
         guard let url = preparationURL(path: PostPath.posts + "\(postID)" + PostPath.likes) else { return }
 
         var request = URLRequest(url: url)
@@ -252,7 +252,7 @@ extension SessionProvider {
                 let users = try self.decoder.decode([User].self, from: data)
                 completionHandler(.success(users))
             } catch {
-                completionHandler(.fail(BackendError.transferError))
+                completionHandler(.failure(.transferError))
             }
         }
 

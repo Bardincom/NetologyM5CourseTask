@@ -60,7 +60,7 @@ final class UserListTableViewCell: UITableViewCell {
                         if user.id == currentUser.id {
                             self.followButton.isHidden = true
                     }
-                    case .fail( _):
+                    case .failure( _):
                         break
                 }
             }

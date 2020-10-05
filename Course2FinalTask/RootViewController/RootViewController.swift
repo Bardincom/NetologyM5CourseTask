@@ -95,7 +95,7 @@ private extension RootViewController {
                     case .success(_):
                         self.switchToFeedViewController()
                         return
-                    case .fail(let backendError):
+                    case .failure(let backendError):
                         guard backendError != .transferError else {
                             print("Сеть не доступна: \(self.session.isOnline)")
                             self.switchToFeedViewController()

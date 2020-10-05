@@ -13,7 +13,7 @@ extension SessionProvider {
     /// Авторизует пользователя и выдает токен.
     func signin(login: String,
                 password: String,
-                completionHandler: @escaping (Result<Token>) -> Void) {
+                completionHandler: @escaping (Result<Token, BackendError>) -> Void) {
         ActivityIndicator.start()
         guard let url = preparationURL(path: TokenPath.signin) else { return }
         let authorization = Authorization(login: login, password: password)
@@ -36,7 +36,7 @@ extension SessionProvider {
                 completionHandler(.success(tokenResult))
                 ActivityIndicator.stop()
             } catch {
-                completionHandler(.fail(BackendError.unauthorized))
+                completionHandler(.failure(.unauthorized))
                 ActivityIndicator.stop()
             }
         }
@@ -56,7 +56,7 @@ extension SessionProvider {
     /// Подписывает текущего пользователя на пользователя с запрошенным ID.
     func followCurrentUserWithUserID(_ token: String,
                                      _ userID: String,
-                                     _ completionHandler: @escaping (Result<User>) -> Void) {
+                                     _ completionHandler: @escaping (Result<User, BackendError>) -> Void) {
         guard let url = preparationURL(path: UserPath.follow) else { return }
         let userIDRequest = UserIDRequest(userID: userID)
         var request = URLRequest(url: url)
@@ -78,7 +78,7 @@ extension SessionProvider {
                 let user = try self.decoder.decode(User.self, from: data)
                 completionHandler(.success(user))
             } catch {
-                completionHandler(.fail(BackendError.transferError))
+                completionHandler(.failure(.transferError))
             }
         }
         dataTask.resume()
@@ -87,7 +87,7 @@ extension SessionProvider {
     /// Отписывает текущего пользователя от пользователя с запрошенным ID.
     func unfollowCurrentUserWithUserID(_ token: String,
                                        _ userID: String,
-                                       _ completionHandler: @escaping (Result<User>) -> Void) {
+                                       _ completionHandler: @escaping (Result<User, BackendError>) -> Void) {
         guard let url = preparationURL(path: UserPath.unfollow) else { return }
         let userIDRequest = UserIDRequest(userID: userID)
 
@@ -110,7 +110,7 @@ extension SessionProvider {
                 let user = try self.decoder.decode(User.self, from: data)
                 completionHandler(.success(user))
             } catch {
-                completionHandler(.fail(BackendError.transferError))
+                completionHandler(.failure(.transferError))
             }
         }
         dataTask.resume()
@@ -119,7 +119,7 @@ extension SessionProvider {
     /// Ставит лайк от текущего пользователя на публикации с запрошенным ID.
     func likePostCurrentUserWithPostID(_ token: String,
                                        _ postID: String,
-                                       _ completionHandler: @escaping (Result<Post>) -> Void) {
+                                       _ completionHandler: @escaping (Result<Post, BackendError>) -> Void) {
         guard let url = preparationURL(path: PostPath.like) else { return }
         let postIDRequest = PostIDRequest(postID: postID)
 
@@ -142,7 +142,7 @@ extension SessionProvider {
                 let post = try self.decoder.decode(Post.self, from: data)
                 completionHandler(.success(post))
             } catch {
-                completionHandler(.fail(BackendError.transferError))
+                completionHandler(.failure(.transferError))
             }
         }
         dataTask.resume()
@@ -151,7 +151,7 @@ extension SessionProvider {
     /// Удаляет лайк от текущего пользователя на публикации с запрошенным ID.
     func unlikePostCurrentUserWithPostID(_ token: String,
                                          _ postID: String,
-                                         _ completionHandler: @escaping (Result<Post>) -> Void) {
+                                         _ completionHandler: @escaping (Result<Post, BackendError>) -> Void) {
         guard let url = preparationURL(path: PostPath.unlike) else { return }
         let postIDRequest = PostIDRequest(postID: postID)
 
@@ -174,7 +174,7 @@ extension SessionProvider {
                 let post = try self.decoder.decode(Post.self, from: data)
                 completionHandler(.success(post))
             } catch {
-                completionHandler(.fail(BackendError.transferError))
+                completionHandler(.failure(.transferError))
             }
         }
         dataTask.resume()
@@ -183,7 +183,7 @@ extension SessionProvider {
     func createPost(_ token: String,
                     _ image: UIImage,
                     _ description: String,
-                    _ completionHandler: @escaping (Result<Post>) -> Void) {
+                    _ completionHandler: @escaping (Result<Post, BackendError>) -> Void) {
         guard let url = preparationURL(path: PostPath.create) else { return }
 
         var request = URLRequest(url: url)
@@ -208,7 +208,7 @@ extension SessionProvider {
                 let post = try self.decoder.decode(Post.self, from: data)
                 completionHandler(.success(post))
             } catch {
-                completionHandler(.fail(BackendError.transferError))
+                completionHandler(.failure(.transferError))
             }
         }
         dataTask.resume()

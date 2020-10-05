@@ -8,10 +8,10 @@
 
 import Foundation
 // TODO: передалать на встроенный Result<T, BackendError>
-enum Result<T> {
-    case success(T)
-    case fail(BackendError)
-}
+//enum Result<T> {
+//    case success(T)
+//    case fail(BackendError)
+//}
 
 final class SessionProvider {
     let sharedSession = URLSession.shared
@@ -69,7 +69,7 @@ extension SessionProvider {
 
     /// Проверка статуса запроса
     func checkBackendErrorStatus<T>(httpResponse: HTTPURLResponse,
-                                    completionHandler: @escaping (Result<T>) -> Void) -> Bool {
+                                    completionHandler: @escaping (Result<T, BackendError>) -> Void) -> Bool {
         guard httpResponse.statusCode == 200 else {
             let backendError: BackendError
 
@@ -82,7 +82,7 @@ extension SessionProvider {
                 default: backendError = .transferError
             }
 
-            completionHandler(.fail(backendError))
+            completionHandler(.failure(backendError))
             ActivityIndicator.stop()
             return false
         }
@@ -90,12 +90,12 @@ extension SessionProvider {
     }
 
     func checkResponse<T>(response: URLResponse?,
-                          completionHandler: @escaping (Result<T>) -> Void) -> HTTPURLResponse? {
+                          completionHandler: @escaping (Result<T, BackendError>) -> Void) -> HTTPURLResponse? {
 
         guard let httpResponse = response as? HTTPURLResponse else {
 
             let backendError = BackendError.transferError
-            completionHandler(.fail(backendError))
+            completionHandler(.failure(backendError))
             isOnline = false
             ActivityIndicator.stop()
             return nil}
