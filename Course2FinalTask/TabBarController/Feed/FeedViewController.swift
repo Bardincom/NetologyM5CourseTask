@@ -10,6 +10,18 @@ import UIKit
 
 final class FeedViewController: UIViewController {
 
+    @IBOutlet weak private var feedCollectionView: UICollectionView! {
+        willSet {
+            newValue.register(nibCell: FeedCollectionViewCell.self)
+        }
+    }
+
+    @IBOutlet weak private var collectionLayout: UICollectionViewFlowLayout! {
+        didSet {
+            collectionLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        }
+    }
+
     private var postsArray = [Post]()
     private var post: Post?
     private var session = SessionProvider.shared
@@ -25,18 +37,6 @@ final class FeedViewController: UIViewController {
         refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
         return refreshControl
     }()
-
-    @IBOutlet weak private var feedCollectionView: UICollectionView! {
-        willSet {
-            newValue.register(nibCell: FeedCollectionViewCell.self)
-        }
-    }
-
-    @IBOutlet weak private var collectionLayout: UICollectionViewFlowLayout! {
-        didSet {
-            collectionLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        }
-    }
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)

@@ -20,8 +20,8 @@ final class ImageFilterOperation: Operation {
 
     private var _chosenFilter: String?
 
-    init(inputImage: UIImage?, filter: String) {
-        self._chosenFilter = filter
+    init(inputImage: UIImage?, filter: Filters.Filter) {
+        self._chosenFilter = filter.rawValue
         self._inputImage = inputImage
     }
 

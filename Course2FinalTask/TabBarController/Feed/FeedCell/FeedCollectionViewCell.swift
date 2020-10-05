@@ -38,10 +38,8 @@ final class FeedCollectionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-
         setupFonts()
         setupTapGestureRecognizer()
-
     }
 
     func setupFeed(post: Post) {

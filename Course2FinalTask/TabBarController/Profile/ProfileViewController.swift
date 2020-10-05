@@ -10,6 +10,13 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
 
+    @IBOutlet weak private var profileCollectionView: UICollectionView! {
+        willSet {
+            newValue.register(nibCell: ProfileCollectionViewCell.self)
+            newValue.register(nibSupplementaryView: ProfileHeaderCollectionReusableView.self, kind: UICollectionView.elementKindSectionHeader)
+        }
+    }
+
     var userProfile: User?
     var feedUserID: String?
     var currentUser: User?
@@ -21,13 +28,6 @@ final class ProfileViewController: UIViewController {
     lazy var coreDataProvider = CoreDataProvider.shared
     private var offlineCurrentUser: UserOffline?
     private var offlinePostsProfile = [PostOffline]()
-
-    @IBOutlet weak private var profileCollectionView: UICollectionView! {
-        willSet {
-            newValue.register(nibCell: ProfileCollectionViewCell.self)
-            newValue.register(nibSupplementaryView: ProfileHeaderCollectionReusableView.self, kind: UICollectionView.elementKindSectionHeader)
-        }
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

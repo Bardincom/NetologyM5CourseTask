@@ -11,25 +11,21 @@ import Photos
 
 final class FiltersViewController: UIViewController {
 
-    var asset: PHAsset?
-    @IBOutlet var bigImage: UIImageView!
+    public var asset: PHAsset?
+    private var filterPhoto: UIImage?
+    private let filters = Filters().filterArray
+    private let operationQueue = OperationQueue()
+    private var targetSize: CGSize {
+        let scale = UIScreen.main.scale
+        return CGSize(width: bigImage.bounds.width * scale, height: bigImage.bounds.height * scale)
+    }
 
+    @IBOutlet var bigImage: UIImageView!
     @IBOutlet private var filterViewController: UICollectionView! {
         willSet {
             newValue.register(nibCell: FiltersCollectionViewCell.self)
         }
     }
-
-    var targetSize: CGSize {
-        let scale = UIScreen.main.scale
-        return CGSize(width: bigImage.bounds.width * scale, height: bigImage.bounds.height * scale)
-    }
-
-    private var filterPhoto: UIImage?
-
-    let filters = Filters().filterArray
-
-    let operationQueue = OperationQueue()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +46,6 @@ extension FiltersViewController: UICollectionViewDataSource, UICollectionViewDel
         return filters.count
     }
 
-    /// для более плавной загрузки фильтров перенесено в этот метод
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(cell: FiltersCollectionViewCell.self, for: indexPath)
 
@@ -105,8 +100,6 @@ private extension FiltersViewController {
     }
 
     func updateStaticImage() {
-//        let options = PHImageRequestOptions()
-
         guard let asset = asset else { return }
 
         PHImageManager.default().requestImage(for: asset,
@@ -114,7 +107,6 @@ private extension FiltersViewController {
                                               contentMode: .aspectFill,
                                               options: nil,
                                               resultHandler: { image, _ in
-
                                                 guard let image = image else { return }
                                                 self.bigImage.image = image
                                                 self.filterPhoto = image

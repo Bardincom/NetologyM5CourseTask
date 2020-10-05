@@ -469,8 +469,8 @@
 			children = (
 				A2FE06E9247322170051CC9E /* Assets.swift */,
 				A23BC8A92419054400640E54 /* Fonts.swift */,
-				A277FCEC246AE300008E14E7 /* Filters.swift */,
 				A2EA2D75251685CB0019190C /* Constants.swift */,
+				A277FCEC246AE300008E14E7 /* Filters.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
