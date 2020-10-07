@@ -10,6 +10,13 @@ import Foundation
 import UIKit
 import Photos
 
+protocol PhotoDataSourse {
+    var fetchResult: PHFetchResult<PHAsset> { get set }
+    func getImages()
+    func getCountImage() -> Int
+    func getFetchResult() -> PHFetchResult<PHAsset>
+}
+
 class PhotoProvider: PhotoDataSourse {
 
     var fetchResult = PHFetchResult<PHAsset>()

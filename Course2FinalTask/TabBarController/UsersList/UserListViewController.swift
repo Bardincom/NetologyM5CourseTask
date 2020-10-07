@@ -13,7 +13,8 @@ final class UserListViewController: UIViewController {
     var usersList = [User]()
     var navigationItemTitle: String?
     private let keychain = Keychain.shared
-    private let session = SessionProvider.shared
+//    private let session = SessionProvider.shared
+    private let networkService = NetworkService()
 
     @IBOutlet var userListTableView: UITableView! {
         willSet {
@@ -66,7 +67,7 @@ extension UserListViewController: UITableViewDelegate {
 extension UserListViewController: UserListTableViewCellDelegate {
 
     func followUnfollowUser(cell: UserListTableViewCell) {
-        guard session.isOnline else {
+        guard networkService.checkOnline().isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -78,7 +79,7 @@ extension UserListViewController: UserListTableViewCellDelegate {
         let userProfile = usersList[indexPath.row]
 
         guard userProfile.currentUserFollowsThisUser else {
-            session.followCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
+            networkService.postRequest().followCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
                 guard let self = self else { return }
 
                 switch result {
@@ -98,7 +99,7 @@ extension UserListViewController: UserListTableViewCellDelegate {
             return
         }
 
-        session.unfollowCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
+        networkService.postRequest().unfollowCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
             guard let self = self else { return }
             switch result {
                 case .success(let user):

@@ -22,10 +22,10 @@ final class SessionProvider {
             "token": ""
         ]
 
-    enum HttpMethod {
-        static let get = "GET"
-        static let post = "POST"
-    }
+//    enum HttpMethod {
+//        static let get = "GET"
+//        static let post = "POST"
+//    }
 
     public var isOnline = true
     static var shared = SessionProvider()

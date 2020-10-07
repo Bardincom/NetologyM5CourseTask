@@ -9,16 +9,9 @@
 import UIKit
 import Photos
 
-protocol PhotoDataSourse: AnyObject {
-    var fetchResult: PHFetchResult<PHAsset> { get set }
-    func getImages()
-    func getCountImage() -> Int
-    func getFetchResult() -> PHFetchResult<PHAsset>
-}
-
 final class NewPostViewController: UIViewController {
 
-    let photoDataSourse: PhotoDataSourse
+    var photoDataSourse: PhotoDataSourse
 
     fileprivate let imageManager = PHCachingImageManager()
     fileprivate var thumbnailSize: CGSize?

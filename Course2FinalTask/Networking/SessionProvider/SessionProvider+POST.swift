@@ -13,7 +13,7 @@ extension SessionProvider {
     /// Авторизует пользователя и выдает токен.
     func signin(login: String,
                 password: String,
-                completionHandler: @escaping (Result<Token, BackendError>) -> Void) {
+                completionHandler: @escaping ResultBlock<Token>) {
         ActivityIndicator.start()
         guard let url = preparationURL(path: TokenPath.signin) else { return }
         let authorization = Authorization(login: login, password: password)
@@ -25,19 +25,18 @@ extension SessionProvider {
     }
 
     /// Деавторизует пользователя и инвалидирует токен.
-    func signout(_ token: String) {
+    func signout(_ token: String, completionHandler: @escaping ResultBlock<Bool>) {
         guard let url = preparationURL(path: TokenPath.signout) else { return }
 
         let request = preparationRequest(url, HttpMethod.post, token)
 
-        let dataTask = sharedSession.dataTask(with: request)
-        dataTask.resume()
+        dataTask(with: request, completionHandler: completionHandler)
     }
 
     /// Подписывает текущего пользователя на пользователя с запрошенным ID.
     func followCurrentUserWithUserID(_ token: String,
                                      _ userID: String,
-                                     _ completionHandler: @escaping (Result<User, BackendError>) -> Void) {
+                                     _ completionHandler: @escaping ResultBlock<User>) {
         guard let url = preparationURL(path: UserPath.follow) else { return }
         let userIDRequest = UserIDRequest(userID: userID)
 
@@ -50,7 +49,7 @@ extension SessionProvider {
     /// Отписывает текущего пользователя от пользователя с запрошенным ID.
     func unfollowCurrentUserWithUserID(_ token: String,
                                        _ userID: String,
-                                       _ completionHandler: @escaping (Result<User, BackendError>) -> Void) {
+                                       _ completionHandler: @escaping ResultBlock<User>) {
         guard let url = preparationURL(path: UserPath.unfollow) else { return }
         let userIDRequest = UserIDRequest(userID: userID)
         var request = preparationRequest(url, HttpMethod.post, token)
@@ -62,7 +61,7 @@ extension SessionProvider {
     /// Ставит лайк от текущего пользователя на публикации с запрошенным ID.
     func likePostCurrentUserWithPostID(_ token: String,
                                        _ postID: String,
-                                       _ completionHandler: @escaping (Result<Post, BackendError>) -> Void) {
+                                       _ completionHandler: @escaping ResultBlock<Post>) {
         guard let url = preparationURL(path: PostPath.like) else { return }
         let postIDRequest = PostIDRequest(postID: postID)
 
@@ -75,7 +74,7 @@ extension SessionProvider {
     /// Удаляет лайк от текущего пользователя на публикации с запрошенным ID.
     func unlikePostCurrentUserWithPostID(_ token: String,
                                          _ postID: String,
-                                         _ completionHandler: @escaping (Result<Post, BackendError>) -> Void) {
+                                         _ completionHandler: @escaping ResultBlock<Post>) {
         guard let url = preparationURL(path: PostPath.unlike) else { return }
         let postIDRequest = PostIDRequest(postID: postID)
 
@@ -88,7 +87,7 @@ extension SessionProvider {
     func createPost(_ token: String,
                     _ image: UIImage,
                     _ description: String,
-                    _ completionHandler: @escaping (Result<Post, BackendError>) -> Void) {
+                    _ completionHandler: @escaping ResultBlock<Post>) {
         guard let url = preparationURL(path: PostPath.create) else { return }
         guard let imageData = image.jpegData(compressionQuality: 1)?.base64EncodedString() else { return }
         let newPostRequest = NewPostRequest(image: imageData, description: description)

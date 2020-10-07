@@ -23,7 +23,8 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
     @IBOutlet private var followButton: UIButton!
 
     var currentUser: User?
-    private let session = SessionProvider.shared
+//    private let session = SessionProvider.shared
+    private let networkService = NetworkService()
     private let keychain = Keychain.shared
 
     weak var delegate: ProfileHeaderDelegate?
@@ -32,7 +33,7 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
         super.awakeFromNib()
         guard let token = keychain.readToken() else { return }
 
-        session.getCurrentUser(token) { [weak self] currentUser in
+        networkService.getRequest().getCurrentUser(token) { [weak self] currentUser in
             guard let self = self else { return }
             switch currentUser {
                 case .success(let currentUser):

@@ -21,6 +21,17 @@
 		A244C8B3251C9C230017C11A /* CoreDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A244C8B2251C9C230017C11A /* CoreDataProvider.swift */; };
 		A248FD6A24AF00F7002E24C9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A248FD6924AF00F7002E24C9 /* User.swift */; };
 		A248FD6C24AF0103002E24C9 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = A248FD6B24AF0103002E24C9 /* Post.swift */; };
+		A24F2ED6252DDACC00E09554 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2ED5252DDACC00E09554 /* NetworkService.swift */; };
+		A24F2ED8252DDB2C00E09554 /* URLComponentsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2ED7252DDB2C00E09554 /* URLComponentsService.swift */; };
+		A24F2EDA252DDC3A00E09554 /* URLService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2ED9252DDC3A00E09554 /* URLService.swift */; };
+		A24F2EDC252DE0EC00E09554 /* DataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EDB252DE0EC00E09554 /* DataProvider.swift */; };
+		A24F2EDE252DE3A000E09554 /* RequestServise.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EDD252DE3A000E09554 /* RequestServise.swift */; };
+		A24F2EE0252DE70700E09554 /* CheckOnlineServise.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EDF252DE70700E09554 /* CheckOnlineServise.swift */; };
+		A24F2EE2252DF49D00E09554 /* AuthorisationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EE1252DF49D00E09554 /* AuthorisationService.swift */; };
+		A24F2EE4252DF96600E09554 /* GETService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EE3252DF96600E09554 /* GETService.swift */; };
+		A24F2EE6252DF9F900E09554 /* POSTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EE5252DF9F900E09554 /* POSTService.swift */; };
+		A24F2EE8252E012C00E09554 /* CheckTokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EE7252E012C00E09554 /* CheckTokenService.swift */; };
+		A24F2EEA252E10C900E09554 /* Blocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EE9252E10C900E09554 /* Blocks.swift */; };
 		A25685BD2433307400A09C0D /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F7486724041F7700396045 /* ProfileViewController.swift */; };
 		A25685BF24335B7F00A09C0D /* UserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27133AE2413B259007E13BC /* UserListViewController.swift */; };
 		A25685C024335B9400A09C0D /* UserListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27133B32413B2B0007E13BC /* UserListTableViewCell.swift */; };
@@ -104,6 +115,17 @@
 		A244C8B2251C9C230017C11A /* CoreDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataProvider.swift; sourceTree = "<group>"; };
 		A248FD6924AF00F7002E24C9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		A248FD6B24AF0103002E24C9 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		A24F2ED5252DDACC00E09554 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		A24F2ED7252DDB2C00E09554 /* URLComponentsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLComponentsService.swift; sourceTree = "<group>"; };
+		A24F2ED9252DDC3A00E09554 /* URLService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLService.swift; sourceTree = "<group>"; };
+		A24F2EDB252DE0EC00E09554 /* DataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProvider.swift; sourceTree = "<group>"; };
+		A24F2EDD252DE3A000E09554 /* RequestServise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestServise.swift; sourceTree = "<group>"; };
+		A24F2EDF252DE70700E09554 /* CheckOnlineServise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckOnlineServise.swift; sourceTree = "<group>"; };
+		A24F2EE1252DF49D00E09554 /* AuthorisationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorisationService.swift; sourceTree = "<group>"; };
+		A24F2EE3252DF96600E09554 /* GETService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GETService.swift; sourceTree = "<group>"; };
+		A24F2EE5252DF9F900E09554 /* POSTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POSTService.swift; sourceTree = "<group>"; };
+		A24F2EE7252E012C00E09554 /* CheckTokenService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTokenService.swift; sourceTree = "<group>"; };
+		A24F2EE9252E10C900E09554 /* Blocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blocks.swift; sourceTree = "<group>"; };
 		A259FDF524B90D86001B8030 /* DateFormatter+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extension.swift"; sourceTree = "<group>"; };
 		A25E5460240C275200478BC5 /* ProfileHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		A25E5461240C275200478BC5 /* ProfileHeaderCollectionReusableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileHeaderCollectionReusableView.xib; sourceTree = "<group>"; };
@@ -348,6 +370,16 @@
 				A26A16D124B3CD0A00A40273 /* Paths.swift */,
 				A26C5EEE24B8B481002FA10B /* SessionProvider+POST.swift */,
 				A26C5EF024B8B4AD002FA10B /* SessionProvider+GET.swift */,
+				A24F2ED5252DDACC00E09554 /* NetworkService.swift */,
+				A24F2ED7252DDB2C00E09554 /* URLComponentsService.swift */,
+				A24F2ED9252DDC3A00E09554 /* URLService.swift */,
+				A24F2EDB252DE0EC00E09554 /* DataProvider.swift */,
+				A24F2EDD252DE3A000E09554 /* RequestServise.swift */,
+				A24F2EDF252DE70700E09554 /* CheckOnlineServise.swift */,
+				A24F2EE3252DF96600E09554 /* GETService.swift */,
+				A24F2EE5252DF9F900E09554 /* POSTService.swift */,
+				A24F2EE1252DF49D00E09554 /* AuthorisationService.swift */,
+				A24F2EE7252E012C00E09554 /* CheckTokenService.swift */,
 			);
 			path = SessionProvider;
 			sourceTree = "<group>";
@@ -471,6 +503,7 @@
 				A23BC8A92419054400640E54 /* Fonts.swift */,
 				A2EA2D75251685CB0019190C /* Constants.swift */,
 				A277FCEC246AE300008E14E7 /* Filters.swift */,
+				A24F2EE9252E10C900E09554 /* Blocks.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -661,11 +694,14 @@
 			files = (
 				A277FCED246AE300008E14E7 /* Filters.swift in Sources */,
 				A25E5462240C275200478BC5 /* ProfileHeaderCollectionReusableView.swift in Sources */,
+				A24F2ED6252DDACC00E09554 /* NetworkService.swift in Sources */,
 				A2AB4FFF2465B74B007BB8F9 /* ActivityIndicator.swift in Sources */,
 				A293F707240BB8EC003D5A96 /* UICollectionView+Extension.swift in Sources */,
+				A24F2EEA252E10C900E09554 /* Blocks.swift in Sources */,
 				A228127125278E34005C3642 /* NewPostCollectionViewCell.swift in Sources */,
 				A23BC8AA2419054400640E54 /* Fonts.swift in Sources */,
 				A248FD6A24AF00F7002E24C9 /* User.swift in Sources */,
+				A24F2EE2252DF49D00E09554 /* AuthorisationService.swift in Sources */,
 				A25685C024335B9400A09C0D /* UserListTableViewCell.swift in Sources */,
 				A25685BD2433307400A09C0D /* ProfileViewController.swift in Sources */,
 				A2FE06EA247322170051CC9E /* Assets.swift in Sources */,
@@ -676,9 +712,13 @@
 				A25685BF24335B7F00A09C0D /* UserListViewController.swift in Sources */,
 				A244C8B3251C9C230017C11A /* CoreDataProvider.swift in Sources */,
 				A26A16C924B2450700A40273 /* SessionProvider.swift in Sources */,
+				A24F2EE6252DF9F900E09554 /* POSTService.swift in Sources */,
 				A277FCF5246C1B57008E14E7 /* DescriptionScreenViewController.swift in Sources */,
 				A2385A2B24BDAB2300936B61 /* NewPostRequest.swift in Sources */,
 				A2F351452520A6BC00B17CFF /* UIViewController+Extansion.swift in Sources */,
+				A24F2EDE252DE3A000E09554 /* RequestServise.swift in Sources */,
+				A24F2ED8252DDB2C00E09554 /* URLComponentsService.swift in Sources */,
+				A24F2EE8252E012C00E09554 /* CheckTokenService.swift in Sources */,
 				A26C5EF124B8B4AD002FA10B /* SessionProvider+GET.swift in Sources */,
 				A26A16C724B2420A00A40273 /* Token.swift in Sources */,
 				A27133B82413BB16007E13BC /* UITableView+Extension.swift in Sources */,
@@ -688,19 +728,23 @@
 				A2EA2D76251685CB0019190C /* Constants.swift in Sources */,
 				A293F70C240BE7A8003D5A96 /* ProfileCollectionViewCell.swift in Sources */,
 				A26A16D024B3CB2F00A40273 /* BackendError.swift in Sources */,
+				A24F2EE4252DF96600E09554 /* GETService.swift in Sources */,
 				A2385A2524BDA54600936B61 /* Authorization.swift in Sources */,
 				A228127425279BF3005C3642 /* PhotoProvider.swift in Sources */,
+				A24F2EE0252DE70700E09554 /* CheckOnlineServise.swift in Sources */,
 				A2385A2924BDAA7A00936B61 /* PostIDRequest.swift in Sources */,
 				A248FD6C24AF0103002E24C9 /* Post.swift in Sources */,
 				A2385A2724BDA76F00936B61 /* UserIDRequest.swift in Sources */,
 				A2F7486524041F6200396045 /* FeedViewController.swift in Sources */,
 				74B79258202B3254006BCB41 /* AppDelegate.swift in Sources */,
 				A2DF35EE2405C2C0008A9CD7 /* FeedCollectionViewCell.swift in Sources */,
+				A24F2EDA252DDC3A00E09554 /* URLService.swift in Sources */,
 				A277FCEF246B068E008E14E7 /* UIImage+Extension.swift in Sources */,
 				A277FCEA2469B7E4008E14E7 /* FiltersCollectionViewCell.swift in Sources */,
 				A262D14C24AB85A200022684 /* LoginScreenViewController.swift in Sources */,
 				A2EA2D7225167BB80019190C /* DataBase.xcdatamodeld in Sources */,
 				A26A16CE24B376AB00A40273 /* Alert.swift in Sources */,
+				A24F2EDC252DE0EC00E09554 /* DataProvider.swift in Sources */,
 				A2C014E42454F228001A4894 /* NewPostViewController.swift in Sources */,
 				A259FDF624B90D86001B8030 /* DateFormatter+Extension.swift in Sources */,
 				A2EA2D74251684800019190C /* CoreDataManager.swift in Sources */,
