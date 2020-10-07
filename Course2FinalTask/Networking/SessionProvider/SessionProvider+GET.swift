@@ -40,22 +40,7 @@ extension SessionProvider {
 
         let request = preparationRequest(url, HttpMethod.get, token)
 
-        let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
-
-            guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-            guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
-            guard let data = data else { return }
-
-            do {
-                let currentUser = try self.decoder.decode(User.self, from: data)
-                completionHandler(.success(currentUser))
-                ActivityIndicator.stop()
-            } catch {
-                completionHandler(.failure(.unauthorized))
-            }
-        }
-
-        dataTask.resume()
+        dataTask(with: request, completionHandler: completionHandler)
     }
 
     /// Возвращает информацию о пользователе с запрошенным ID.
@@ -66,21 +51,7 @@ extension SessionProvider {
 
         let request = preparationRequest(url, HttpMethod.get, token)
 
-        let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
-
-            guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-            guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
-            guard let data = data else { return }
-
-            do {
-                let user = try self.decoder.decode(User.self, from: data)
-                completionHandler(.success(user))
-            } catch {
-                completionHandler(.failure(.transferError))
-            }
-        }
-
-        dataTask.resume()
+        dataTask(with: request, completionHandler: completionHandler)
     }
 
     /// Возвращает подписчиков пользователя с запрошенным ID
@@ -91,21 +62,7 @@ extension SessionProvider {
 
         let request = preparationRequest(url, HttpMethod.get, token)
 
-        let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
-
-            guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-            guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
-            guard let data = data else { return }
-
-            do {
-                let users = try self.decoder.decode([User].self, from: data)
-                completionHandler(.success(users))
-            } catch {
-                completionHandler(.failure(.transferError))
-            }
-        }
-
-        dataTask.resume()
+        dataTask(with: request, completionHandler: completionHandler)
     }
 
     /// Возвращает подписки пользователя с запрошенным ID
@@ -117,21 +74,7 @@ extension SessionProvider {
 
         let request = preparationRequest(url, HttpMethod.get, token)
 
-        let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
-
-            guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-            guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
-            guard let data = data else { return }
-
-            do {
-                let users = try self.decoder.decode([User].self, from: data)
-                completionHandler(.success(users))
-            } catch {
-                completionHandler(.failure(.transferError))
-            }
-        }
-
-        dataTask.resume()
+        dataTask(with: request, completionHandler: completionHandler)
     }
 
     /// Возвращает публикации пользователя с запрошенным ID.
@@ -142,21 +85,7 @@ extension SessionProvider {
 
         let request = preparationRequest(url, HttpMethod.get, token)
 
-        let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
-
-            guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-            guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
-            guard let data = data else { return }
-
-            do {
-                let posts = try self.decoder.decode([Post].self, from: data)
-                completionHandler(.success(posts))
-            } catch {
-                completionHandler(.failure(.transferError))
-            }
-        }
-
-        dataTask.resume()
+        dataTask(with: request, completionHandler: completionHandler)
     }
 
     /// Возвращает публикации пользователей, на которых подписан текущий пользователь.
@@ -166,21 +95,7 @@ extension SessionProvider {
 
         let request = preparationRequest(url, HttpMethod.get, token)
 
-        let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
-
-            guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-            guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
-            guard let data = data else { return }
-
-            do {
-                let posts = try self.decoder.decode([Post].self, from: data)
-                completionHandler(.success(posts))
-            } catch {
-                completionHandler(.failure(.transferError))
-            }
-        }
-
-        dataTask.resume()
+        dataTask(with: request, completionHandler: completionHandler)
     }
 
     /// Возвращает публикацию с запрошенным ID.
@@ -191,21 +106,7 @@ extension SessionProvider {
 
         let request = preparationRequest(url, HttpMethod.get, token)
 
-        let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
-
-            guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-            guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
-            guard let data = data else { return }
-
-            do {
-                let post = try self.decoder.decode(Post.self, from: data)
-                completionHandler(.success(post))
-            } catch {
-                completionHandler(.failure(.transferError))
-            }
-        }
-
-        dataTask.resume()
+        dataTask(with: request, completionHandler: completionHandler)
     }
 
     /// Возвращает пользователей, поставивших лайк на публикацию с запрошенным ID.
@@ -216,19 +117,6 @@ extension SessionProvider {
 
         let request = preparationRequest(url, HttpMethod.get, token)
 
-        let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
-
-            guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-            guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
-            guard let data = data else { return }
-
-            do {
-                let users = try self.decoder.decode([User].self, from: data)
-                completionHandler(.success(users))
-            } catch {
-                completionHandler(.failure(.transferError))
-            }
-        }
-        dataTask.resume()
+        dataTask(with: request, completionHandler: completionHandler)
     }
 }

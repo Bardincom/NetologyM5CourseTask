@@ -48,7 +48,6 @@ extension UserListViewController: UITableViewDataSource {
         cell.delegate = self
         return cell
     }
-
 }
 
 // MARK: Delegate
@@ -62,7 +61,6 @@ extension UserListViewController: UITableViewDelegate {
         navigationController?.pushViewController(profileViewController, animated: true)
         userListTableView.deselectRow(at: indexPath, animated: true)
     }
-
 }
 
 extension UserListViewController: UserListTableViewCellDelegate {

@@ -52,13 +52,8 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         likesLabel.text = "Likes: " + "\(post.likedByCount)"
         descriptionLabel.text = post.description
 
-        /// отображение лайка на публикации текущего пользователя
-        guard post.currentUserLikesThisPost else {
-            likeButton.tintColor = SystemColors.grayColor
-            return
-        }
-
-        likeButton.tintColor = SystemColors.pinkColor
+        // отображение лайка на публикации текущего пользователя
+        post.currentUserLikesThisPost ? (likeButton.tintColor = SystemColors.pinkColor) : (likeButton.tintColor = SystemColors.grayColor)
     }
 
     func setupFeed(post: PostOffline) {
@@ -67,7 +62,8 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         userNameLabel.text = post.authorUsername
         likesLabel.text = "Likes: " + "\(post.likedByCount)"
         descriptionLabel.text = post.descript
-        likeButton.tintColor = SystemColors.pinkColor
+
+        post.currentUserLikesThisPost ? (likeButton.tintColor = SystemColors.pinkColor) : (likeButton.tintColor = SystemColors.grayColor)
 
         guard
             let avatar = post.authorAvatar,
@@ -78,9 +74,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
             let image = post.image,
             let postImage = UIImage(data: image) else { return }
         imageView.image = postImage
-
     }
-
 }
 
 // MARK: Selector
@@ -114,12 +108,10 @@ extension FeedCollectionViewCell {
                            options: [.curveEaseOut],
                            animations: {
                             self.bigLike.alpha = 0
-            }, completion: nil)
+                           }) { _ in
+                self.delegate?.likePost(cell: self)
+            }
         })
-
-        if likeButton.tintColor == SystemColors.grayColor {
-            delegate?.likePost(cell: self)
-        }
     }
 }
 

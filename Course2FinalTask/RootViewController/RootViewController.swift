@@ -66,8 +66,8 @@ private extension RootViewController {
         profileViewController.tabBarItem.image = Buttons.profile
         let profileNavigationController = UINavigationController(rootViewController: profileViewController)
 
-        let photoProvider = PhotoProvider()
-        let newPostViewController = NewPostViewController(photoDataSourse: photoProvider)
+//        let photoProvider = PhotoProvider()
+        let newPostViewController = NewPostViewController()
         newPostViewController.tabBarItem.title = ControllerSet.newPostViewController
         newPostViewController.tabBarItem.image = Buttons.newPost
         let newNavigationController = UINavigationController(rootViewController: newPostViewController)

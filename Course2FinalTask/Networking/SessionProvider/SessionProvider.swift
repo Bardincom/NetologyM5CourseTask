@@ -97,4 +97,23 @@ extension SessionProvider {
         isOnline = true
         return httpResponse
     }
+
+    func dataTask<T: Codable>(with request: URLRequest, completionHandler: @escaping (Result<T, BackendError>) -> Void) {
+        let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
+
+            guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
+            guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
+            guard let data = data else { return }
+
+            do {
+                let result = try self.decoder.decode(T.self, from: data)
+                completionHandler(.success(result))
+                ActivityIndicator.stop()
+            } catch {
+                completionHandler(.failure(.transferError))
+                ActivityIndicator.stop()
+            }
+        }
+        dataTask.resume()
+    }
 }

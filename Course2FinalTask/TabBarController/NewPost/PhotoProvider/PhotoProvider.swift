@@ -27,5 +27,4 @@ class PhotoProvider: PhotoDataSourse {
     func getFetchResult() -> PHFetchResult<PHAsset> {
         fetchResult
     }
-
 }

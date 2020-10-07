@@ -21,22 +21,7 @@ extension SessionProvider {
         var request = preparationRequest(url, HttpMethod.post)
         request.httpBody = try? encoder.encode(authorization)
 
-        let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
-
-            guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-            guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
-            guard let data = data else { return }
-
-            do {
-                let tokenResult = try self.decoder.decode(Token.self, from: data)
-                completionHandler(.success(tokenResult))
-                ActivityIndicator.stop()
-            } catch {
-                completionHandler(.failure(.unauthorized))
-                ActivityIndicator.stop()
-            }
-        }
-        dataTask.resume()
+        dataTask(with: request, completionHandler: completionHandler)
     }
 
     /// Деавторизует пользователя и инвалидирует токен.
@@ -59,20 +44,7 @@ extension SessionProvider {
         var request = preparationRequest(url, HttpMethod.post, token)
         request.httpBody = try? encoder.encode(userIDRequest)
 
-        let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
-
-            guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-            guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
-            guard let data = data else { return }
-
-            do {
-                let user = try self.decoder.decode(User.self, from: data)
-                completionHandler(.success(user))
-            } catch {
-                completionHandler(.failure(.transferError))
-            }
-        }
-        dataTask.resume()
+        dataTask(with: request, completionHandler: completionHandler)
     }
 
     /// Отписывает текущего пользователя от пользователя с запрошенным ID.
@@ -84,20 +56,7 @@ extension SessionProvider {
         var request = preparationRequest(url, HttpMethod.post, token)
         request.httpBody = try? encoder.encode(userIDRequest)
 
-        let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
-
-            guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-            guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
-            guard let data = data else { return }
-
-            do {
-                let user = try self.decoder.decode(User.self, from: data)
-                completionHandler(.success(user))
-            } catch {
-                completionHandler(.failure(.transferError))
-            }
-        }
-        dataTask.resume()
+        dataTask(with: request, completionHandler: completionHandler)
     }
 
     /// Ставит лайк от текущего пользователя на публикации с запрошенным ID.
@@ -110,20 +69,7 @@ extension SessionProvider {
         var request = preparationRequest(url, HttpMethod.post, token)
         request.httpBody = try? encoder.encode(postIDRequest)
 
-        let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
-
-            guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-            guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
-            guard let data = data else { return }
-
-            do {
-                let post = try self.decoder.decode(Post.self, from: data)
-                completionHandler(.success(post))
-            } catch {
-                completionHandler(.failure(.transferError))
-            }
-        }
-        dataTask.resume()
+        dataTask(with: request, completionHandler: completionHandler)
     }
 
     /// Удаляет лайк от текущего пользователя на публикации с запрошенным ID.
@@ -136,20 +82,7 @@ extension SessionProvider {
         var request = preparationRequest(url, HttpMethod.post, token)
         request.httpBody = try? encoder.encode(postIDRequest)
 
-        let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
-
-            guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-            guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
-            guard let data = data else { return }
-
-            do {
-                let post = try self.decoder.decode(Post.self, from: data)
-                completionHandler(.success(post))
-            } catch {
-                completionHandler(.failure(.transferError))
-            }
-        }
-        dataTask.resume()
+        dataTask(with: request, completionHandler: completionHandler)
     }
 
     func createPost(_ token: String,
@@ -163,19 +96,6 @@ extension SessionProvider {
         var request = preparationRequest(url, HttpMethod.post, token)
         request.httpBody = try? encoder.encode(newPostRequest)
 
-        let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
-
-            guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
-            guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
-            guard let data = data else { return }
-
-            do {
-                let post = try self.decoder.decode(Post.self, from: data)
-                completionHandler(.success(post))
-            } catch {
-                completionHandler(.failure(.transferError))
-            }
-        }
-        dataTask.resume()
+        dataTask(with: request, completionHandler: completionHandler)
     }
 }

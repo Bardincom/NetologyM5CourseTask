@@ -24,5 +24,4 @@ class NewPostCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         imageView.image = nil
     }
-
 }

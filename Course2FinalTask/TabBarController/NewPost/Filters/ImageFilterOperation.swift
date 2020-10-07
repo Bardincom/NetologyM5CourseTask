@@ -51,6 +51,5 @@ final class ImageFilterOperation: Operation {
 
         /// результат фильтрайии
         outputImage = UIImage(cgImage: cgImage)
-
     }
 }

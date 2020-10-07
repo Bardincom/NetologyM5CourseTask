@@ -10,6 +10,14 @@ import UIKit
 
 final class FeedViewController: UIViewController {
 
+    enum Constants {
+        static let topOffset: CGFloat = 8
+        static let avatarHeight: CGFloat = 35
+        static let topPostImageOffset: CGFloat = 8
+        static let isLikeIconHeight: CGFloat = 44
+        static let descriptionHeight: CGFloat = 44
+    }
+
     @IBOutlet weak private var feedCollectionView: UICollectionView! {
         willSet {
             newValue.register(nibCell: FeedCollectionViewCell.self)
@@ -84,13 +92,12 @@ final class FeedViewController: UIViewController {
         alertAction?(isViewLoaded)
 
         addCameraButton()
-        navigationItem.title = "Instagram"
+        navigationItem.title = Names.feedTitle
         configureTitle()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         checkOnlineSession()
     }
 }
@@ -122,17 +129,12 @@ extension FeedViewController: UICollectionViewDataSource {
 extension FeedViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.bounds.width
 
-        if session.isOnline {
-            let post = postsArray[indexPath.row]
-            let estimatedFrame = NSString(string: post.description).boundingRect(with: CGSize(width: width - 8, height: width - 8), options: .usesLineFragmentOrigin, attributes: nil, context: nil)
-            return CGSize(width: width, height: estimatedFrame.height + width + 130)
-        } else {
-            let post = offlinePostsArray[indexPath.row]
-            let estimatedFrame = NSString(string: post.description).boundingRect(with: CGSize(width: width - 8, height: width - 8), options: .usesLineFragmentOrigin, attributes: nil, context: nil)
-            return CGSize(width: width, height: estimatedFrame.height + width + 130)
-        }
+        let width = view.bounds.width
+        let imageHeight = width
+        let height = Constants.topOffset + Constants.avatarHeight + Constants.topPostImageOffset + imageHeight + Constants.isLikeIconHeight + Constants.descriptionHeight
+
+        return CGSize(width: width, height: height)
     }
 
     /// убираю отступ между ячейками
@@ -277,6 +279,7 @@ private extension FeedViewController {
     func refresh(_ sender: UIRefreshControl) {
         guard session.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
+            sender.endRefreshing()
             return
         }
 

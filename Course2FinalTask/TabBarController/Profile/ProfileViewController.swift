@@ -112,7 +112,6 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
         let size = (profileCollectionView.bounds.width - 1) / 3
         return CGSize(width: size, height: size)
     }
-
 }
 
 // MARK: setViewController
@@ -336,7 +335,6 @@ extension ProfileViewController: ProfileHeaderDelegate {
             }
         }
     }
-
 }
 
 extension ProfileViewController: UINavigationControllerDelegate {

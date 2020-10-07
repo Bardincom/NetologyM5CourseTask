@@ -60,7 +60,6 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
         followingLabel.text = "\(Names.following): \(user.followsCount)"
 
         buttonDisplay(user: user)
-
     }
 
     func buttonDisplay(user: User) {
@@ -98,7 +97,6 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
         avatarImage.image = userAvatarImage
 
         buttonDisplay(userOffline: userOffline)
-
     }
 
     func buttonDisplay(userOffline: UserOffline) {
@@ -115,7 +113,6 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
 
         followButton.isHidden = true
     }
-
 }
 
 // MARK: Selector
