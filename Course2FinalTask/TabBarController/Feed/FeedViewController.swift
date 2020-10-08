@@ -32,9 +32,8 @@ final class FeedViewController: UIViewController {
 
     private var postsArray = [Post]()
     private var post: Post?
-//    private var session = SessionProvider.shared
-//    let checkOnlineServise = CheckOnlineServise.shared
     private var networkService = NetworkService()
+    private let onlineServise = CheckOnlineServise.shared
     private var keychain = Keychain.shared
     public var newPost: ((Post) -> Void)?
     public var alertAction: ((Bool) -> Void)?
@@ -107,15 +106,14 @@ final class FeedViewController: UIViewController {
 // MARK: DataSource
 extension FeedViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return networkService.checkOnline().isOnline ? postsArray.count : offlinePostsArray.count
-//        return  session.isOnline ? postsArray.count : offlinePostsArray.count
+        return onlineServise.isOnline ? postsArray.count : offlinePostsArray.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let cell = collectionView.dequeue(cell: FeedCollectionViewCell.self, for: indexPath)
 
-        if networkService.checkOnline().isOnline {
+        if onlineServise.isOnline {
             let post = postsArray[indexPath.row]
             cell.setupFeed(post: post)
         } else {
@@ -151,7 +149,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
     /// открывает профиль пользователя
     func openUserProfile(cell: FeedCollectionViewCell) {
-        guard networkService.checkOnline().isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -180,7 +178,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
     /// ставит лайк на публикацию
     func likePost(cell: FeedCollectionViewCell) {
-        guard networkService.checkOnline().isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -229,7 +227,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
     /// открывает список пользователей поставивших лайк
     func userList(cell: FeedCollectionViewCell) {
-        guard networkService.checkOnline().isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -280,7 +278,7 @@ private extension FeedViewController {
 
     @objc
     func refresh(_ sender: UIRefreshControl) {
-        guard networkService.checkOnline().isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             sender.endRefreshing()
             return
@@ -311,7 +309,7 @@ private extension FeedViewController {
 
 extension FeedViewController {
     func checkOnlineSession() {
-        guard networkService.checkOnline().isOnline else {
+        guard onlineServise.isOnline else {
             coreDataProvider.fetchData(for: PostOffline.self, hendler: { (offlinePost) in
                 offlinePostsArray = offlinePost
             })

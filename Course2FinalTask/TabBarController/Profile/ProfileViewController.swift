@@ -21,8 +21,9 @@ final class ProfileViewController: UIViewController {
     var feedUserID: String?
     var currentUser: User?
     private let keychain = Keychain.shared
-//    private let session = SessionProvider.shared
+    //    private let session = SessionProvider.shared
     private let networkService = NetworkService()
+    private let onlineServise = CheckOnlineServise.shared
     private var postsProfile = [Post]()
     lazy var rootViewController = AppDelegate.shared.rootViewController
 
@@ -42,7 +43,7 @@ final class ProfileViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        //        view.backgroundColor = SystemColors.backgroundColor
         guard checkOnlineSession() else { return }
 
         if let userID = feedUserID {
@@ -58,14 +59,14 @@ final class ProfileViewController: UIViewController {
 extension ProfileViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return networkService.checkOnline().isOnline ? postsProfile.count : offlinePostsProfile.count
+        return onlineServise.isOnline ? postsProfile.count : offlinePostsProfile.count
     }
 
     /// установка изображений
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(cell: ProfileCollectionViewCell.self, for: indexPath)
 
-        if networkService.checkOnline().isOnline {
+        if onlineServise.isOnline {
             let post = postsProfile.sorted { $0.createdTime > $1.createdTime }[indexPath.row]
             cell.setImageCell(post: post)
         } else {
@@ -85,7 +86,7 @@ extension ProfileViewController: UICollectionViewDataSource {
                                           kind: kind,
                                           for: indexPath)
 
-        if networkService.checkOnline().isOnline {
+        if onlineServise.isOnline {
             guard let userProfile = userProfile else { return view }
             view.setHeader(user: userProfile)
         } else {
@@ -141,21 +142,20 @@ extension ProfileViewController {
 
     @objc
     private func logout() {
-        guard networkService.checkOnline().isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
 
         guard let token = keychain.readToken() else { return }
         networkService.authorization().signout(token) { _ in }
-//        session.signout(token, completionHandler: (Result<Bool, BackendError>) -> Void)
         keychain.deleteToken()
         rootViewController.switchToLogout()
     }
 
     /// Загрузка профиля друга из ленты
     func loadUserByProfile(_ userID: String) {
-        guard networkService.checkOnline().isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -192,7 +192,7 @@ extension ProfileViewController {
 
     /// Загрузка профиля текущего пользователя
     func loadCurrentUser() {
-        guard networkService.checkOnline().isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -234,7 +234,7 @@ extension ProfileViewController {
 extension ProfileViewController: ProfileHeaderDelegate {
     /// Открывает список подписчиков
     func openFollowersList() {
-        guard networkService.checkOnline().isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -250,8 +250,9 @@ extension ProfileViewController: ProfileHeaderDelegate {
 
             switch result {
                 case .success(let users):
-                    userListViewController.usersList = users
                     DispatchQueue.main.async {
+                        userListViewController.usersList = users
+
                         userListViewController.navigationItemTitle = Names.followers
                         self.navigationController?.pushViewController(userListViewController, animated: true)
                         ActivityIndicator.stop()
@@ -264,7 +265,7 @@ extension ProfileViewController: ProfileHeaderDelegate {
 
     /// Открывает список подписок
     func openFollowingList() {
-        guard networkService.checkOnline().isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -281,8 +282,8 @@ extension ProfileViewController: ProfileHeaderDelegate {
 
             switch result {
                 case .success(let users):
-                    userListViewController.usersList = users
                     DispatchQueue.main.async {
+                        userListViewController.usersList = users
                         userListViewController.navigationItemTitle = Names.following
                         self.navigationController?.pushViewController(userListViewController, animated: true)
                         ActivityIndicator.stop()
@@ -295,7 +296,7 @@ extension ProfileViewController: ProfileHeaderDelegate {
 
     /// Подписывает и отписывает текущего пользователя от друзей
     func followUnfollowUser() {
-        guard networkService.checkOnline().isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -360,7 +361,7 @@ extension ProfileViewController: UITabBarControllerDelegate {
 
 extension ProfileViewController {
     func checkOnlineSession() -> Bool {
-        guard networkService.checkOnline().isOnline else {
+        guard onlineServise.isOnline else {
 
             coreDataProvider.fetchData(for: UserOffline.self) { userOffline in
                 offlineCurrentUser = userOffline.first

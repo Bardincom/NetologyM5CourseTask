@@ -42,13 +42,10 @@
 		A262D14B24AB85A200022684 /* LoginScreenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A262D14824AB85A200022684 /* LoginScreenViewController.xib */; };
 		A262D14C24AB85A200022684 /* LoginScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262D14924AB85A200022684 /* LoginScreenViewController.swift */; };
 		A26A16C724B2420A00A40273 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26A16C624B2420A00A40273 /* Token.swift */; };
-		A26A16C924B2450700A40273 /* SessionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26A16C824B2450700A40273 /* SessionProvider.swift */; };
 		A26A16CC24B24C9F00A40273 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26A16CB24B24C9F00A40273 /* Keychain.swift */; };
 		A26A16CE24B376AB00A40273 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26A16CD24B376AB00A40273 /* Alert.swift */; };
 		A26A16D024B3CB2F00A40273 /* BackendError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26A16CF24B3CB2F00A40273 /* BackendError.swift */; };
 		A26A16D224B3CD0A00A40273 /* Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26A16D124B3CD0A00A40273 /* Paths.swift */; };
-		A26C5EEF24B8B481002FA10B /* SessionProvider+POST.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26C5EEE24B8B481002FA10B /* SessionProvider+POST.swift */; };
-		A26C5EF124B8B4AD002FA10B /* SessionProvider+GET.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26C5EF024B8B4AD002FA10B /* SessionProvider+GET.swift */; };
 		A27133AC240FC416007E13BC /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27133AB240FC416007E13BC /* Date+Extension.swift */; };
 		A27133B12413B259007E13BC /* UserListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A27133AF2413B259007E13BC /* UserListViewController.xib */; };
 		A27133B62413B2B0007E13BC /* UserListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A27133B42413B2B0007E13BC /* UserListTableViewCell.xib */; };
@@ -133,13 +130,10 @@
 		A262D14824AB85A200022684 /* LoginScreenViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginScreenViewController.xib; sourceTree = "<group>"; };
 		A262D14924AB85A200022684 /* LoginScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginScreenViewController.swift; sourceTree = "<group>"; };
 		A26A16C624B2420A00A40273 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
-		A26A16C824B2450700A40273 /* SessionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionProvider.swift; sourceTree = "<group>"; };
 		A26A16CB24B24C9F00A40273 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		A26A16CD24B376AB00A40273 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		A26A16CF24B3CB2F00A40273 /* BackendError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendError.swift; sourceTree = "<group>"; };
 		A26A16D124B3CD0A00A40273 /* Paths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paths.swift; sourceTree = "<group>"; };
-		A26C5EEE24B8B481002FA10B /* SessionProvider+POST.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionProvider+POST.swift"; sourceTree = "<group>"; };
-		A26C5EF024B8B4AD002FA10B /* SessionProvider+GET.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionProvider+GET.swift"; sourceTree = "<group>"; };
 		A27133AB240FC416007E13BC /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		A27133AE2413B259007E13BC /* UserListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListViewController.swift; sourceTree = "<group>"; };
 		A27133AF2413B259007E13BC /* UserListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserListViewController.xib; sourceTree = "<group>"; };
@@ -289,7 +283,7 @@
 			isa = PBXGroup;
 			children = (
 				A248FD6824AF00E3002E24C9 /* Model */,
-				A26C5EEC24B8B389002FA10B /* SessionProvider */,
+				A26C5EEC24B8B389002FA10B /* Service */,
 				A26C5EED24B8B3B2002FA10B /* Errors */,
 			);
 			path = Networking;
@@ -363,13 +357,10 @@
 			path = Safety;
 			sourceTree = "<group>";
 		};
-		A26C5EEC24B8B389002FA10B /* SessionProvider */ = {
+		A26C5EEC24B8B389002FA10B /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				A26A16C824B2450700A40273 /* SessionProvider.swift */,
 				A26A16D124B3CD0A00A40273 /* Paths.swift */,
-				A26C5EEE24B8B481002FA10B /* SessionProvider+POST.swift */,
-				A26C5EF024B8B4AD002FA10B /* SessionProvider+GET.swift */,
 				A24F2ED5252DDACC00E09554 /* NetworkService.swift */,
 				A24F2ED7252DDB2C00E09554 /* URLComponentsService.swift */,
 				A24F2ED9252DDC3A00E09554 /* URLService.swift */,
@@ -381,7 +372,7 @@
 				A24F2EE1252DF49D00E09554 /* AuthorisationService.swift */,
 				A24F2EE7252E012C00E09554 /* CheckTokenService.swift */,
 			);
-			path = SessionProvider;
+			path = Service;
 			sourceTree = "<group>";
 		};
 		A26C5EED24B8B3B2002FA10B /* Errors */ = {
@@ -708,10 +699,8 @@
 				A277FCE524694DF3008E14E7 /* FiltersViewController.swift in Sources */,
 				A277FCF1246B0B68008E14E7 /* ImageFilterOperation.swift in Sources */,
 				A26A16CC24B24C9F00A40273 /* Keychain.swift in Sources */,
-				A26C5EEF24B8B481002FA10B /* SessionProvider+POST.swift in Sources */,
 				A25685BF24335B7F00A09C0D /* UserListViewController.swift in Sources */,
 				A244C8B3251C9C230017C11A /* CoreDataProvider.swift in Sources */,
-				A26A16C924B2450700A40273 /* SessionProvider.swift in Sources */,
 				A24F2EE6252DF9F900E09554 /* POSTService.swift in Sources */,
 				A277FCF5246C1B57008E14E7 /* DescriptionScreenViewController.swift in Sources */,
 				A2385A2B24BDAB2300936B61 /* NewPostRequest.swift in Sources */,
@@ -719,7 +708,6 @@
 				A24F2EDE252DE3A000E09554 /* RequestServise.swift in Sources */,
 				A24F2ED8252DDB2C00E09554 /* URLComponentsService.swift in Sources */,
 				A24F2EE8252E012C00E09554 /* CheckTokenService.swift in Sources */,
-				A26C5EF124B8B4AD002FA10B /* SessionProvider+GET.swift in Sources */,
 				A26A16C724B2420A00A40273 /* Token.swift in Sources */,
 				A27133B82413BB16007E13BC /* UITableView+Extension.swift in Sources */,
 				A27133AC240FC416007E13BC /* Date+Extension.swift in Sources */,

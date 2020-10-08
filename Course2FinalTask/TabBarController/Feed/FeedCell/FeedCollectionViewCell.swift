@@ -33,7 +33,6 @@ final class FeedCollectionViewCell: UICollectionViewCell {
     }
 
     weak var delegate: FeedCollectionViewProtocol?
-//    let session = SessionProvider.shared
     let keychaine = Keychain.shared
 
     override func awakeFromNib() {

@@ -27,7 +27,13 @@ class DataProvider: DataProviderProtocol {
 
     /// Получение данных после запроса
     func dataTask<T: Codable>(with request: URLRequest, completionHandler: @escaping ResultBlock<T>) {
-        let dataTask = sharedSession.dataTask(with: request) { (data, response, error) in
+        let dataTask = sharedSession.dataTask(with: request) { [weak self] (data, response, error) in
+            guard let self = self else { return }
+            if let error = error {
+                self.onlineServise.isOnline = false
+                print("Возникла ошибка: \(error.localizedDescription)")
+            }
+
             guard let httpResponse = self.checkResponse(response: response, completionHandler: completionHandler) else { return }
             guard self.checkBackendErrorStatus(httpResponse: httpResponse, completionHandler: completionHandler) else { return }
             guard let data = data else { return }

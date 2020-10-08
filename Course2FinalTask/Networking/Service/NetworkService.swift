@@ -14,7 +14,6 @@ final class NetworkService {
     private let checkTokenService: CheckTokenProtocol
     private let getService: GETProtocol
     private let postService: POSTProtocol
-    private let checkOnlineServise = CheckOnlineServise.shared
 
     init(authorizationServise: AuthorizationProtocol = AuthorizationService(),
          checkTokenService: CheckTokenProtocol = CheckTokenService(),
@@ -41,9 +40,4 @@ final class NetworkService {
     func postRequest() -> POSTProtocol {
         return postService
     }
-
-    func checkOnline() -> CheckOnlineServise {
-        return checkOnlineServise
-    }
-
 }

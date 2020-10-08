@@ -12,4 +12,5 @@ final class CheckOnlineServise {
     static let shared = CheckOnlineServise()
     var isOnline = true
     private init() {}
+
 }
