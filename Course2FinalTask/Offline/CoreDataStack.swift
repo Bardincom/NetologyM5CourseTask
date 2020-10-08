@@ -9,11 +9,11 @@
 import Foundation
 import CoreData
 
-extension CoreDataManager {
-    static let shared = CoreDataManager(modelName: Model.name)
+extension CoreDataStack {
+    static let shared = CoreDataStack(modelName: Model.name)
 }
 
-final class CoreDataManager {
+final class CoreDataStack {
     private let modelName: String
 
     init(modelName: String) {
@@ -38,17 +38,7 @@ final class CoreDataManager {
 
     func save() {
         guard getContext().hasChanges else { return }
-
-        do {
-            try getContext().save()
-        } catch {
-            let nserror = error as NSError
-            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-        }
-    }
-
-    func save(context: NSManagedObjectContext) {
-        guard context.hasChanges else { return }
+        let context = getContext()
         context.mergePolicy = NSMergePolicy(merge: .mergeByPropertyObjectTrumpMergePolicyType)
 
         do {
@@ -63,12 +53,6 @@ final class CoreDataManager {
         let context = getContext()
         let object = NSEntityDescription.insertNewObject(forEntityName: String(describing: entity), into: context) as! T
         return object
-    }
-
-    func delete(object: NSManagedObject) {
-        let context = getContext()
-        context.delete(object)
-        save(context: context)
     }
 
     func fetchData<T: NSManagedObject>(for entity: T.Type) -> [T] {

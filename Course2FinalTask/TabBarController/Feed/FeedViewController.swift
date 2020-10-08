@@ -37,8 +37,7 @@ final class FeedViewController: UIViewController {
     private var keychain = Keychain.shared
     public var newPost: ((Post) -> Void)?
     public var alertAction: ((Bool) -> Void)?
-
-    lazy var coreDataProvider = CoreDataProvider.shared
+    private var coreDataService = CoreDataService()
     private var offlinePostsArray = [PostOffline]()
 
     let refreshControl: UIRefreshControl = {
@@ -59,7 +58,7 @@ final class FeedViewController: UIViewController {
                     self.postsArray = posts
                     // Сохранение в CoreData
                     posts.forEach { post in
-                        self.coreDataProvider.savePostOffline(post: post)
+                        self.coreDataService.saveOfflinePost().savePostOffline(post: post)
                     }
 
                 case .failure(let error):
@@ -85,7 +84,7 @@ final class FeedViewController: UIViewController {
         // сюда попадает новая публикация и размещается вверху ленты
         newPost = { [weak self] post in
             self?.postsArray.insert(post, at: 0)
-            self?.coreDataProvider.savePostOffline(post: post)
+            self?.coreDataService.saveOfflinePost().savePostOffline(post: post)
             // переходим в начало Ленты
             self?.feedCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
             self?.feedCollectionView.reloadData()
@@ -194,6 +193,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
                 switch result {
                     case .success(let unlikePost):
                         self.post = unlikePost
+                        self.coreDataService.saveOfflinePost().savePostOffline(post: unlikePost)
                     case .failure(let error):
                         Alert.showAlert(self, error.description)
                 }
@@ -213,6 +213,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
             switch result {
                 case .success(let likePost):
                     self.post = likePost
+                    self.coreDataService.saveOfflinePost().savePostOffline(post: likePost)
                 case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
@@ -310,8 +311,8 @@ private extension FeedViewController {
 extension FeedViewController {
     func checkOnlineSession() {
         guard onlineServise.isOnline else {
-            coreDataProvider.fetchData(for: PostOffline.self, hendler: { (offlinePost) in
-                offlinePostsArray = offlinePost
+            coreDataService.fetchData(for: PostOffline.self, hendler: { [weak self] (offlinePost) in
+                self?.offlinePostsArray = offlinePost
             })
             return
         }

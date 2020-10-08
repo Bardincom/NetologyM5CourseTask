@@ -21,13 +21,11 @@ final class ProfileViewController: UIViewController {
     var feedUserID: String?
     var currentUser: User?
     private let keychain = Keychain.shared
-    //    private let session = SessionProvider.shared
     private let networkService = NetworkService()
     private let onlineServise = CheckOnlineServise.shared
     private var postsProfile = [Post]()
     lazy var rootViewController = AppDelegate.shared.rootViewController
-
-    lazy var coreDataProvider = CoreDataProvider.shared
+    private var coreDataService = CoreDataService()
     private var offlineCurrentUser: UserOffline?
     private var offlinePostsProfile = [PostOffline]()
 
@@ -43,7 +41,6 @@ final class ProfileViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //        view.backgroundColor = SystemColors.backgroundColor
         guard checkOnlineSession() else { return }
 
         if let userID = feedUserID {
@@ -210,7 +207,7 @@ extension ProfileViewController {
                     self.userProfile = currentUser
 
                     // Сохраняются данные текущего пользователя в core data
-                    self.coreDataProvider.saveCurrentUserOffline(user: currentUser)
+                    self.coreDataService.saveOfflineUser().saveCurrentUserOffline(user: currentUser)
 
                     self.networkService.getRequest().getPostsWithUserID(token, currentUser.id) { [weak self] result in
                         guard let self = self else { return }
@@ -363,13 +360,13 @@ extension ProfileViewController {
     func checkOnlineSession() -> Bool {
         guard onlineServise.isOnline else {
 
-            coreDataProvider.fetchData(for: UserOffline.self) { userOffline in
-                offlineCurrentUser = userOffline.first
+            coreDataService.fetchData(for: UserOffline.self) { [weak self] userOffline in
+                self?.offlineCurrentUser = userOffline.first
             }
 
-            coreDataProvider.fetchData(for: PostOffline.self) { (postOffline) in
-                offlinePostsProfile = postOffline.filter({ post -> Bool in
-                    post.author == offlineCurrentUser?.id
+            coreDataService.fetchData(for: PostOffline.self) { [weak self] postOffline in
+                self?.offlinePostsProfile = postOffline.filter({ post -> Bool in
+                    post.author == self?.offlineCurrentUser?.id
                 })
             }
 

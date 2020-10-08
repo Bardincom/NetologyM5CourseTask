@@ -12,7 +12,6 @@ final class RootViewController: UIViewController {
 
     private var current: UIViewController
     private var keychain = Keychain.shared
-//    private var session = SessionProvider.shared
     private var networkService = NetworkService()
     private let onlineServise = CheckOnlineServise.shared
 
@@ -102,7 +101,6 @@ private extension RootViewController {
                             self.switchToFeedViewController()
                             return
                         }
-
                         self.addChild(self.current)
                         self.current.view.frame = self.view.bounds
                         self.view.addSubview(self.current.view)
