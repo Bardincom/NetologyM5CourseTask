@@ -23,7 +23,7 @@
 		A24F2ED6252DDACC00E09554 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2ED5252DDACC00E09554 /* NetworkService.swift */; };
 		A24F2ED8252DDB2C00E09554 /* URLComponentsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2ED7252DDB2C00E09554 /* URLComponentsService.swift */; };
 		A24F2EDA252DDC3A00E09554 /* URLService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2ED9252DDC3A00E09554 /* URLService.swift */; };
-		A24F2EDC252DE0EC00E09554 /* DataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EDB252DE0EC00E09554 /* DataProvider.swift */; };
+		A24F2EDC252DE0EC00E09554 /* DataTaskService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EDB252DE0EC00E09554 /* DataTaskService.swift */; };
 		A24F2EDE252DE3A000E09554 /* RequestServise.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EDD252DE3A000E09554 /* RequestServise.swift */; };
 		A24F2EE0252DE70700E09554 /* CheckOnlineServise.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EDF252DE70700E09554 /* CheckOnlineServise.swift */; };
 		A24F2EE2252DF49D00E09554 /* AuthorisationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EE1252DF49D00E09554 /* AuthorisationService.swift */; };
@@ -116,7 +116,7 @@
 		A24F2ED5252DDACC00E09554 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		A24F2ED7252DDB2C00E09554 /* URLComponentsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLComponentsService.swift; sourceTree = "<group>"; };
 		A24F2ED9252DDC3A00E09554 /* URLService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLService.swift; sourceTree = "<group>"; };
-		A24F2EDB252DE0EC00E09554 /* DataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProvider.swift; sourceTree = "<group>"; };
+		A24F2EDB252DE0EC00E09554 /* DataTaskService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTaskService.swift; sourceTree = "<group>"; };
 		A24F2EDD252DE3A000E09554 /* RequestServise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestServise.swift; sourceTree = "<group>"; };
 		A24F2EDF252DE70700E09554 /* CheckOnlineServise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckOnlineServise.swift; sourceTree = "<group>"; };
 		A24F2EE1252DF49D00E09554 /* AuthorisationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorisationService.swift; sourceTree = "<group>"; };
@@ -368,7 +368,7 @@
 				A24F2ED5252DDACC00E09554 /* NetworkService.swift */,
 				A24F2ED7252DDB2C00E09554 /* URLComponentsService.swift */,
 				A24F2ED9252DDC3A00E09554 /* URLService.swift */,
-				A24F2EDB252DE0EC00E09554 /* DataProvider.swift */,
+				A24F2EDB252DE0EC00E09554 /* DataTaskService.swift */,
 				A24F2EDD252DE3A000E09554 /* RequestServise.swift */,
 				A24F2EDF252DE70700E09554 /* CheckOnlineServise.swift */,
 				A24F2EE3252DF96600E09554 /* GETService.swift */,
@@ -747,7 +747,7 @@
 				A262D14C24AB85A200022684 /* LoginScreenViewController.swift in Sources */,
 				A2EA2D7225167BB80019190C /* DataBase.xcdatamodeld in Sources */,
 				A26A16CE24B376AB00A40273 /* Alert.swift in Sources */,
-				A24F2EDC252DE0EC00E09554 /* DataProvider.swift in Sources */,
+				A24F2EDC252DE0EC00E09554 /* DataTaskService.swift in Sources */,
 				A2C014E42454F228001A4894 /* NewPostViewController.swift in Sources */,
 				A259FDF624B90D86001B8030 /* DateFormatter+Extension.swift in Sources */,
 				A2A77EA6252FCBAB00013E44 /* PostOfflineService.swift in Sources */,

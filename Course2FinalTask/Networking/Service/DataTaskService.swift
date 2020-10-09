@@ -1,5 +1,5 @@
 //
-//  DataProvider.swift
+//  DataTaskService.swift
 //  Course3FinalTask
 //
 //  Created by Aleksey Bardin on 07.10.2020.
@@ -8,13 +8,11 @@
 
 import Foundation
 
-//typealias ResaltBlock<T> = (Result<T, BackendError>) -> Void
-
-protocol DataProviderProtocol {
+protocol DataTaskServiceProtocol {
     func dataTask<T: Codable>(with request: URLRequest, completionHandler: @escaping ResultBlock<T>)
 }
 
-class DataProvider: DataProviderProtocol {
+class DataTaskService: DataTaskServiceProtocol {
 
     private let sharedSession = URLSession.shared
     private let decoder = JSONDecoder()

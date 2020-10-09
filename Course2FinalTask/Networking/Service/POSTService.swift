@@ -22,11 +22,11 @@ class POSTService: POSTProtocol {
     private let encoder = JSONEncoder()
     private let urlService: URLServiceProtocol
     private let requestServise: RequestServiceProtocol
-    private let dataProvider: DataProviderProtocol
+    private let dataProvider: DataTaskServiceProtocol
 
     init(urlService: URLServiceProtocol = URLService(),
          requestServise: RequestServiceProtocol = RequestService(),
-         dataProvider: DataProviderProtocol = DataProvider()) {
+         dataProvider: DataTaskServiceProtocol = DataTaskService()) {
         self.urlService = urlService
         self.requestServise = requestServise
         self.dataProvider = dataProvider
