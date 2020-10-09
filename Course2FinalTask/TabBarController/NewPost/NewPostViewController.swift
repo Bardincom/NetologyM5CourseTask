@@ -11,14 +11,14 @@ import Photos
 
 final class NewPostViewController: UIViewController {
 
-    var photoDataSourse: PhotoDataSourse
+    var photoDataSourse: PhotoServiceProtocol
 
     fileprivate let imageManager = PHCachingImageManager()
     fileprivate var thumbnailSize: CGSize?
     fileprivate var availableWidth: CGFloat = 0
     fileprivate var previousPreheatRect = CGRect.zero
 
-    init(photoDataSourse: PhotoDataSourse = PhotoProvider()) {
+    init(photoDataSourse: PhotoServiceProtocol = PhotoService()) {
         self.photoDataSourse = photoDataSourse
         super.init(nibName: nil, bundle: nil)
     }

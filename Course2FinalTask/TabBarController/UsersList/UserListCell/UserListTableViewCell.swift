@@ -19,7 +19,6 @@ final class UserListTableViewCell: UITableViewCell {
     @IBOutlet var followButton: UIButton!
 
     var currentUser: User?
-//    private let session = SessionProvider.shared
     private let networkService = NetworkService()
     private let keychain = Keychain.shared
 

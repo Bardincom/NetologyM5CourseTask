@@ -12,7 +12,7 @@
 		74B7925F202B3254006BCB41 /* IconAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 74B7925E202B3254006BCB41 /* IconAssets.xcassets */; };
 		A228127125278E34005C3642 /* NewPostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A228126F25278E34005C3642 /* NewPostCollectionViewCell.swift */; };
 		A228127225278E34005C3642 /* NewPostCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A228127025278E34005C3642 /* NewPostCollectionViewCell.xib */; };
-		A228127425279BF3005C3642 /* PhotoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A228127325279BF3005C3642 /* PhotoProvider.swift */; };
+		A228127425279BF3005C3642 /* PhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A228127325279BF3005C3642 /* PhotoService.swift */; };
 		A2385A2524BDA54600936B61 /* Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2385A2424BDA54600936B61 /* Authorization.swift */; };
 		A2385A2724BDA76F00936B61 /* UserIDRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2385A2624BDA76F00936B61 /* UserIDRequest.swift */; };
 		A2385A2924BDAA7A00936B61 /* PostIDRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2385A2824BDAA7A00936B61 /* PostIDRequest.swift */; };
@@ -105,7 +105,7 @@
 		93C59B665E88D6DC1F116179 /* Pods_Course3FinalTask.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Course3FinalTask.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A228126F25278E34005C3642 /* NewPostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostCollectionViewCell.swift; sourceTree = "<group>"; };
 		A228127025278E34005C3642 /* NewPostCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewPostCollectionViewCell.xib; sourceTree = "<group>"; };
-		A228127325279BF3005C3642 /* PhotoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoProvider.swift; sourceTree = "<group>"; };
+		A228127325279BF3005C3642 /* PhotoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoService.swift; sourceTree = "<group>"; };
 		A2385A2424BDA54600936B61 /* Authorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authorization.swift; sourceTree = "<group>"; };
 		A2385A2624BDA76F00936B61 /* UserIDRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserIDRequest.swift; sourceTree = "<group>"; };
 		A2385A2824BDAA7A00936B61 /* PostIDRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostIDRequest.swift; sourceTree = "<group>"; };
@@ -275,12 +275,12 @@
 			path = NewPostCell;
 			sourceTree = "<group>";
 		};
-		A2385A1B24BC806D00936B61 /* PhotoProvider */ = {
+		A2385A1B24BC806D00936B61 /* PhotoSevice */ = {
 			isa = PBXGroup;
 			children = (
-				A228127325279BF3005C3642 /* PhotoProvider.swift */,
+				A228127325279BF3005C3642 /* PhotoService.swift */,
 			);
-			path = PhotoProvider;
+			path = PhotoSevice;
 			sourceTree = "<group>";
 		};
 		A248FD6724AF006F002E24C9 /* Networking */ = {
@@ -471,7 +471,7 @@
 		A2C014DE2454F16F001A4894 /* NewPost */ = {
 			isa = PBXGroup;
 			children = (
-				A2385A1B24BC806D00936B61 /* PhotoProvider */,
+				A2385A1B24BC806D00936B61 /* PhotoSevice */,
 				A228126E25278DB8005C3642 /* NewPostCell */,
 				A2C014E22454F228001A4894 /* NewPostViewController.swift */,
 				A2C014E32454F228001A4894 /* NewPostViewController.xib */,
@@ -733,7 +733,7 @@
 				A26A16D024B3CB2F00A40273 /* BackendError.swift in Sources */,
 				A24F2EE4252DF96600E09554 /* GETService.swift in Sources */,
 				A2385A2524BDA54600936B61 /* Authorization.swift in Sources */,
-				A228127425279BF3005C3642 /* PhotoProvider.swift in Sources */,
+				A228127425279BF3005C3642 /* PhotoService.swift in Sources */,
 				A24F2EE0252DE70700E09554 /* CheckOnlineServise.swift in Sources */,
 				A2385A2924BDAA7A00936B61 /* PostIDRequest.swift in Sources */,
 				A248FD6C24AF0103002E24C9 /* Post.swift in Sources */,

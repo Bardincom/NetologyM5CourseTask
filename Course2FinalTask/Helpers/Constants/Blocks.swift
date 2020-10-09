@@ -9,7 +9,4 @@
 import Foundation
 
 typealias ResultBlock<T> = (Result<T, BackendError>) -> Void
-typealias UsersBlock = (Result<[User], BackendError>) -> Void
-typealias PostsBlock = (Result<[Post], BackendError>) -> Void
-typealias UserBlock = (Result<User, BackendError>) -> Void
-typealias PostBlock = (Result<Post, BackendError>) -> Void
+typealias Block<T> = (T) -> Void

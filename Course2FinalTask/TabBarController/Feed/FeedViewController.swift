@@ -35,8 +35,8 @@ final class FeedViewController: UIViewController {
     private var networkService = NetworkService()
     private let onlineServise = CheckOnlineServise.shared
     private var keychain = Keychain.shared
-    public var newPost: ((Post) -> Void)?
-    public var alertAction: ((Bool) -> Void)?
+    public var newPost: Block<Post>?
+    public var alertAction: Block<Bool>?
     private var coreDataService = CoreDataService()
     private var offlinePostsArray = [PostOffline]()
 
