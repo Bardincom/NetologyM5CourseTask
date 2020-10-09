@@ -43,6 +43,7 @@ public enum ControllerSet {
 }
 
 public enum Names {
+    static let feedTitle = "Instagram"
     static let likes = "Likes"
     static let followers = "Followers"
     static let following = "Following"

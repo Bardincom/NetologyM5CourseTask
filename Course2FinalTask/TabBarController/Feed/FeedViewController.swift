@@ -10,21 +10,13 @@ import UIKit
 
 final class FeedViewController: UIViewController {
 
-    private var postsArray = [Post]()
-    private var post: Post?
-    private var session = SessionProvider.shared
-    private var keychain = Keychain.shared
-    public var newPost: ((Post) -> Void)?
-    public var alertAction: ((Bool) -> Void)?
-
-    lazy var coreDataProvider = CoreDataProvider.shared
-    private var offlinePostsArray = [PostOffline]()
-
-    let refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
-        return refreshControl
-    }()
+    enum Constants {
+        static let topOffset: CGFloat = 8
+        static let avatarHeight: CGFloat = 35
+        static let topPostImageOffset: CGFloat = 8
+        static let isLikeIconHeight: CGFloat = 44
+        static let descriptionHeight: CGFloat = 44
+    }
 
     @IBOutlet weak private var feedCollectionView: UICollectionView! {
         willSet {
@@ -38,22 +30,38 @@ final class FeedViewController: UIViewController {
         }
     }
 
+    private var postsArray = [Post]()
+    private var post: Post?
+    private var networkService = NetworkService()
+    private let onlineServise = CheckOnlineServise.shared
+    private var keychain = Keychain.shared
+    public var newPost: Block<Post>?
+    public var alertAction: Block<Bool>?
+    private var coreDataService = CoreDataService()
+    private var offlinePostsArray = [PostOffline]()
+
+    let refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        return refreshControl
+    }()
+
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 
         guard let token = keychain.readToken() else { return }
 
-        session.getFeedPosts(token) { [weak self] result in
+        networkService.getRequest().getFeedPosts(token) { [weak self] result in
             guard let self = self else { return }
             switch result {
                 case .success(let posts):
                     self.postsArray = posts
                     // Сохранение в CoreData
                     posts.forEach { post in
-                        self.coreDataProvider.savePostOffline(post: post)
+                        self.coreDataService.saveOfflinePost().savePostOffline(post: post)
                     }
 
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
 
@@ -76,7 +84,7 @@ final class FeedViewController: UIViewController {
         // сюда попадает новая публикация и размещается вверху ленты
         newPost = { [weak self] post in
             self?.postsArray.insert(post, at: 0)
-            self?.coreDataProvider.savePostOffline(post: post)
+            self?.coreDataService.saveOfflinePost().savePostOffline(post: post)
             // переходим в начало Ленты
             self?.feedCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
             self?.feedCollectionView.reloadData()
@@ -84,13 +92,12 @@ final class FeedViewController: UIViewController {
         alertAction?(isViewLoaded)
 
         addCameraButton()
-        navigationItem.title = "Instagram"
+        navigationItem.title = Names.feedTitle
         configureTitle()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         checkOnlineSession()
     }
 }
@@ -98,14 +105,14 @@ final class FeedViewController: UIViewController {
 // MARK: DataSource
 extension FeedViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return  session.isOnline ? postsArray.count : offlinePostsArray.count
+        return onlineServise.isOnline ? postsArray.count : offlinePostsArray.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let cell = collectionView.dequeue(cell: FeedCollectionViewCell.self, for: indexPath)
 
-        if session.isOnline {
+        if onlineServise.isOnline {
             let post = postsArray[indexPath.row]
             cell.setupFeed(post: post)
         } else {
@@ -122,17 +129,12 @@ extension FeedViewController: UICollectionViewDataSource {
 extension FeedViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.bounds.width
 
-        if session.isOnline {
-            let post = postsArray[indexPath.row]
-            let estimatedFrame = NSString(string: post.description).boundingRect(with: CGSize(width: width - 8, height: width - 8), options: .usesLineFragmentOrigin, attributes: nil, context: nil)
-            return CGSize(width: width, height: estimatedFrame.height + width + 130)
-        } else {
-            let post = offlinePostsArray[indexPath.row]
-            let estimatedFrame = NSString(string: post.description).boundingRect(with: CGSize(width: width - 8, height: width - 8), options: .usesLineFragmentOrigin, attributes: nil, context: nil)
-            return CGSize(width: width, height: estimatedFrame.height + width + 130)
-        }
+        let width = view.bounds.width
+        let imageHeight = width
+        let height = Constants.topOffset + Constants.avatarHeight + Constants.topPostImageOffset + imageHeight + Constants.isLikeIconHeight + Constants.descriptionHeight
+
+        return CGSize(width: width, height: height)
     }
 
     /// убираю отступ между ячейками
@@ -146,7 +148,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
     /// открывает профиль пользователя
     func openUserProfile(cell: FeedCollectionViewCell) {
-        guard session.isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -158,7 +160,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
         let userID = postsArray[indexPath.row].author
 
-        session.getUserWithID(token, userID) { [weak self] result in
+        networkService.getRequest().getUserWithID(token, userID) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
@@ -167,7 +169,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
                     DispatchQueue.main.async {
                         self.navigationController?.pushViewController(profileViewController, animated: true)
                     }
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
         }
@@ -175,7 +177,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
     /// ставит лайк на публикацию
     func likePost(cell: FeedCollectionViewCell) {
-        guard session.isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -186,12 +188,13 @@ extension FeedViewController: FeedCollectionViewProtocol {
         let postID = postsArray[indexPath.row].id
 
         guard !postsArray[indexPath.row].currentUserLikesThisPost else {
-            session.unlikePostCurrentUserWithPostID(token, postID) { [weak self] result in
+            networkService.postRequest().unlikePostCurrentUserWithPostID(token, postID) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
                     case .success(let unlikePost):
                         self.post = unlikePost
-                    case .fail(let error):
+                        self.coreDataService.saveOfflinePost().savePostOffline(post: unlikePost)
+                    case .failure(let error):
                         Alert.showAlert(self, error.description)
                 }
             }
@@ -204,13 +207,14 @@ extension FeedViewController: FeedCollectionViewProtocol {
             return
         }
 
-        session.likePostCurrentUserWithPostID(token, postID) { [weak self] result in
+        networkService.postRequest().likePostCurrentUserWithPostID(token, postID) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
                 case .success(let likePost):
                     self.post = likePost
-                case .fail(let error):
+                    self.coreDataService.saveOfflinePost().savePostOffline(post: likePost)
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
         }
@@ -224,7 +228,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
     /// открывает список пользователей поставивших лайк
     func userList(cell: FeedCollectionViewCell) {
-        guard session.isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -237,12 +241,12 @@ extension FeedViewController: FeedCollectionViewProtocol {
 
         let currentPostID = postsArray[indexPath.row].id
 
-        session.getLikePostUserWithPostID(token, currentPostID) { [weak self] result in
+        networkService.getRequest().getLikePostUserWithPostID(token, currentPostID) { [weak self] result in
             guard let self = self else { return }
             switch result {
                 case .success(let users):
                     userListViewController.usersList = users
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
 
@@ -275,19 +279,20 @@ private extension FeedViewController {
 
     @objc
     func refresh(_ sender: UIRefreshControl) {
-        guard session.isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
+            sender.endRefreshing()
             return
         }
 
         guard let token = keychain.readToken() else { return }
 
-        session.getFeedPosts(token) { [weak self] result in
+        networkService.getRequest().getFeedPosts(token) { [weak self] result in
             guard let self = self else { return }
             switch result {
                 case .success(let posts):
                     self.postsArray = posts
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
 
@@ -305,9 +310,9 @@ private extension FeedViewController {
 
 extension FeedViewController {
     func checkOnlineSession() {
-        guard session.isOnline else {
-            coreDataProvider.fetchData(for: PostOffline.self, hendler: { (offlinePost) in
-                offlinePostsArray = offlinePost
+        guard onlineServise.isOnline else {
+            coreDataService.fetchData(for: PostOffline.self, hendler: { [weak self] (offlinePost) in
+                self?.offlinePostsArray = offlinePost
             })
             return
         }

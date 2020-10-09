@@ -9,23 +9,16 @@
 import UIKit
 import Photos
 
-protocol PhotoDataSourse: AnyObject {
-    var fetchResult: PHFetchResult<PHAsset> { get set }
-    func getImages()
-    func getCountImage() -> Int
-    func getFetchResult() -> PHFetchResult<PHAsset>
-}
-
 final class NewPostViewController: UIViewController {
 
-    let photoDataSourse: PhotoDataSourse
+    var photoDataSourse: PhotoServiceProtocol
 
     fileprivate let imageManager = PHCachingImageManager()
     fileprivate var thumbnailSize: CGSize?
     fileprivate var availableWidth: CGFloat = 0
     fileprivate var previousPreheatRect = CGRect.zero
 
-    init(photoDataSourse: PhotoDataSourse) {
+    init(photoDataSourse: PhotoServiceProtocol = PhotoService()) {
         self.photoDataSourse = photoDataSourse
         super.init(nibName: nil, bundle: nil)
     }
@@ -39,6 +32,7 @@ final class NewPostViewController: UIViewController {
             newValue.register(nibCell: NewPostCollectionViewCell.self)
         }
     }
+
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
 
     override func viewDidLoad() {
@@ -184,7 +178,6 @@ extension NewPostViewController: UICollectionViewDelegateFlowLayout {
         resetCachedAssets()
         newPostViewController.deselectItem(at: indexPath, animated: true)
     }
-
 }
 
 extension NewPostViewController: PHPhotoLibraryChangeObserver {
@@ -215,7 +208,6 @@ extension NewPostViewController: PHPhotoLibraryChangeObserver {
                                    to: IndexPath(item: toIndex, section: 0))
                 }
             }
-
             self.resetCachedAssets()
         }
     }

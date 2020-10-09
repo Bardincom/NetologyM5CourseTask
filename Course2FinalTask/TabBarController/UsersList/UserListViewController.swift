@@ -13,7 +13,8 @@ final class UserListViewController: UIViewController {
     var usersList = [User]()
     var navigationItemTitle: String?
     private let keychain = Keychain.shared
-    private let session = SessionProvider.shared
+    private let networkService = NetworkService()
+    private let onlineServise = CheckOnlineServise.shared
 
     @IBOutlet var userListTableView: UITableView! {
         willSet {
@@ -28,7 +29,6 @@ final class UserListViewController: UIViewController {
         configureTitle()
         setupBackButton()
         title = navigationItemTitle
-
         view.backgroundColor = SystemColors.backgroundColor
     }
 }
@@ -48,7 +48,6 @@ extension UserListViewController: UITableViewDataSource {
         cell.delegate = self
         return cell
     }
-
 }
 
 // MARK: Delegate
@@ -62,13 +61,12 @@ extension UserListViewController: UITableViewDelegate {
         navigationController?.pushViewController(profileViewController, animated: true)
         userListTableView.deselectRow(at: indexPath, animated: true)
     }
-
 }
 
 extension UserListViewController: UserListTableViewCellDelegate {
 
     func followUnfollowUser(cell: UserListTableViewCell) {
-        guard session.isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -80,7 +78,7 @@ extension UserListViewController: UserListTableViewCellDelegate {
         let userProfile = usersList[indexPath.row]
 
         guard userProfile.currentUserFollowsThisUser else {
-            session.followCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
+            networkService.postRequest().followCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
                 guard let self = self else { return }
 
                 switch result {
@@ -93,14 +91,14 @@ extension UserListViewController: UserListTableViewCellDelegate {
                             self.usersList.insert(user, at: index)
                             self.userListTableView.reloadData()
                         }
-                    case .fail(let error):
+                    case .failure(let error):
                         Alert.showAlert(self, error.description)
                 }
             }
             return
         }
 
-        session.unfollowCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
+        networkService.postRequest().unfollowCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
             guard let self = self else { return }
             switch result {
                 case .success(let user):
@@ -112,7 +110,7 @@ extension UserListViewController: UserListTableViewCellDelegate {
                         self.usersList.insert(user, at: index)
                         self.userListTableView.reloadData()
                     }
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
         }

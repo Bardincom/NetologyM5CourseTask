@@ -12,7 +12,8 @@ final class RootViewController: UIViewController {
 
     private var current: UIViewController
     private var keychain = Keychain.shared
-    private var session = SessionProvider.shared
+    private var networkService = NetworkService()
+    private let onlineServise = CheckOnlineServise.shared
 
     init() {
         current = LoginScreenViewController()
@@ -66,8 +67,7 @@ private extension RootViewController {
         profileViewController.tabBarItem.image = Buttons.profile
         let profileNavigationController = UINavigationController(rootViewController: profileViewController)
 
-        let photoProvider = PhotoProvider()
-        let newPostViewController = NewPostViewController(photoDataSourse: photoProvider)
+        let newPostViewController = NewPostViewController()
         newPostViewController.tabBarItem.title = ControllerSet.newPostViewController
         newPostViewController.tabBarItem.image = Buttons.newPost
         let newNavigationController = UINavigationController(rootViewController: newPostViewController)
@@ -87,21 +87,20 @@ private extension RootViewController {
             view.addSubview(current.view)
             current.didMove(toParent: self)
             return }
-        // если токен есть проверям действителен ли он
-        session.checkToken(token) { [weak self] result in
+        // если токен есть проверяем действителен ли он
+        networkService.checkToken().checkToken(token) { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
                     case .success(_):
                         self.switchToFeedViewController()
                         return
-                    case .fail(let backendError):
+                    case .failure(let backendError):
                         guard backendError != .transferError else {
-                            print("Сеть не доступна: \(self.session.isOnline)")
+                            print("Сеть не доступна: \(self.onlineServise.isOnline)")
                             self.switchToFeedViewController()
                             return
                         }
-
                         self.addChild(self.current)
                         self.current.view.frame = self.view.bounds
                         self.view.addSubview(self.current.view)

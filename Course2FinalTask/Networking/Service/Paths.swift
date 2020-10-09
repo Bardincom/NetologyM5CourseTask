@@ -8,6 +8,11 @@
 
 import Foundation
 
+enum HttpMethod {
+    static let get = "GET"
+    static let post = "POST"
+}
+
 enum TokenPath {
     static let signin = "/signin"
     static let signout = "/signout"

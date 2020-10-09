@@ -10,24 +10,24 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
 
-    var userProfile: User?
-    var feedUserID: String?
-    var currentUser: User?
-    private let keychain = Keychain.shared
-    private let session = SessionProvider.shared
-    private var postsProfile = [Post]()
-    lazy var rootViewController = AppDelegate.shared.rootViewController
-
-    lazy var coreDataProvider = CoreDataProvider.shared
-    private var offlineCurrentUser: UserOffline?
-    private var offlinePostsProfile = [PostOffline]()
-
     @IBOutlet weak private var profileCollectionView: UICollectionView! {
         willSet {
             newValue.register(nibCell: ProfileCollectionViewCell.self)
             newValue.register(nibSupplementaryView: ProfileHeaderCollectionReusableView.self, kind: UICollectionView.elementKindSectionHeader)
         }
     }
+
+    var userProfile: User?
+    var feedUserID: String?
+    var currentUser: User?
+    private let keychain = Keychain.shared
+    private let networkService = NetworkService()
+    private let onlineServise = CheckOnlineServise.shared
+    private var postsProfile = [Post]()
+    lazy var rootViewController = AppDelegate.shared.rootViewController
+    private var coreDataService = CoreDataService()
+    private var offlineCurrentUser: UserOffline?
+    private var offlinePostsProfile = [PostOffline]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +41,6 @@ final class ProfileViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         guard checkOnlineSession() else { return }
 
         if let userID = feedUserID {
@@ -57,14 +56,14 @@ final class ProfileViewController: UIViewController {
 extension ProfileViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return session.isOnline ? postsProfile.count : offlinePostsProfile.count
+        return onlineServise.isOnline ? postsProfile.count : offlinePostsProfile.count
     }
 
     /// установка изображений
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(cell: ProfileCollectionViewCell.self, for: indexPath)
 
-        if session.isOnline {
+        if onlineServise.isOnline {
             let post = postsProfile.sorted { $0.createdTime > $1.createdTime }[indexPath.row]
             cell.setImageCell(post: post)
         } else {
@@ -84,7 +83,7 @@ extension ProfileViewController: UICollectionViewDataSource {
                                           kind: kind,
                                           for: indexPath)
 
-        if session.isOnline {
+        if onlineServise.isOnline {
             guard let userProfile = userProfile else { return view }
             view.setHeader(user: userProfile)
         } else {
@@ -112,7 +111,6 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
         let size = (profileCollectionView.bounds.width - 1) / 3
         return CGSize(width: size, height: size)
     }
-
 }
 
 // MARK: setViewController
@@ -141,20 +139,20 @@ extension ProfileViewController {
 
     @objc
     private func logout() {
-        guard session.isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
 
         guard let token = keychain.readToken() else { return }
-        session.signout(token)
+        networkService.authorization().signout(token) { _ in }
         keychain.deleteToken()
         rootViewController.switchToLogout()
     }
 
     /// Загрузка профиля друга из ленты
     func loadUserByProfile(_ userID: String) {
-        guard session.isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -164,26 +162,26 @@ extension ProfileViewController {
 
         feedUserID = userID
 
-        session.getUserWithID(token, userID) { [weak self] result in
+        networkService.getRequest().getUserWithID(token, userID) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
                 case .success(let user):
                     self.userProfile = user
 
-                    self.session.getPostsWithUserID(token, user.id) { [weak self] result in
+                    self.networkService.getRequest().getPostsWithUserID(token, user.id) { [weak self] result in
                         guard let self = self else { return }
 
                         switch result {
                             case .success(let posts):
                                 self.postsProfile = posts
                                 self.updateUI()
-                            case .fail(let error):
+                            case .failure(let error):
                                 Alert.showAlert(self, error.description)
                         }
                     }
 
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
         }
@@ -191,7 +189,7 @@ extension ProfileViewController {
 
     /// Загрузка профиля текущего пользователя
     func loadCurrentUser() {
-        guard session.isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -201,7 +199,7 @@ extension ProfileViewController {
 
         ActivityIndicator.start()
 
-        session.getCurrentUser(token) { [weak self] result in
+        networkService.getRequest().getCurrentUser(token) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
@@ -209,20 +207,20 @@ extension ProfileViewController {
                     self.userProfile = currentUser
 
                     // Сохраняются данные текущего пользователя в core data
-                    self.coreDataProvider.saveCurrentUserOffline(user: currentUser)
+                    self.coreDataService.saveOfflineUser().saveCurrentUserOffline(user: currentUser)
 
-                    self.session.getPostsWithUserID(token, currentUser.id) { [weak self] result in
+                    self.networkService.getRequest().getPostsWithUserID(token, currentUser.id) { [weak self] result in
                         guard let self = self else { return }
                         switch result {
                             case .success(let posts):
                                 self.postsProfile = posts
 
                                 self.updateUI()
-                            case .fail(let error):
+                            case .failure(let error):
                                 Alert.showAlert(self, error.description)
                         }
                     }
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
         }
@@ -233,7 +231,7 @@ extension ProfileViewController {
 extension ProfileViewController: ProfileHeaderDelegate {
     /// Открывает список подписчиков
     func openFollowersList() {
-        guard session.isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -244,18 +242,19 @@ extension ProfileViewController: ProfileHeaderDelegate {
         let userListViewController = UserListViewController()
         guard let userID = userProfile?.id else { return }
 
-        session.getFollowersWithUserID(token, userID) { [weak self] result in
+        networkService.getRequest().getFollowersWithUserID(token, userID) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
                 case .success(let users):
-                    userListViewController.usersList = users
                     DispatchQueue.main.async {
+                        userListViewController.usersList = users
+
                         userListViewController.navigationItemTitle = Names.followers
                         self.navigationController?.pushViewController(userListViewController, animated: true)
                         ActivityIndicator.stop()
                     }
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
         }
@@ -263,7 +262,7 @@ extension ProfileViewController: ProfileHeaderDelegate {
 
     /// Открывает список подписок
     func openFollowingList() {
-        guard session.isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -275,18 +274,18 @@ extension ProfileViewController: ProfileHeaderDelegate {
 
         guard let userID = userProfile?.id else { return }
 
-        session.getFollowingWithUserID(token, userID) { [weak self] result in
+        networkService.getRequest().getFollowingWithUserID(token, userID) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
                 case .success(let users):
-                    userListViewController.usersList = users
                     DispatchQueue.main.async {
+                        userListViewController.usersList = users
                         userListViewController.navigationItemTitle = Names.following
                         self.navigationController?.pushViewController(userListViewController, animated: true)
                         ActivityIndicator.stop()
                     }
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
         }
@@ -294,7 +293,7 @@ extension ProfileViewController: ProfileHeaderDelegate {
 
     /// Подписывает и отписывает текущего пользователя от друзей
     func followUnfollowUser() {
-        guard session.isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -304,7 +303,7 @@ extension ProfileViewController: ProfileHeaderDelegate {
             let userProfile = userProfile else { return }
 
         guard userProfile.currentUserFollowsThisUser else {
-            session.followCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
+            networkService.postRequest().followCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
                 guard let self = self else { return }
 
                 switch result {
@@ -314,14 +313,14 @@ extension ProfileViewController: ProfileHeaderDelegate {
                             self.currentUser?.followedByCount += 1
                             self.profileCollectionView.reloadData()
                         }
-                    case .fail(let error):
+                    case .failure(let error):
                         Alert.showAlert(self, error.description)
                 }
             }
             return
         }
 
-        session.unfollowCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
+        networkService.postRequest().unfollowCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
@@ -331,12 +330,11 @@ extension ProfileViewController: ProfileHeaderDelegate {
                         self.currentUser?.followsCount -= 1
                         self.profileCollectionView.reloadData()
                     }
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
         }
     }
-
 }
 
 extension ProfileViewController: UINavigationControllerDelegate {
@@ -360,15 +358,15 @@ extension ProfileViewController: UITabBarControllerDelegate {
 
 extension ProfileViewController {
     func checkOnlineSession() -> Bool {
-        guard session.isOnline else {
+        guard onlineServise.isOnline else {
 
-            coreDataProvider.fetchData(for: UserOffline.self) { userOffline in
-                offlineCurrentUser = userOffline.first
+            coreDataService.fetchData(for: UserOffline.self) { [weak self] userOffline in
+                self?.offlineCurrentUser = userOffline.first
             }
 
-            coreDataProvider.fetchData(for: PostOffline.self) { (postOffline) in
-                offlinePostsProfile = postOffline.filter({ post -> Bool in
-                    post.author == offlineCurrentUser?.id
+            coreDataService.fetchData(for: PostOffline.self) { [weak self] postOffline in
+                self?.offlinePostsProfile = postOffline.filter({ post -> Bool in
+                    post.author == self?.offlineCurrentUser?.id
                 })
             }
 

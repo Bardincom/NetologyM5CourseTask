@@ -14,7 +14,9 @@ final class DescriptionScreenViewController: UIViewController {
     @IBOutlet private var descriptionText: UITextField!
 
     public var newPublishedPhoto: UIImage?
-    private var session = SessionProvider.shared
+//    private var session = SessionProvider.shared
+    private var networkService = NetworkService()
+    private let onlineServise = CheckOnlineServise.shared
     private var keychain = Keychain.shared
 
     override func viewDidLoad() {
@@ -49,7 +51,7 @@ private extension DescriptionScreenViewController {
     }
 
     func sendPost() {
-        guard session.isOnline else {
+        guard onlineServise.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -64,7 +66,7 @@ private extension DescriptionScreenViewController {
             let feedPost = feedViewController.newPost,
             let token = keychain.readToken() else { return }
 
-        session.createPost(token, newPublishedPhoto, descriptionText) { [weak self] result in
+        networkService.postRequest().createPost(token, newPublishedPhoto, descriptionText) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
@@ -79,7 +81,7 @@ private extension DescriptionScreenViewController {
 
                         ActivityIndicator.stop()
                     }
-                case .fail(let error):
+                case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
         }

@@ -1,5 +1,5 @@
 //
-//  NewPhotoProvider.swift
+//  PhotoService.swift
 //  Course3FinalTask
 //
 //  Created by Aleksey Bardin on 02.10.2020.
@@ -10,7 +10,14 @@ import Foundation
 import UIKit
 import Photos
 
-class PhotoProvider: PhotoDataSourse {
+protocol PhotoServiceProtocol {
+    var fetchResult: PHFetchResult<PHAsset> { get set }
+    func getImages()
+    func getCountImage() -> Int
+    func getFetchResult() -> PHFetchResult<PHAsset>
+}
+
+class PhotoService: PhotoServiceProtocol {
 
     var fetchResult = PHFetchResult<PHAsset>()
 
@@ -27,5 +34,4 @@ class PhotoProvider: PhotoDataSourse {
     func getFetchResult() -> PHFetchResult<PHAsset> {
         fetchResult
     }
-
 }

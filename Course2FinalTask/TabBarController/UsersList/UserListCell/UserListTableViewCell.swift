@@ -19,7 +19,7 @@ final class UserListTableViewCell: UITableViewCell {
     @IBOutlet var followButton: UIButton!
 
     var currentUser: User?
-    private let session = SessionProvider.shared
+    private let networkService = NetworkService()
     private let keychain = Keychain.shared
 
     weak var delegate: UserListTableViewCellDelegate?
@@ -51,7 +51,7 @@ final class UserListTableViewCell: UITableViewCell {
 
         guard let token = keychain.readToken() else { return }
 
-        session.getCurrentUser(token) { [weak self] currentUser in
+        networkService.getRequest().getCurrentUser(token) { [weak self] currentUser in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 switch currentUser {
@@ -60,7 +60,7 @@ final class UserListTableViewCell: UITableViewCell {
                         if user.id == currentUser.id {
                             self.followButton.isHidden = true
                     }
-                    case .fail( _):
+                    case .failure( _):
                         break
                 }
             }
