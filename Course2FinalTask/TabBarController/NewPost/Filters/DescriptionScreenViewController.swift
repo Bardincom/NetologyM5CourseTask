@@ -12,9 +12,9 @@ final class DescriptionScreenViewController: UIViewController {
 
     @IBOutlet private var publishedPhoto: UIImageView!
     @IBOutlet private var descriptionText: UITextField!
+    @IBOutlet private var descriptionLabel: UILabel!
 
     public var newPublishedPhoto: UIImage?
-//    private var session = SessionProvider.shared
     private var networkService = NetworkService()
     private let onlineServise = CheckOnlineServise.shared
     private var keychain = Keychain.shared
@@ -32,8 +32,9 @@ private extension DescriptionScreenViewController {
 
     func setupFiltersViewController() {
         publishedPhoto.image = newPublishedPhoto
+        descriptionLabel.text = Localization.Names.description
 
-        descriptionText.placeholder = "Enter you description"
+        descriptionText.placeholder = Localization.Placeholder.description
         let shared = UIBarButtonItem(image: Buttons.sharedPost,
                                      style: .done,
                                      target: self,

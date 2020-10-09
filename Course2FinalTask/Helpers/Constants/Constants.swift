@@ -35,20 +35,3 @@ public enum Buttons {
     static let sharedPost = UIImage(systemName: "checkmark.circle.fill", withConfiguration: Constants.simbolWeight)
     static let camera = UIImage(systemName: "camera", withConfiguration: Constants.simbolWeight)
 }
-
-public enum ControllerSet {
-    static let feedViewController = "Feed"
-    static let profileViewController = "Profile"
-    static let newPostViewController = "Add Post"
-}
-
-public enum Names {
-    static let feedTitle = "Instagram"
-    static let likes = "Likes"
-    static let followers = "Followers"
-    static let following = "Following"
-    static let newPost = "New Post"
-    static let filters = "Filters"
-    static let unfollow = "Unfollow"
-    static let follow =  "Follow"
-}

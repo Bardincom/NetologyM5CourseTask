@@ -41,11 +41,11 @@ final class UserListTableViewCell: UITableViewCell {
 
         if user.currentUserFollowsThisUser {
             self.followButton.isHidden = false
-            self.followButton.setTitle(Names.unfollow, for: .normal)
+            self.followButton.setTitle(Localization.Button.unfollow, for: .normal)
             self.followButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
         } else {
             self.followButton.isHidden = false
-            self.followButton.setTitle(Names.follow, for: .normal)
+            self.followButton.setTitle(Localization.Button.follow, for: .normal)
             self.followButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
         }
 

@@ -48,7 +48,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         avatarImageView.layer.cornerRadius = avatarImageView.frame.height / 2
         userNameLabel.text = post.authorUsername
         imageView.kf.setImage(with: post.image)
-        likesLabel.text = "Likes: " + "\(post.likedByCount)"
+        likesLabel.text = Localization.Names.likes + ": \(post.likedByCount)"
         descriptionLabel.text = post.description
 
         // отображение лайка на публикации текущего пользователя
@@ -59,7 +59,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
 
         dateLabel.text = post.createdTime?.displayDate()
         userNameLabel.text = post.authorUsername
-        likesLabel.text = "Likes: " + "\(post.likedByCount)"
+        likesLabel.text = Localization.Names.likes + ": \(post.likedByCount)"
         descriptionLabel.text = post.descript
 
         post.currentUserLikesThisPost ? (likeButton.tintColor = SystemColors.pinkColor) : (likeButton.tintColor = SystemColors.grayColor)

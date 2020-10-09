@@ -39,7 +39,7 @@ final class NewPostViewController: UIViewController {
         super.viewDidLoad()
         resetCachedAssets()
 
-        navigationItem.title = Names.newPost
+        navigationItem.title = Localization.Names.newPost
         configureTitle()
         PHPhotoLibrary.shared().register(self)
         photoDataSourse.getImages()

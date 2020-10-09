@@ -92,7 +92,7 @@ final class FeedViewController: UIViewController {
         alertAction?(isViewLoaded)
 
         addCameraButton()
-        navigationItem.title = Names.feedTitle
+        navigationItem.title = Localization.Names.feedTitle
         configureTitle()
     }
 
@@ -251,7 +251,7 @@ extension FeedViewController: FeedCollectionViewProtocol {
             }
 
             DispatchQueue.main.async {
-                userListViewController.navigationItemTitle = Names.likes
+                userListViewController.navigationItemTitle = Localization.Names.likes
                 self.navigationController?.pushViewController(userListViewController, animated: true)
                 ActivityIndicator.stop()
             }

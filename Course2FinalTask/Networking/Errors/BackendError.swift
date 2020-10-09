@@ -18,12 +18,12 @@ enum BackendError: Error, CustomStringConvertible {
 
     var description: String {
         switch self {
-            case .notFound: return "Not found"
-            case .badRequest: return "Bad request"
-            case .unauthorized: return "Unauthorized"
-            case .notAcceptable: return "Not acceptable"
-            case .unprocessable: return "Unprocessable"
-            case .transferError: return "Offline mode"
+            case .notFound: return Localization.Error.notFound
+            case .badRequest: return Localization.Error.badRequest
+            case .unauthorized: return Localization.Error.unauthorized
+            case .notAcceptable: return Localization.Error.notAcceptable
+            case .unprocessable: return Localization.Error.unprocessable
+            case .transferError: return Localization.Error.offlineMode
         }
     }
 }

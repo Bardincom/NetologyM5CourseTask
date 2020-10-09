@@ -64,6 +64,8 @@
 		A2A77EA0252FCAA600013E44 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A77E9F252FCAA600013E44 /* CoreDataService.swift */; };
 		A2A77EA6252FCBAB00013E44 /* PostOfflineService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A77EA5252FCBAB00013E44 /* PostOfflineService.swift */; };
 		A2A77EA8252FCC9500013E44 /* UserOfflineService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A77EA7252FCC9500013E44 /* UserOfflineService.swift */; };
+		A2A77EBE2530B91100013E44 /* Localizable.strings in Sources */ = {isa = PBXBuildFile; fileRef = A2A77EC02530B91100013E44 /* Localizable.strings */; };
+		A2A77EC32530D2E600013E44 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A77EC22530D2E600013E44 /* Strings.swift */; };
 		A2AB4FFF2465B74B007BB8F9 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AB4FFE2465B74B007BB8F9 /* ActivityIndicator.swift */; };
 		A2C014E42454F228001A4894 /* NewPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C014E22454F228001A4894 /* NewPostViewController.swift */; };
 		A2C014E52454F228001A4894 /* NewPostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2C014E32454F228001A4894 /* NewPostViewController.xib */; };
@@ -156,6 +158,10 @@
 		A2A77E9F252FCAA600013E44 /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 		A2A77EA5252FCBAB00013E44 /* PostOfflineService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostOfflineService.swift; sourceTree = "<group>"; };
 		A2A77EA7252FCC9500013E44 /* UserOfflineService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOfflineService.swift; sourceTree = "<group>"; };
+		A2A77EBF2530B91100013E44 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A2A77EC12530B92000013E44 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A2A77EC22530D2E600013E44 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		A2A77ECC2530E9F400013E44 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A2AB4FFE2465B74B007BB8F9 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		A2C014E22454F228001A4894 /* NewPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewController.swift; sourceTree = "<group>"; };
 		A2C014E32454F228001A4894 /* NewPostViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewPostViewController.xib; sourceTree = "<group>"; };
@@ -442,6 +448,7 @@
 			children = (
 				A2FE06EB24732E720051CC9E /* Extension */,
 				A2FE06D8247307AD0051CC9E /* Constants */,
+				A2A77EBB2530B84000013E44 /* Strings */,
 				A2AB4FFE2465B74B007BB8F9 /* ActivityIndicator.swift */,
 				A26A16CD24B376AB00A40273 /* Alert.swift */,
 			);
@@ -466,6 +473,14 @@
 				A2A77EA7252FCC9500013E44 /* UserOfflineService.swift */,
 			);
 			name = Service;
+			sourceTree = "<group>";
+		};
+		A2A77EBB2530B84000013E44 /* Strings */ = {
+			isa = PBXGroup;
+			children = (
+				A2A77EC02530B91100013E44 /* Localizable.strings */,
+			);
+			path = Strings;
 			sourceTree = "<group>";
 		};
 		A2C014DE2454F16F001A4894 /* NewPost */ = {
@@ -509,6 +524,7 @@
 				A2EA2D75251685CB0019190C /* Constants.swift */,
 				A277FCEC246AE300008E14E7 /* Filters.swift */,
 				A24F2EE9252E10C900E09554 /* Blocks.swift */,
+				A2A77EC22530D2E600013E44 /* Strings.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -574,6 +590,8 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
+				uk,
 			);
 			mainGroup = 74B7924B202B3254006BCB41;
 			productRefGroup = 74B79255202B3254006BCB41 /* Products */;
@@ -723,6 +741,7 @@
 				A24F2EDE252DE3A000E09554 /* RequestServise.swift in Sources */,
 				A24F2ED8252DDB2C00E09554 /* URLComponentsService.swift in Sources */,
 				A24F2EE8252E012C00E09554 /* CheckTokenService.swift in Sources */,
+				A2A77EBE2530B91100013E44 /* Localizable.strings in Sources */,
 				A26A16C724B2420A00A40273 /* Token.swift in Sources */,
 				A27133B82413BB16007E13BC /* UITableView+Extension.swift in Sources */,
 				A27133AC240FC416007E13BC /* Date+Extension.swift in Sources */,
@@ -739,6 +758,7 @@
 				A248FD6C24AF0103002E24C9 /* Post.swift in Sources */,
 				A2385A2724BDA76F00936B61 /* UserIDRequest.swift in Sources */,
 				A2F7486524041F6200396045 /* FeedViewController.swift in Sources */,
+				A2A77EC32530D2E600013E44 /* Strings.swift in Sources */,
 				74B79258202B3254006BCB41 /* AppDelegate.swift in Sources */,
 				A2DF35EE2405C2C0008A9CD7 /* FeedCollectionViewCell.swift in Sources */,
 				A24F2EDA252DDC3A00E09554 /* URLService.swift in Sources */,
@@ -756,6 +776,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		A2A77EC02530B91100013E44 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A2A77EBF2530B91100013E44 /* en */,
+				A2A77EC12530B92000013E44 /* ru */,
+				A2A77ECC2530E9F400013E44 /* uk */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		74B79264202B3254006BCB41 /* Debug */ = {
