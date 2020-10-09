@@ -46,6 +46,25 @@ public enum Localization {
     public static let unprocessable = Localization.tr("Localizable", "Error.Unprocessable")
   }
 
+  public enum Filter {
+    /// BoxBlur
+    public static let boxBlur = Localization.tr("Localizable", "Filter.BoxBlur")
+    /// ColorInvert
+    public static let colorInvert = Localization.tr("Localizable", "Filter.ColorInvert")
+    /// Noir
+    public static let noir = Localization.tr("Localizable", "Filter.Noir")
+    /// Normal
+    public static let normal = Localization.tr("Localizable", "Filter.Normal")
+    /// Pixellate
+    public static let pixellate = Localization.tr("Localizable", "Filter.Pixellate")
+    /// Sepia
+    public static let sepia = Localization.tr("Localizable", "Filter.Sepia")
+    /// SpotColor
+    public static let spotColor = Localization.tr("Localizable", "Filter.SpotColor")
+    /// Tonal
+    public static let tonal = Localization.tr("Localizable", "Filter.Tonal")
+  }
+
   public enum Names {
     /// Description
     public static let description = Localization.tr("Localizable", "Names.Description")

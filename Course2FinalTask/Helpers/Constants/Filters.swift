@@ -33,14 +33,14 @@ struct Filters {
 
         var description: String {
             switch self {
-                case .ciColorClamp: return "Normal"
-                case .ciBoxBlur: return "BoxBlur"
-                case .ciColorInvert: return "ColorInvert"
-                case .ciPhotoEffectNoir: return "Noir"
-                case .ciSpotColor: return "SpotColor"
-                case .ciPhotoEffectTonal: return "Tonal"
-                case .ciPixellate: return "Pixellate"
-                case .ciSepiaTone: return "Sepia"
+                case .ciColorClamp: return Localization.Filter.normal
+                case .ciBoxBlur: return Localization.Filter.boxBlur
+                case .ciColorInvert: return Localization.Filter.colorInvert
+                case .ciPhotoEffectNoir: return Localization.Filter.noir
+                case .ciSpotColor: return Localization.Filter.spotColor
+                case .ciPhotoEffectTonal: return Localization.Filter.tonal
+                case .ciPixellate: return Localization.Filter.pixellate
+                case .ciSepiaTone: return Localization.Filter.sepia
             }
         }
     }

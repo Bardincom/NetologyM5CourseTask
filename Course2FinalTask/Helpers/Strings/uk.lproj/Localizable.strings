@@ -45,3 +45,14 @@
 "Error.Not acceptable" = "Неприйнятно";
 "Error.Unprocessable" = "Невірний логін або пароль";
 "Error.Offline mode" = "Режим без мережі";
+
+// MARK: Filter
+
+"Filter.Normal" = "Без змін";
+"Filter.BoxBlur" = "Розмиття";
+"Filter.ColorInvert" = "Інверсия";
+"Filter.Noir" = "Нуар";
+"Filter.SpotColor" = "Точковий";
+"Filter.Tonal" = "Тональний";
+"Filter.Pixellate" = "В пікселях";
+"Filter.Sepia" = "Сепія";

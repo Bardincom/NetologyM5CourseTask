@@ -47,3 +47,15 @@
 "Error.Unprocessable" = "Unprocessable";
 "Error.Offline mode" = "Offline mode";
 
+// MARK: Filter
+
+"Filter.Normal" = "Normal";
+"Filter.BoxBlur" = "BoxBlur";
+"Filter.ColorInvert" = "ColorInvert";
+"Filter.Noir" = "Noir";
+"Filter.SpotColor" = "SpotColor";
+"Filter.Tonal" = "Tonal";
+"Filter.Pixellate" = "Pixellate";
+"Filter.Sepia" = "Sepia";
+
+

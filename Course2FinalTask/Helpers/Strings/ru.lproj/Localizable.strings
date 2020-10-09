@@ -45,3 +45,14 @@
 "Error.Not acceptable" = "Неприемлемо";
 "Error.Unprocessable" = "Неверный логин или пароль";
 "Error.Offline mode" = "Режим без сети";
+
+// MARK: Filter
+
+"Filter.Normal" = "Без изменений";
+"Filter.BoxBlur" = "Размытие";
+"Filter.ColorInvert" = "Инверсия";
+"Filter.Noir" = "Нуар";
+"Filter.SpotColor" = "Планшетный";
+"Filter.Tonal" = "Тональный";
+"Filter.Pixellate" = "В пикселях";
+"Filter.Sepia" = "Сепия";
