@@ -35,4 +35,15 @@
 "Button.Unfollow" = "Unfollow";
 "Button.Follow" =  "Follow";
 "Button.SignIn" = "Sign In";
+"Button.OK" = "OK";
+
+
+// MARK: Error
+
+"Error.Not found" = "Not found";
+"Error.Bad request" = "Bad request";
+"Error.Unauthorized" = "Unauthorized";
+"Error.Not acceptable" = "Not acceptable";
+"Error.Unprocessable" = "Unprocessable";
+"Error.Offline mode" = "Offline mode";
 

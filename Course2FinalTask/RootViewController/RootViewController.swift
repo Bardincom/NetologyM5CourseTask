@@ -58,19 +58,16 @@ final class RootViewController: UIViewController {
 private extension RootViewController {
     func assemblyTabBarController() -> UITabBarController {
         let feedViewController = FeedViewController()
-//        feedViewController.tabBarItem.title = ControllerSet.feedViewController
         feedViewController.tabBarItem.title = Localization.Controller.feed
         feedViewController.tabBarItem.image = Buttons.feed
         let feedNavigationController = UINavigationController(rootViewController: feedViewController)
 
         let profileViewController = ProfileViewController()
-//        profileViewController.tabBarItem.title = ControllerSet.profileViewController
         profileViewController.tabBarItem.title = Localization.Controller.profile
         profileViewController.tabBarItem.image = Buttons.profile
         let profileNavigationController = UINavigationController(rootViewController: profileViewController)
 
         let newPostViewController = NewPostViewController()
-//        newPostViewController.tabBarItem.title = ControllerSet.newPostViewController
         newPostViewController.tabBarItem.title = Localization.Controller.addPost
         newPostViewController.tabBarItem.image = Buttons.newPost
         let newNavigationController = UINavigationController(rootViewController: newPostViewController)
@@ -100,7 +97,6 @@ private extension RootViewController {
                         return
                     case .failure(let backendError):
                         guard backendError != .transferError else {
-                            print("Сеть не доступна: \(self.onlineServise.isOnline)")
                             self.switchToFeedViewController()
                             return
                         }

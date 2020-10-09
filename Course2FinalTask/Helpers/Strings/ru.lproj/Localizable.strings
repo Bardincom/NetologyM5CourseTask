@@ -35,3 +35,13 @@
 "Button.Unfollow" = "Отписаться";
 "Button.Follow" =  "Подписаться";
 "Button.SignIn" = "Войти";
+"Button.OK" = "Хорошо";
+
+// MARK: Error
+
+"Error.Not found" = "Не найден";
+"Error.Bad request" = "Неверный запрос";
+"Error.Unauthorized" = "Не авторизован";
+"Error.Not acceptable" = "Неприемлемо";
+"Error.Unprocessable" = "Неверный логин или пароль";
+"Error.Offline mode" = "Режим без сети";

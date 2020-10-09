@@ -14,6 +14,8 @@ public enum Localization {
   public enum Button {
     /// Follow
     public static let follow = Localization.tr("Localizable", "Button.Follow")
+    /// OK
+    public static let ok = Localization.tr("Localizable", "Button.OK")
     /// Sign In
     public static let signIn = Localization.tr("Localizable", "Button.SignIn")
     /// Unfollow
@@ -27,6 +29,21 @@ public enum Localization {
     public static let feed = Localization.tr("Localizable", "Controller.Feed")
     /// Profile
     public static let profile = Localization.tr("Localizable", "Controller.Profile")
+  }
+
+  public enum Error {
+    /// Bad request
+    public static let badRequest = Localization.tr("Localizable", "Error.Bad request")
+    /// Not acceptable
+    public static let notAcceptable = Localization.tr("Localizable", "Error.Not acceptable")
+    /// Not found
+    public static let notFound = Localization.tr("Localizable", "Error.Not found")
+    /// Offline mode
+    public static let offlineMode = Localization.tr("Localizable", "Error.Offline mode")
+    /// Unauthorized
+    public static let unauthorized = Localization.tr("Localizable", "Error.Unauthorized")
+    /// Unprocessable
+    public static let unprocessable = Localization.tr("Localizable", "Error.Unprocessable")
   }
 
   public enum Names {
