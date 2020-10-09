@@ -121,7 +121,7 @@ extension ProfileViewController {
             ActivityIndicator.stop()
             self.view.backgroundColor = SystemColors.backgroundColor
             self.title = self.userProfile?.username
-            self.tabBarItem.title = ControllerSet.profileViewController
+            self.tabBarItem.title = Localization.Controller.profile
             self.profileCollectionView.reloadData()
         }
     }
@@ -249,8 +249,7 @@ extension ProfileViewController: ProfileHeaderDelegate {
                 case .success(let users):
                     DispatchQueue.main.async {
                         userListViewController.usersList = users
-
-                        userListViewController.navigationItemTitle = Names.followers
+                        userListViewController.navigationItemTitle = Localization.Names.followers
                         self.navigationController?.pushViewController(userListViewController, animated: true)
                         ActivityIndicator.stop()
                     }
@@ -281,7 +280,7 @@ extension ProfileViewController: ProfileHeaderDelegate {
                 case .success(let users):
                     DispatchQueue.main.async {
                         userListViewController.usersList = users
-                        userListViewController.navigationItemTitle = Names.following
+                        userListViewController.navigationItemTitle = Localization.Names.following
                         self.navigationController?.pushViewController(userListViewController, animated: true)
                         ActivityIndicator.stop()
                     }
@@ -372,7 +371,7 @@ extension ProfileViewController {
 
             DispatchQueue.main.async {
                 self.title = self.offlineCurrentUser?.username
-                self.tabBarItem.title = ControllerSet.profileViewController
+                self.tabBarItem.title = Localization.Controller.profile
                 self.setLogout()
             }
 

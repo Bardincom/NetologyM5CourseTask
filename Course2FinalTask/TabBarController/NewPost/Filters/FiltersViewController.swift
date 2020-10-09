@@ -88,7 +88,7 @@ private extension FiltersViewController {
         navigationController?.navigationBar.shadowImage = UIImage()
 
         bigImage.image = filterPhoto
-        title = Names.filters
+        title = Localization.Names.filters
     }
 
     @objc

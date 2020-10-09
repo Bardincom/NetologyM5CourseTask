@@ -21,7 +21,7 @@ final class LoginScreenViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        signInButton.layer.cornerRadius = Constants.cornerRadiusButton
+        customizeUI()
         disableSignInButton()
         setDelegate()
     }
@@ -34,7 +34,6 @@ final class LoginScreenViewController: UIViewController {
         login.resignFirstResponder()
         password.resignFirstResponder()
     }
-
 }
 
 // MARK: TextFieldDelegate
@@ -70,6 +69,13 @@ extension LoginScreenViewController: UITextFieldDelegate {
 
 // MARK: LoginScreenViewController + Helper
 private extension LoginScreenViewController {
+    func customizeUI() {
+        signInButton.setTitle(Localization.Button.signIn, for: .normal)
+        signInButton.layer.cornerRadius = Constants.cornerRadiusButton
+        login.placeholder = Localization.Placeholder.login
+        password.placeholder = Localization.Placeholder.password
+    }
+
     func disableSignInButton() {
         signInButton.isEnabled = false
         signInButton.alpha = 0.3
