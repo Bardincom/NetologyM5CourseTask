@@ -161,6 +161,7 @@
 		A2A77EBF2530B91100013E44 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A2A77EC12530B92000013E44 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A2A77EC22530D2E600013E44 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		A2A77ECC2530E9F400013E44 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A2AB4FFE2465B74B007BB8F9 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		A2C014E22454F228001A4894 /* NewPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewController.swift; sourceTree = "<group>"; };
 		A2C014E32454F228001A4894 /* NewPostViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewPostViewController.xib; sourceTree = "<group>"; };
@@ -590,6 +591,7 @@
 				en,
 				Base,
 				ru,
+				uk,
 			);
 			mainGroup = 74B7924B202B3254006BCB41;
 			productRefGroup = 74B79255202B3254006BCB41 /* Products */;
@@ -781,6 +783,7 @@
 			children = (
 				A2A77EBF2530B91100013E44 /* en */,
 				A2A77EC12530B92000013E44 /* ru */,
+				A2A77ECC2530E9F400013E44 /* uk */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

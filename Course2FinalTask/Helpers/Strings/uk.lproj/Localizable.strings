@@ -1,0 +1,37 @@
+/*
+  Localizable.string.swift
+  Course3FinalTask
+
+  Created by Aleksey Bardin on 09.10.2020.
+  Copyright © 2020 Bardincom. All rights reserved.
+*/
+
+//import Foundation
+
+// MARK: Controller
+
+"Controller.Feed" = "Стрічка";
+"Controller.Profile" = "Профіль";
+"Controller.Add Post" = "Додати пост";
+
+// MARK: Names
+
+"Names.FeedTitle" = "Instagram";
+"Names.Likes" = "Вподобань";
+"Names.Followers" = "Читачі";
+"Names.Following" = "Стежать";
+"Names.New Post" = "Нова публікація";
+"Names.Filters" = "Фільтри";
+"Names.Description" = "Опис";
+
+// MARK: Placeholder
+
+"Placeholder.Login" = "Ім'я користувача";
+"Placeholder.Password" = "Пароль";
+"Placeholder.Description" = "Додайте опис";
+
+// MARK: Button
+
+"Button.Unfollow" = "Відстежується";
+"Button.Follow" =  "Стежити";
+"Button.SignIn" = "Увійти";

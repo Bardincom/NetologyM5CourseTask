@@ -3,13 +3,13 @@ xcassets:
     - Course2FinalTask/Resources/IconAssets.xcassets
     - Course2FinalTask/Resources/ColorAssets.xcassets
   outputs:
-    - templateName: swift4
+    - templateName: swift5
       output: Course2FinalTask/Helpers/Constants/Assets.swift
 
 strings:
   inputs: Course2FinalTask/Helpers/Strings/en.lproj/Localizable.strings
   outputs:
-    - templateName: structured-swift4
+    - templateName: structured-swift5
       output: Course2FinalTask/Helpers/Constants/Strings.swift
       params:
         enumName: Localization

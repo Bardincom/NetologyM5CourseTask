@@ -2,7 +2,7 @@ PODS:
   - Kingfisher (5.15.5):
     - Kingfisher/Core (= 5.15.5)
   - Kingfisher/Core (5.15.5)
-  - SwiftGen (6.3.0)
+  - SwiftGen (6.4.0)
   - SwiftLint (0.40.3)
 
 DEPENDENCIES:
@@ -18,9 +18,9 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Kingfisher: e3ec347a5ab8817b7585ef46923a2d2b9a7d8fbe
-  SwiftGen: 3d5024a47ea79e408cded20763d7a17d18a4548c
+  SwiftGen: 67860cc7c3cfc2ed25b9b74cfd55495fc89f9108
   SwiftLint: dfd554ff0dff17288ee574814ccdd5cea85d76f7
 
-PODFILE CHECKSUM: 4d497fb2b43f33a674bffd6609c37e67ee91a9bf
+PODFILE CHECKSUM: 3f6c57abf18867b75976fb5067b37cffb22d4fd5
 
 COCOAPODS: 1.9.3
