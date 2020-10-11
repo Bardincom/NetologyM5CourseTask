@@ -8,8 +8,8 @@
 
 import Foundation
 
-final class CheckOnlineServise {
-    static let shared = CheckOnlineServise()
+final class CheckOnlineService {
+    static let shared = CheckOnlineService()
     var isOnline = true
     private init() {}
 

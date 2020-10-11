@@ -25,8 +25,8 @@
 		A24F2EDA252DDC3A00E09554 /* URLService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2ED9252DDC3A00E09554 /* URLService.swift */; };
 		A24F2EDC252DE0EC00E09554 /* DataTaskService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EDB252DE0EC00E09554 /* DataTaskService.swift */; };
 		A24F2EDE252DE3A000E09554 /* RequestServise.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EDD252DE3A000E09554 /* RequestServise.swift */; };
-		A24F2EE0252DE70700E09554 /* CheckOnlineServise.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EDF252DE70700E09554 /* CheckOnlineServise.swift */; };
-		A24F2EE2252DF49D00E09554 /* AuthorisationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EE1252DF49D00E09554 /* AuthorisationService.swift */; };
+		A24F2EE0252DE70700E09554 /* CheckOnlineService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EDF252DE70700E09554 /* CheckOnlineService.swift */; };
+		A24F2EE2252DF49D00E09554 /* AuthorizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EE1252DF49D00E09554 /* AuthorizationService.swift */; };
 		A24F2EE4252DF96600E09554 /* GETService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EE3252DF96600E09554 /* GETService.swift */; };
 		A24F2EE6252DF9F900E09554 /* POSTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EE5252DF9F900E09554 /* POSTService.swift */; };
 		A24F2EE8252E012C00E09554 /* CheckTokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24F2EE7252E012C00E09554 /* CheckTokenService.swift */; };
@@ -120,8 +120,8 @@
 		A24F2ED9252DDC3A00E09554 /* URLService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLService.swift; sourceTree = "<group>"; };
 		A24F2EDB252DE0EC00E09554 /* DataTaskService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTaskService.swift; sourceTree = "<group>"; };
 		A24F2EDD252DE3A000E09554 /* RequestServise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestServise.swift; sourceTree = "<group>"; };
-		A24F2EDF252DE70700E09554 /* CheckOnlineServise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckOnlineServise.swift; sourceTree = "<group>"; };
-		A24F2EE1252DF49D00E09554 /* AuthorisationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorisationService.swift; sourceTree = "<group>"; };
+		A24F2EDF252DE70700E09554 /* CheckOnlineService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckOnlineService.swift; sourceTree = "<group>"; };
+		A24F2EE1252DF49D00E09554 /* AuthorizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationService.swift; sourceTree = "<group>"; };
 		A24F2EE3252DF96600E09554 /* GETService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GETService.swift; sourceTree = "<group>"; };
 		A24F2EE5252DF9F900E09554 /* POSTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POSTService.swift; sourceTree = "<group>"; };
 		A24F2EE7252E012C00E09554 /* CheckTokenService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckTokenService.swift; sourceTree = "<group>"; };
@@ -376,10 +376,10 @@
 				A24F2ED9252DDC3A00E09554 /* URLService.swift */,
 				A24F2EDB252DE0EC00E09554 /* DataTaskService.swift */,
 				A24F2EDD252DE3A000E09554 /* RequestServise.swift */,
-				A24F2EDF252DE70700E09554 /* CheckOnlineServise.swift */,
+				A24F2EDF252DE70700E09554 /* CheckOnlineService.swift */,
 				A24F2EE3252DF96600E09554 /* GETService.swift */,
 				A24F2EE5252DF9F900E09554 /* POSTService.swift */,
-				A24F2EE1252DF49D00E09554 /* AuthorisationService.swift */,
+				A24F2EE1252DF49D00E09554 /* AuthorizationService.swift */,
 				A24F2EE7252E012C00E09554 /* CheckTokenService.swift */,
 			);
 			path = Service;
@@ -724,7 +724,7 @@
 				A228127125278E34005C3642 /* NewPostCollectionViewCell.swift in Sources */,
 				A23BC8AA2419054400640E54 /* Fonts.swift in Sources */,
 				A248FD6A24AF00F7002E24C9 /* User.swift in Sources */,
-				A24F2EE2252DF49D00E09554 /* AuthorisationService.swift in Sources */,
+				A24F2EE2252DF49D00E09554 /* AuthorizationService.swift in Sources */,
 				A25685C024335B9400A09C0D /* UserListTableViewCell.swift in Sources */,
 				A25685BD2433307400A09C0D /* ProfileViewController.swift in Sources */,
 				A2FE06EA247322170051CC9E /* Assets.swift in Sources */,
@@ -753,7 +753,7 @@
 				A24F2EE4252DF96600E09554 /* GETService.swift in Sources */,
 				A2385A2524BDA54600936B61 /* Authorization.swift in Sources */,
 				A228127425279BF3005C3642 /* PhotoService.swift in Sources */,
-				A24F2EE0252DE70700E09554 /* CheckOnlineServise.swift in Sources */,
+				A24F2EE0252DE70700E09554 /* CheckOnlineService.swift in Sources */,
 				A2385A2924BDAA7A00936B61 /* PostIDRequest.swift in Sources */,
 				A248FD6C24AF0103002E24C9 /* Post.swift in Sources */,
 				A2385A2724BDA76F00936B61 /* UserIDRequest.swift in Sources */,

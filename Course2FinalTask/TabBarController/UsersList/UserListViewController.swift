@@ -14,7 +14,7 @@ final class UserListViewController: UIViewController {
     var navigationItemTitle: String?
     private let keychain = Keychain.shared
     private let networkService = NetworkService()
-    private let onlineServise = CheckOnlineServise.shared
+    private let onlineService = CheckOnlineService.shared
 
     @IBOutlet var userListTableView: UITableView! {
         willSet {
@@ -66,7 +66,7 @@ extension UserListViewController: UITableViewDelegate {
 extension UserListViewController: UserListTableViewCellDelegate {
 
     func followUnfollowUser(cell: UserListTableViewCell) {
-        guard onlineServise.isOnline else {
+        guard onlineService.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }

@@ -10,23 +10,23 @@ import Foundation
 
 final class NetworkService {
 
-    private let authorizationServise: AuthorizationProtocol
+    private let authorizationService: AuthorizationProtocol
     private let checkTokenService: CheckTokenProtocol
     private let getService: GETProtocol
     private let postService: POSTProtocol
 
-    init(authorizationServise: AuthorizationProtocol = AuthorizationService(),
+    init(authorizationService: AuthorizationProtocol = AuthorizationService(),
          checkTokenService: CheckTokenProtocol = CheckTokenService(),
          getService: GETProtocol = GETService(),
          postService: POSTProtocol = POSTService()) {
-        self.authorizationServise = authorizationServise
+        self.authorizationService = authorizationService
         self.checkTokenService = checkTokenService
         self.getService = getService
         self.postService = postService
     }
 
     func authorization() -> AuthorizationProtocol {
-        return authorizationServise
+        return authorizationService
     }
 
     func checkToken() -> CheckTokenProtocol {

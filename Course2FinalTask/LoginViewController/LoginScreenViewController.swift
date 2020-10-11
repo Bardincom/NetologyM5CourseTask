@@ -16,7 +16,7 @@ final class LoginScreenViewController: UIViewController {
 
     lazy var rootViewController = AppDelegate.shared.rootViewController
     private let networkService = NetworkService()
-    private let onlineServise = CheckOnlineServise.shared
+    private let onlineService = CheckOnlineService.shared
     private var keychain = Keychain.shared
 
     override func viewDidLoad() {
@@ -87,7 +87,7 @@ private extension LoginScreenViewController {
     }
 
     func authorization() {
-        guard onlineServise.isOnline else {
+        guard onlineService.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -96,7 +96,7 @@ private extension LoginScreenViewController {
             let login = login.text,
             let password = password.text else { return }
 
-        networkService.authorization().signin(login: login, password: password) { [weak self] result in
+        networkService.authorization().signIn(login: login, password: password) { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {

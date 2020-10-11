@@ -21,14 +21,14 @@ class POSTService: POSTProtocol {
 
     private let encoder = JSONEncoder()
     private let urlService: URLServiceProtocol
-    private let requestServise: RequestServiceProtocol
+    private let requestService: RequestServiceProtocol
     private let dataProvider: DataTaskServiceProtocol
 
     init(urlService: URLServiceProtocol = URLService(),
-         requestServise: RequestServiceProtocol = RequestService(),
+         requestService: RequestServiceProtocol = RequestService(),
          dataProvider: DataTaskServiceProtocol = DataTaskService()) {
         self.urlService = urlService
-        self.requestServise = requestServise
+        self.requestService = requestService
         self.dataProvider = dataProvider
     }
 
@@ -38,7 +38,7 @@ class POSTService: POSTProtocol {
                                      _ completionHandler: @escaping ResultBlock<User>) {
         guard let url = urlService.preparationURL(path: UserPath.follow) else { return }
         let userIDRequest = UserIDRequest(userID: userID)
-        var request = requestServise.preparationRequest(url, HttpMethod.post, token)
+        var request = requestService.preparationRequest(url, HttpMethod.post, token)
         request.httpBody = try? encoder.encode(userIDRequest)
         dataProvider.dataTask(with: request, completionHandler: completionHandler)
     }
@@ -49,7 +49,7 @@ class POSTService: POSTProtocol {
                                        _ completionHandler: @escaping ResultBlock<User>) {
         guard let url = urlService.preparationURL(path: UserPath.unfollow) else { return }
         let userIDRequest = UserIDRequest(userID: userID)
-        var request = requestServise.preparationRequest(url, HttpMethod.post, token)
+        var request = requestService.preparationRequest(url, HttpMethod.post, token)
         request.httpBody = try? encoder.encode(userIDRequest)
         dataProvider.dataTask(with: request, completionHandler: completionHandler)
     }
@@ -60,7 +60,7 @@ class POSTService: POSTProtocol {
                                        _ completionHandler: @escaping ResultBlock<Post>) {
         guard let url = urlService.preparationURL(path: PostPath.like) else { return }
         let postIDRequest = PostIDRequest(postID: postID)
-        var request = requestServise.preparationRequest(url, HttpMethod.post, token)
+        var request = requestService.preparationRequest(url, HttpMethod.post, token)
         request.httpBody = try? encoder.encode(postIDRequest)
         dataProvider.dataTask(with: request, completionHandler: completionHandler)
     }
@@ -71,7 +71,7 @@ class POSTService: POSTProtocol {
                                          _ completionHandler: @escaping ResultBlock<Post>) {
         guard let url = urlService.preparationURL(path: PostPath.unlike) else { return }
         let postIDRequest = PostIDRequest(postID: postID)
-        var request = requestServise.preparationRequest(url, HttpMethod.post, token)
+        var request = requestService.preparationRequest(url, HttpMethod.post, token)
         request.httpBody = try? encoder.encode(postIDRequest)
         dataProvider.dataTask(with: request, completionHandler: completionHandler)
     }
@@ -81,9 +81,9 @@ class POSTService: POSTProtocol {
                     _ description: String,
                     _ completionHandler: @escaping ResultBlock<Post>) {
         guard let url = urlService.preparationURL(path: PostPath.create) else { return }
-        guard let imageData = image.jpegData(compressionQuality: 1)?.base64EncodedString() else { return }
+        guard let imageData = image.jpegData(compressionQuality: 0.5)?.base64EncodedString() else { return }
         let newPostRequest = NewPostRequest(image: imageData, description: description)
-        var request = requestServise.preparationRequest(url, HttpMethod.post, token)
+        var request = requestService.preparationRequest(url, HttpMethod.post, token)
         request.httpBody = try? encoder.encode(newPostRequest)
         dataProvider.dataTask(with: request, completionHandler: completionHandler)
     }

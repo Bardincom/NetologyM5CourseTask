@@ -11,15 +11,15 @@ import Photos
 
 final class NewPostViewController: UIViewController {
 
-    var photoDataSourse: PhotoServiceProtocol
+    var photoDataSource: PhotoServiceProtocol
 
-    fileprivate let imageManager = PHCachingImageManager()
-    fileprivate var thumbnailSize: CGSize?
-    fileprivate var availableWidth: CGFloat = 0
-    fileprivate var previousPreheatRect = CGRect.zero
+    private let imageManager = PHCachingImageManager()
+    private var thumbnailSize: CGSize?
+    private var availableWidth: CGFloat = 0
+    private var previousPreheatRect = CGRect.zero
 
-    init(photoDataSourse: PhotoServiceProtocol = PhotoService()) {
-        self.photoDataSourse = photoDataSourse
+    init(photoDataSource: PhotoServiceProtocol = PhotoService()) {
+        self.photoDataSource = photoDataSource
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -42,7 +42,7 @@ final class NewPostViewController: UIViewController {
         navigationItem.title = Localization.Names.newPost
         configureTitle()
         PHPhotoLibrary.shared().register(self)
-        photoDataSourse.getImages()
+        photoDataSource.getImages()
     }
 
     deinit {
@@ -82,12 +82,12 @@ final class NewPostViewController: UIViewController {
 
     // MARK: Asset Caching
 
-    fileprivate func resetCachedAssets() {
+    private func resetCachedAssets() {
         imageManager.stopCachingImagesForAllAssets()
         previousPreheatRect = .zero
     }
     /// - Tag: UpdateAssets
-    fileprivate func updateCachedAssets() {
+    private func updateCachedAssets() {
         // Update only if the view is visible.
         guard isViewLoaded && view.window != nil else { return }
 
@@ -103,10 +103,10 @@ final class NewPostViewController: UIViewController {
         let (addedRects, removedRects) = differencesBetweenRects(previousPreheatRect, preheatRect)
         let addedAssets = addedRects
             .flatMap { rect in newPostViewController.indexPathsForElements(in: rect) }
-            .map { indexPath in photoDataSourse.getFetchResult().object(at: indexPath.item) }
+            .map { indexPath in photoDataSource.getFetchResult().object(at: indexPath.item) }
         let removedAssets = removedRects
             .flatMap { rect in newPostViewController.indexPathsForElements(in: rect) }
-            .map { indexPath in photoDataSourse.getFetchResult().object(at: indexPath.item) }
+            .map { indexPath in photoDataSource.getFetchResult().object(at: indexPath.item) }
 
         guard let thumbnailSize = thumbnailSize else { return }
 
@@ -118,7 +118,7 @@ final class NewPostViewController: UIViewController {
 
     }
 
-    fileprivate func differencesBetweenRects(_ old: CGRect, _ new: CGRect) -> (added: [CGRect], removed: [CGRect]) {
+    private func differencesBetweenRects(_ old: CGRect, _ new: CGRect) -> (added: [CGRect], removed: [CGRect]) {
         if old.intersects(new) {
             var added = [CGRect]()
             if new.maxY > old.maxY {
@@ -144,16 +144,15 @@ final class NewPostViewController: UIViewController {
 extension NewPostViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photoDataSourse.getCountImage()
+        return photoDataSource.getCountImage()
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let cell = collectionView.dequeue(cell: NewPostCollectionViewCell.self, for: indexPath)
-        let asset = photoDataSourse.getFetchResult().object(at: indexPath.item)
+        let asset = photoDataSource.getFetchResult().object(at: indexPath.item)
         guard let thumbnailSize = thumbnailSize else { return cell }
         cell.representedAssetIdentifier = asset.localIdentifier
-
         imageManager.requestImage(for: asset, targetSize: thumbnailSize, contentMode: .aspectFill, options: nil) { image, _ in
             if cell.representedAssetIdentifier == asset.localIdentifier {
                 cell.thumbnailImage = image
@@ -170,7 +169,7 @@ extension NewPostViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
         let filtersViewController = FiltersViewController()
-        let selectAsset = photoDataSourse.getFetchResult().object(at: indexPath.item)
+        let selectAsset = photoDataSource.getFetchResult().object(at: indexPath.item)
 
         filtersViewController.asset = selectAsset
 
@@ -182,10 +181,10 @@ extension NewPostViewController: UICollectionViewDelegateFlowLayout {
 
 extension NewPostViewController: PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_ changeInstance: PHChange) {
-        guard let changes = changeInstance.changeDetails(for: photoDataSourse.getFetchResult()) else { return }
+        guard let changes = changeInstance.changeDetails(for: photoDataSource.getFetchResult()) else { return }
 
         DispatchQueue.main.async {
-            self.photoDataSourse.fetchResult = changes.fetchResultAfterChanges
+            self.photoDataSource.fetchResult = changes.fetchResultAfterChanges
 
             guard changes.hasIncrementalChanges else {
                 self.newPostViewController.reloadData()

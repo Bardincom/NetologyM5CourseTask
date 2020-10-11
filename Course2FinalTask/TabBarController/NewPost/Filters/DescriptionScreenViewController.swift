@@ -16,7 +16,7 @@ final class DescriptionScreenViewController: UIViewController {
 
     public var newPublishedPhoto: UIImage?
     private var networkService = NetworkService()
-    private let onlineServise = CheckOnlineServise.shared
+    private let onlineService = CheckOnlineService.shared
     private var keychain = Keychain.shared
 
     override func viewDidLoad() {
@@ -52,7 +52,7 @@ private extension DescriptionScreenViewController {
     }
 
     func sendPost() {
-        guard onlineServise.isOnline else {
+        guard onlineService.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
