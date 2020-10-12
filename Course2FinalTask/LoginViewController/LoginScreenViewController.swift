@@ -47,7 +47,10 @@ extension LoginScreenViewController: UITextFieldDelegate {
         guard
             let login = login.text,
             let password = password.text,
-            !login.isEmpty && !password.isEmpty else { return false }
+            !login.isEmpty && !password.isEmpty
+        else {
+            return false
+        }
 
         authorization()
 
@@ -58,9 +61,10 @@ extension LoginScreenViewController: UITextFieldDelegate {
         guard
             let login = login.text,
             let password = password.text,
-            !login.isEmpty && !password.isEmpty else {
-                disableSignInButton()
-                return
+            !login.isEmpty && !password.isEmpty
+        else {
+            disableSignInButton()
+            return
         }
 
         enableSignInButton()
@@ -94,7 +98,10 @@ private extension LoginScreenViewController {
 
         guard
             let login = login.text,
-            let password = password.text else { return }
+            let password = password.text
+        else {
+            return
+        }
 
         networkService.authorization().signIn(login: login, password: password) { [weak self] result in
             guard let self = self else { return }

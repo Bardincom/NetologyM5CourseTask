@@ -21,14 +21,19 @@ final class DescriptionScreenViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = SystemColors.backgroundColor
+
+        setupUI()
         setupFiltersViewController()
-        setupBackButton()
         setDelegate()
     }
 }
 
 private extension DescriptionScreenViewController {
+
+    func  setupUI() {
+        view.backgroundColor = SystemColors.backgroundColor
+        setupBackButton()
+    }
 
     func setupFiltersViewController() {
         publishedPhoto.image = newPublishedPhoto

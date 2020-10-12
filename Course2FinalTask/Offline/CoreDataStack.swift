@@ -36,6 +36,19 @@ final class CoreDataStack {
         return persistentContainer.viewContext
     }
 
+    func save(context: NSManagedObjectContext) {
+        let privateContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        privateContext.parent = context
+        guard context.hasChanges else { return }
+        context.mergePolicy = NSMergePolicy(merge: .mergeByPropertyObjectTrumpMergePolicyType)
+        do {
+            try context.save()
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+    }
+
     func save() {
         guard getContext().hasChanges else { return }
         let context = getContext()

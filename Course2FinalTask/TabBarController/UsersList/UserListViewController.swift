@@ -26,10 +26,7 @@ final class UserListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureTitle()
-        setupBackButton()
-        title = navigationItemTitle
-        view.backgroundColor = SystemColors.backgroundColor
+        setupUI()
     }
 }
 
@@ -73,7 +70,10 @@ extension UserListViewController: UserListTableViewCellDelegate {
 
         guard
             let token = keychain.readToken(),
-            let indexPath = userListTableView.indexPath(for: cell) else { return }
+            let indexPath = userListTableView.indexPath(for: cell)
+        else {
+            return
+        }
 
         let userProfile = usersList[indexPath.row]
 
@@ -114,5 +114,15 @@ extension UserListViewController: UserListTableViewCellDelegate {
                     Alert.showAlert(self, error.description)
             }
         }
+    }
+}
+
+// MARK: Helpers
+private extension UserListViewController {
+    func setupUI() {
+        configureTitle()
+        setupBackButton()
+        title = navigationItemTitle
+        view.backgroundColor = SystemColors.backgroundColor
     }
 }

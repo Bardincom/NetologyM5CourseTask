@@ -10,7 +10,7 @@ import UIKit
 
 final class FeedViewController: UIViewController {
 
-    enum Constants {
+    private enum Constants {
         static let topOffset: CGFloat = 8
         static let avatarHeight: CGFloat = 35
         static let topPostImageOffset: CGFloat = 8
@@ -56,11 +56,8 @@ final class FeedViewController: UIViewController {
             switch result {
                 case .success(let posts):
                     self.postsArray = posts
-                    // Сохранение в CoreData
-                    posts.forEach { post in
-                        self.coreDataService.saveOfflinePost().savePostOffline(post: post)
-                    }
-
+                    // save in CoreData
+                    self.coreDataService.saveOfflinePost().savePostsOffline(posts)
                 case .failure(let error):
                     Alert.showAlert(self, error.description)
             }
@@ -79,7 +76,7 @@ final class FeedViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = SystemColors.backgroundColor
+
         feedCollectionView.refreshControl = refreshControl
         // сюда попадает новая публикация и размещается вверху ленты
         newPost = { [weak self] post in
@@ -90,10 +87,7 @@ final class FeedViewController: UIViewController {
             self?.feedCollectionView.reloadData()
         }
         alertAction?(isViewLoaded)
-
-        addCameraButton()
-        navigationItem.title = Localization.Names.feedTitle
-        configureTitle()
+        setupUI()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -135,11 +129,6 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
         let height = Constants.topOffset + Constants.avatarHeight + Constants.topPostImageOffset + imageHeight + Constants.isLikeIconHeight + Constants.descriptionHeight
 
         return CGSize(width: width, height: height)
-    }
-
-    /// убираю отступ между ячейками
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
     }
 }
 
@@ -258,6 +247,13 @@ extension FeedViewController: FeedCollectionViewProtocol {
 }
 
 private extension FeedViewController {
+
+    func setupUI() {
+        view.backgroundColor = SystemColors.backgroundColor
+        navigationItem.title = Localization.Names.feedTitle
+        addCameraButton()
+        configureTitle()
+    }
 
     func addCameraButton() {
         let backButton = UIBarButtonItem(image: Buttons.camera,

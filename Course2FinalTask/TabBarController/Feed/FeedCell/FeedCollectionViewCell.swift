@@ -66,12 +66,19 @@ final class FeedCollectionViewCell: UICollectionViewCell {
 
         guard
             let avatar = post.authorAvatar,
-            let avatarImage = UIImage(data: avatar) else { return }
+            let avatarImage = UIImage(data: avatar)
+        else {
+            return
+        }
         avatarImageView.image = avatarImage
+        avatarImageView.layer.cornerRadius = avatarImageView.frame.height / 2
 
         guard
             let image = post.image,
-            let postImage = UIImage(data: image) else { return }
+            let postImage = UIImage(data: image)
+        else {
+            return
+        }
         imageView.image = postImage
     }
 }

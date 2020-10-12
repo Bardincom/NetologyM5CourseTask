@@ -43,12 +43,7 @@ final class ProfileViewController: UIViewController {
         super.viewWillAppear(animated)
         guard checkOnlineSession() else { return }
 
-        if let userID = feedUserID {
-            loadUserByProfile(userID)
-            setupBackButton()
-        } else {
-            loadCurrentUser()
-        }
+        setupUser()
     }
 }
 
@@ -115,6 +110,15 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: setViewController
 extension ProfileViewController {
+
+    func setupUser() {
+        guard let userID = feedUserID else {
+            loadCurrentUser()
+            return
+        }
+        loadUserByProfile(userID)
+        setupBackButton()
+    }
 
     func updateUI() {
         DispatchQueue.main.async {
@@ -295,40 +299,17 @@ extension ProfileViewController: ProfileHeaderDelegate {
 
         guard
             let token = keychain.readToken(),
-            let userProfile = userProfile else { return }
-
-        guard userProfile.currentUserFollowsThisUser else {
-            networkService.postRequest().followCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
-                guard let self = self else { return }
-
-                switch result {
-                    case .success(let user):
-                        self.userProfile = user
-                        DispatchQueue.main.async {
-                            self.currentUser?.followedByCount += 1
-                            self.profileCollectionView.reloadData()
-                        }
-                    case .failure(let error):
-                        Alert.showAlert(self, error.description)
-                }
-            }
+            let userProfile = userProfile
+        else {
             return
         }
 
-        networkService.postRequest().unfollowCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
-            guard let self = self else { return }
-
-            switch result {
-                case .success(let user):
-                    self.userProfile = user
-                    DispatchQueue.main.async {
-                        self.currentUser?.followsCount -= 1
-                        self.profileCollectionView.reloadData()
-                    }
-                case .failure(let error):
-                    Alert.showAlert(self, error.description)
-            }
+        guard userProfile.currentUserFollowsThisUser else {
+            followCurrentUserWithUserID(token, userProfile.id)
+            return
         }
+
+        unfollowCurrentUserWithUserID(token, userProfile.id)
     }
 }
 
@@ -352,6 +333,41 @@ extension ProfileViewController: UITabBarControllerDelegate {
 }
 
 extension ProfileViewController {
+
+    func followCurrentUserWithUserID(_ token: String, _ userID: String) {
+        networkService.postRequest().followCurrentUserWithUserID(token, userID) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+                case .success(let user):
+                    self.userProfile = user
+                    DispatchQueue.main.async {
+                        self.currentUser?.followedByCount += 1
+                        self.profileCollectionView.reloadData()
+                    }
+                case .failure(let error):
+                    Alert.showAlert(self, error.description)
+            }
+        }
+    }
+
+    func unfollowCurrentUserWithUserID(_ token: String, _ userID: String) {
+        networkService.postRequest().unfollowCurrentUserWithUserID(token, userID) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+                case .success(let user):
+                    self.userProfile = user
+                    DispatchQueue.main.async {
+                        self.currentUser?.followsCount -= 1
+                        self.profileCollectionView.reloadData()
+                    }
+                case .failure(let error):
+                    Alert.showAlert(self, error.description)
+            }
+        }
+    }
+
     func checkOnlineSession() -> Bool {
         guard onlineService.isOnline else {
 

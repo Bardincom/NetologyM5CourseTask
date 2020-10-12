@@ -10,12 +10,14 @@ import Foundation
 
 protocol PostOfflineProtocol {
     func savePostOffline(post: Post)
+    func savePostsOffline(_ posts: [Post])
 }
 
 class PostOfflineService: PostOfflineProtocol {
     private let coreDataManager = CoreDataStack.shared
 
     func savePostOffline(post: Post) {
+        let context = coreDataManager.getContext()
         let postOff = coreDataManager.createObject(from: PostOffline.self)
         let postAuthorAvatarImageData = try? Data(contentsOf: post.authorAvatar)
         let postImageData = try? Data(contentsOf: post.image)
@@ -29,7 +31,13 @@ class PostOfflineService: PostOfflineProtocol {
         postOff.likedByCount = Int16(post.likedByCount)
         postOff.id = post.id
         postOff.image = postImageData
-
-        coreDataManager.save()
+        coreDataManager.save(context: context)
     }
+
+    func savePostsOffline(_ posts: [Post]) {
+        posts.forEach { post in
+            savePostOffline(post: post)
+        }
+    }
+
 }
