@@ -16,6 +16,7 @@ class UserOfflineService: UserOfflineProtocol {
     private let coreDataManager = CoreDataStack.shared
 
     func saveCurrentUserOffline(user: User) {
+        let context = coreDataManager.getContext()
         let userAvatarImageData = try? Data(contentsOf: user.avatar)
         let currentUserOffline = coreDataManager.createObject(from: UserOffline.self)
         currentUserOffline.avatar = userAvatarImageData
@@ -27,6 +28,6 @@ class UserOfflineService: UserOfflineProtocol {
         currentUserOffline.id = user.id
         currentUserOffline.username = user.username
 
-        coreDataManager.save()
+        coreDataManager.save(context: context)
     }
 }

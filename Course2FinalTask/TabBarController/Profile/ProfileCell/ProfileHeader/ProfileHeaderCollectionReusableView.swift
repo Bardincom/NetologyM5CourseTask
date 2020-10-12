@@ -23,6 +23,7 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
     @IBOutlet private var followButton: UIButton!
 
     var currentUser: User?
+
     private let networkService = NetworkService()
     private let keychain = Keychain.shared
 
@@ -30,18 +31,7 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        guard let token = keychain.readToken() else { return }
-
-        networkService.getRequest().getCurrentUser(token) { [weak self] currentUser in
-            guard let self = self else { return }
-            switch currentUser {
-                case .success(let currentUser):
-                    self.currentUser = currentUser
-                case .failure( _):
-                    break
-            }
-        }
-
+        checkCurrentUser()
         followButton.layer.cornerRadius = 6
         setupTapGestureRecognizer()
     }
@@ -62,7 +52,7 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
         buttonDisplay(user: user)
     }
 
-    func buttonDisplay(user: User) {
+    private func buttonDisplay(user: User) {
 
         if user.currentUserFollowsThisUser {
             followButton.isHidden = false
@@ -96,22 +86,20 @@ final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
             let userAvatarImage = UIImage(data: avatarData) else { return }
         avatarImage.image = userAvatarImage
 
-        buttonDisplay(userOffline: userOffline)
     }
 
-    func buttonDisplay(userOffline: UserOffline) {
+    func checkCurrentUser() {
+        guard let token = keychain.readToken() else { return }
 
-        if userOffline.currentUserFollowsThisUser {
-            followButton.isHidden = false
-            followButton.setTitle("\(Localization.Button.unfollow)", for: .normal)
-            followButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
-        } else {
-            followButton.isHidden = false
-            followButton.setTitle("\(Localization.Button.follow)", for: .normal)
-            followButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
+        networkService.getRequest().getCurrentUser(token) { [weak self] currentUser in
+            guard let self = self else { return }
+            switch currentUser {
+                case .success(let currentUser):
+                    self.currentUser = currentUser
+                case .failure( _):
+                    break
+            }
         }
-
-        followButton.isHidden = true
     }
 }
 

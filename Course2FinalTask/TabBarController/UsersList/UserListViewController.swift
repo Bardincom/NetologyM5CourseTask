@@ -14,7 +14,7 @@ final class UserListViewController: UIViewController {
     var navigationItemTitle: String?
     private let keychain = Keychain.shared
     private let networkService = NetworkService()
-    private let onlineServise = CheckOnlineServise.shared
+    private let onlineService = CheckOnlineService.shared
 
     @IBOutlet var userListTableView: UITableView! {
         willSet {
@@ -26,10 +26,7 @@ final class UserListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureTitle()
-        setupBackButton()
-        title = navigationItemTitle
-        view.backgroundColor = SystemColors.backgroundColor
+        setupUI()
     }
 }
 
@@ -66,14 +63,17 @@ extension UserListViewController: UITableViewDelegate {
 extension UserListViewController: UserListTableViewCellDelegate {
 
     func followUnfollowUser(cell: UserListTableViewCell) {
-        guard onlineServise.isOnline else {
+        guard onlineService.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
 
         guard
             let token = keychain.readToken(),
-            let indexPath = userListTableView.indexPath(for: cell) else { return }
+            let indexPath = userListTableView.indexPath(for: cell)
+        else {
+            return
+        }
 
         let userProfile = usersList[indexPath.row]
 
@@ -114,5 +114,15 @@ extension UserListViewController: UserListTableViewCellDelegate {
                     Alert.showAlert(self, error.description)
             }
         }
+    }
+}
+
+// MARK: Helpers
+private extension UserListViewController {
+    func setupUI() {
+        configureTitle()
+        setupBackButton()
+        title = navigationItemTitle
+        view.backgroundColor = SystemColors.backgroundColor
     }
 }

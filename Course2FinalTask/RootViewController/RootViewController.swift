@@ -13,7 +13,6 @@ final class RootViewController: UIViewController {
     private var current: UIViewController
     private var keychain = Keychain.shared
     private var networkService = NetworkService()
-    private let onlineServise = CheckOnlineServise.shared
 
     init() {
         current = LoginScreenViewController()

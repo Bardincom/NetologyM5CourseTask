@@ -22,14 +22,14 @@ protocol GETProtocol {
 class GETService: GETProtocol {
 
     private let urlService: URLServiceProtocol
-    private let requestServise: RequestServiceProtocol
+    private let requestService: RequestServiceProtocol
     private let dataProvider: DataTaskServiceProtocol
 
     init(urlService: URLServiceProtocol = URLService(),
-         requestServise: RequestServiceProtocol = RequestService(),
+         requestService: RequestServiceProtocol = RequestService(),
          dataProvider: DataTaskServiceProtocol = DataTaskService()) {
         self.urlService = urlService
-        self.requestServise = requestServise
+        self.requestService = requestService
         self.dataProvider = dataProvider
     }
 
@@ -37,7 +37,7 @@ class GETService: GETProtocol {
     func getCurrentUser(_ token: String,
                         completionHandler: @escaping ResultBlock<User>) {
         guard let url = urlService.preparationURL(path: UserPath.currentUser) else { return }
-        let request = requestServise.preparationRequest(url, HttpMethod.get, token)
+        let request = requestService.preparationRequest(url, HttpMethod.get, token)
         dataProvider.dataTask(with: request, completionHandler: completionHandler)
     }
 
@@ -46,7 +46,7 @@ class GETService: GETProtocol {
                         _ userID: String,
                         completionHandler: @escaping ResultBlock<User>) {
         guard let url = urlService.preparationURL(path: UserPath.users + userID) else { return }
-        let request = requestServise.preparationRequest(url, HttpMethod.get, token)
+        let request = requestService.preparationRequest(url, HttpMethod.get, token)
         dataProvider.dataTask(with: request, completionHandler: completionHandler)
     }
 
@@ -55,7 +55,7 @@ class GETService: GETProtocol {
                                 _ userID: String,
                                 completionHandler: @escaping ResultBlock<[User]>) {
         guard let url = urlService.preparationURL(path: UserPath.users + "\(userID)" + UserPath.followers) else { return }
-        let request = requestServise.preparationRequest(url, HttpMethod.get, token)
+        let request = requestService.preparationRequest(url, HttpMethod.get, token)
         dataProvider.dataTask(with: request, completionHandler: completionHandler)
     }
 
@@ -64,7 +64,7 @@ class GETService: GETProtocol {
                                 _ userID: String,
                                 completionHandler: @escaping ResultBlock<[User]>) {
         guard let url = urlService.preparationURL(path: UserPath.users + "\(userID)" + UserPath.following) else { return }
-        let request = requestServise.preparationRequest(url, HttpMethod.get, token)
+        let request = requestService.preparationRequest(url, HttpMethod.get, token)
         dataProvider.dataTask(with: request, completionHandler: completionHandler)
     }
 
@@ -73,7 +73,7 @@ class GETService: GETProtocol {
                             _ userID: String,
                             completionHandler: @escaping ResultBlock<[Post]>) {
         guard let url = urlService.preparationURL(path: UserPath.users + "\(userID)" + PostPath.posts) else { return }
-        let request = requestServise.preparationRequest(url, HttpMethod.get, token)
+        let request = requestService.preparationRequest(url, HttpMethod.get, token)
         dataProvider.dataTask(with: request, completionHandler: completionHandler)
     }
 
@@ -81,7 +81,7 @@ class GETService: GETProtocol {
     func getFeedPosts(_ token: String,
                       completionHandler: @escaping ResultBlock<[Post]>) {
         guard let url = urlService.preparationURL(path: PostPath.feed) else { return }
-        let request = requestServise.preparationRequest(url, HttpMethod.get, token)
+        let request = requestService.preparationRequest(url, HttpMethod.get, token)
         dataProvider.dataTask(with: request, completionHandler: completionHandler)
     }
 
@@ -90,7 +90,7 @@ class GETService: GETProtocol {
                          _ postsID: String,
                          completionHandler: @escaping ResultBlock<Post>) {
         guard let url = urlService.preparationURL(path: PostPath.posts + postsID) else { return }
-        let request = requestServise.preparationRequest(url, HttpMethod.get, token)
+        let request = requestService.preparationRequest(url, HttpMethod.get, token)
         dataProvider.dataTask(with: request, completionHandler: completionHandler)
     }
 
@@ -99,7 +99,7 @@ class GETService: GETProtocol {
                                    _ postID: String,
                                    completionHandler: @escaping ResultBlock<[User]>) {
         guard let url = urlService.preparationURL(path: PostPath.posts + "\(postID)" + PostPath.likes) else { return }
-        let request = requestServise.preparationRequest(url, HttpMethod.get, token)
+        let request = requestService.preparationRequest(url, HttpMethod.get, token)
         dataProvider.dataTask(with: request, completionHandler: completionHandler)
     }
 }

@@ -21,7 +21,9 @@ final class ProfileCollectionViewCell: UICollectionViewCell {
         guard
             let postImage = postOffline.image,
             let image = UIImage(data: postImage)
-            else { return }
+        else {
+            return
+        }
         imageView.image = image
     }
 }

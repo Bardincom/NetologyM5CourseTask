@@ -17,10 +17,10 @@ final class URLComponentsService: URLComponentsProtocol {
     private let scheme = "http"
     private let host = "localhost"
     private let port = 8080
-    private let onlineServise = CheckOnlineServise.shared
+    private let onlineService = CheckOnlineService.shared
 
     func preparationURLComponents(path: String) -> URLComponents? {
-        guard onlineServise.isOnline else { return nil }
+        guard onlineService.isOnline else { return nil }
         var urlComponents = URLComponents()
         urlComponents.scheme = scheme
         urlComponents.host = host

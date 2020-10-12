@@ -28,7 +28,7 @@ class CoreDataService {
         return userOfflineService
     }
 
-    func fetchData<T: NSManagedObject>(for: T.Type, hendler: @escaping ([T]) -> Void) {
-        hendler(coreDataManager.fetchData(for: T.self))
+    func fetchData<T: NSManagedObject>(for: T.Type, handler: @escaping ([T]) -> Void) {
+        handler(coreDataManager.fetchData(for: T.self))
     }
 }

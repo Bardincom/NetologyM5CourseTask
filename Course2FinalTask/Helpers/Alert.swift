@@ -13,10 +13,10 @@ final class Alert {
 
     /// Выводит предупреждение в случае ошибки при авторизации
     /// - Parameter viewController: передаем контроллер, в котором необходимо показать предупреждение
-    /// - Parameter massage: передаем сообщение.
-    class func showAlert(_ viewController: UIViewController, _ massage: String) {
+    /// - Parameter message: передаем сообщение.
+    class func showAlert(_ viewController: UIViewController, _ message: String) {
         DispatchQueue.main.async {
-            let alert = UIAlertController(title: nil, message: massage, preferredStyle: .alert)
+            let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: Localization.Button.ok, style: .default, handler: nil))
             viewController.present(alert, animated: true)
         }

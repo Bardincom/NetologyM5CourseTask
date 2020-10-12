@@ -13,7 +13,7 @@ enum BackendError: Error, CustomStringConvertible {
     case unauthorized // 401
     case notFound // 404
     case notAcceptable // 406
-    case unprocessable // 422
+    case unprocessable // 422 
     case transferError // other error
 
     var description: String {

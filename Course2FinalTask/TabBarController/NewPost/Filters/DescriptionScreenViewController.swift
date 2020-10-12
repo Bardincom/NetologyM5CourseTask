@@ -16,19 +16,24 @@ final class DescriptionScreenViewController: UIViewController {
 
     public var newPublishedPhoto: UIImage?
     private var networkService = NetworkService()
-    private let onlineServise = CheckOnlineServise.shared
+    private let onlineService = CheckOnlineService.shared
     private var keychain = Keychain.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = SystemColors.backgroundColor
+
+        setupUI()
         setupFiltersViewController()
-        setupBackButton()
         setDelegate()
     }
 }
 
 private extension DescriptionScreenViewController {
+
+    func  setupUI() {
+        view.backgroundColor = SystemColors.backgroundColor
+        setupBackButton()
+    }
 
     func setupFiltersViewController() {
         publishedPhoto.image = newPublishedPhoto
@@ -52,7 +57,7 @@ private extension DescriptionScreenViewController {
     }
 
     func sendPost() {
-        guard onlineServise.isOnline else {
+        guard onlineService.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }

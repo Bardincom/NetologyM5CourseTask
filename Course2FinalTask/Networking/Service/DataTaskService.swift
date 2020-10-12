@@ -17,7 +17,7 @@ class DataTaskService: DataTaskServiceProtocol {
     private let sharedSession = URLSession.shared
     private let decoder = JSONDecoder()
     private let dateFormatter: DateFormatter = .createdTime
-    private let onlineServise = CheckOnlineServise.shared
+    private let onlineService = CheckOnlineService.shared
 
     init() {
         decoder.dateDecodingStrategy = .formatted(dateFormatter)
@@ -28,7 +28,7 @@ class DataTaskService: DataTaskServiceProtocol {
         let dataTask = sharedSession.dataTask(with: request) { [weak self] (data, response, error) in
             guard let self = self else { return }
             if let error = error {
-                self.onlineServise.isOnline = false
+                self.onlineService.isOnline = false
                 print("Возникла ошибка: \(error.localizedDescription)")
             }
 
@@ -78,10 +78,10 @@ class DataTaskService: DataTaskServiceProtocol {
 
             let backendError = BackendError.transferError
             completionHandler(.failure(backendError))
-            onlineServise.isOnline = false
+            onlineService.isOnline = false
             ActivityIndicator.stop()
             return nil}
-        onlineServise.isOnline = true
+        onlineService.isOnline = true
         return httpResponse
     }
 }

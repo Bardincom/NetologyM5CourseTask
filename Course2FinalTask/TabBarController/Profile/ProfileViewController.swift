@@ -22,7 +22,7 @@ final class ProfileViewController: UIViewController {
     var currentUser: User?
     private let keychain = Keychain.shared
     private let networkService = NetworkService()
-    private let onlineServise = CheckOnlineServise.shared
+    private let onlineService = CheckOnlineService.shared
     private var postsProfile = [Post]()
     lazy var rootViewController = AppDelegate.shared.rootViewController
     private var coreDataService = CoreDataService()
@@ -43,27 +43,22 @@ final class ProfileViewController: UIViewController {
         super.viewWillAppear(animated)
         guard checkOnlineSession() else { return }
 
-        if let userID = feedUserID {
-            loadUserByProfile(userID)
-            setupBackButton()
-        } else {
-            loadCurrentUser()
-        }
+        setupUser()
     }
 }
 
-// MARK: DataSourse
+// MARK: DataSource
 extension ProfileViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return onlineServise.isOnline ? postsProfile.count : offlinePostsProfile.count
+        return onlineService.isOnline ? postsProfile.count : offlinePostsProfile.count
     }
 
     /// установка изображений
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(cell: ProfileCollectionViewCell.self, for: indexPath)
 
-        if onlineServise.isOnline {
+        if onlineService.isOnline {
             let post = postsProfile.sorted { $0.createdTime > $1.createdTime }[indexPath.row]
             cell.setImageCell(post: post)
         } else {
@@ -83,7 +78,7 @@ extension ProfileViewController: UICollectionViewDataSource {
                                           kind: kind,
                                           for: indexPath)
 
-        if onlineServise.isOnline {
+        if onlineService.isOnline {
             guard let userProfile = userProfile else { return view }
             view.setHeader(user: userProfile)
         } else {
@@ -116,6 +111,15 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
 // MARK: setViewController
 extension ProfileViewController {
 
+    func setupUser() {
+        guard let userID = feedUserID else {
+            loadCurrentUser()
+            return
+        }
+        loadUserByProfile(userID)
+        setupBackButton()
+    }
+
     func updateUI() {
         DispatchQueue.main.async {
             ActivityIndicator.stop()
@@ -139,20 +143,20 @@ extension ProfileViewController {
 
     @objc
     private func logout() {
-        guard onlineServise.isOnline else {
+        guard onlineService.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
 
         guard let token = keychain.readToken() else { return }
-        networkService.authorization().signout(token) { _ in }
+        networkService.authorization().signOut(token) { _ in }
         keychain.deleteToken()
         rootViewController.switchToLogout()
     }
 
     /// Загрузка профиля друга из ленты
     func loadUserByProfile(_ userID: String) {
-        guard onlineServise.isOnline else {
+        guard onlineService.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -189,7 +193,7 @@ extension ProfileViewController {
 
     /// Загрузка профиля текущего пользователя
     func loadCurrentUser() {
-        guard onlineServise.isOnline else {
+        guard onlineService.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
@@ -206,7 +210,7 @@ extension ProfileViewController {
                 case .success(let currentUser):
                     self.userProfile = currentUser
 
-                    // Сохраняются данные текущего пользователя в core data
+                    // Сохраняются данные текущего пользователя в coredata
                     self.coreDataService.saveOfflineUser().saveCurrentUserOffline(user: currentUser)
 
                     self.networkService.getRequest().getPostsWithUserID(token, currentUser.id) { [weak self] result in
@@ -231,13 +235,12 @@ extension ProfileViewController {
 extension ProfileViewController: ProfileHeaderDelegate {
     /// Открывает список подписчиков
     func openFollowersList() {
-        guard onlineServise.isOnline else {
+        guard onlineService.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
 
         guard let token = keychain.readToken() else { return }
-        ActivityIndicator.start()
 
         let userListViewController = UserListViewController()
         guard let userID = userProfile?.id else { return }
@@ -251,7 +254,6 @@ extension ProfileViewController: ProfileHeaderDelegate {
                         userListViewController.usersList = users
                         userListViewController.navigationItemTitle = Localization.Names.followers
                         self.navigationController?.pushViewController(userListViewController, animated: true)
-                        ActivityIndicator.stop()
                     }
                 case .failure(let error):
                     Alert.showAlert(self, error.description)
@@ -261,13 +263,12 @@ extension ProfileViewController: ProfileHeaderDelegate {
 
     /// Открывает список подписок
     func openFollowingList() {
-        guard onlineServise.isOnline else {
+        guard onlineService.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
 
         guard let token = keychain.readToken() else { return }
-        ActivityIndicator.start()
 
         let userListViewController = UserListViewController()
 
@@ -282,7 +283,6 @@ extension ProfileViewController: ProfileHeaderDelegate {
                         userListViewController.usersList = users
                         userListViewController.navigationItemTitle = Localization.Names.following
                         self.navigationController?.pushViewController(userListViewController, animated: true)
-                        ActivityIndicator.stop()
                     }
                 case .failure(let error):
                     Alert.showAlert(self, error.description)
@@ -292,47 +292,24 @@ extension ProfileViewController: ProfileHeaderDelegate {
 
     /// Подписывает и отписывает текущего пользователя от друзей
     func followUnfollowUser() {
-        guard onlineServise.isOnline else {
+        guard onlineService.isOnline else {
             Alert.showAlert(self, BackendError.transferError.description)
             return
         }
 
         guard
             let token = keychain.readToken(),
-            let userProfile = userProfile else { return }
-
-        guard userProfile.currentUserFollowsThisUser else {
-            networkService.postRequest().followCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
-                guard let self = self else { return }
-
-                switch result {
-                    case .success(let user):
-                        self.userProfile = user
-                        DispatchQueue.main.async {
-                            self.currentUser?.followedByCount += 1
-                            self.profileCollectionView.reloadData()
-                        }
-                    case .failure(let error):
-                        Alert.showAlert(self, error.description)
-                }
-            }
+            let userProfile = userProfile
+        else {
             return
         }
 
-        networkService.postRequest().unfollowCurrentUserWithUserID(token, userProfile.id) { [weak self] result in
-            guard let self = self else { return }
-
-            switch result {
-                case .success(let user):
-                    self.userProfile = user
-                    DispatchQueue.main.async {
-                        self.currentUser?.followsCount -= 1
-                        self.profileCollectionView.reloadData()
-                    }
-                case .failure(let error):
-                    Alert.showAlert(self, error.description)
-            }
+        guard userProfile.currentUserFollowsThisUser else {
+            followCurrentUserWithUserID(token, userProfile.id)
+            return
         }
+
+        unfollowCurrentUserWithUserID(token, userProfile.id)
     }
 }
 
@@ -356,8 +333,43 @@ extension ProfileViewController: UITabBarControllerDelegate {
 }
 
 extension ProfileViewController {
+
+    func followCurrentUserWithUserID(_ token: String, _ userID: String) {
+        networkService.postRequest().followCurrentUserWithUserID(token, userID) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+                case .success(let user):
+                    self.userProfile = user
+                    DispatchQueue.main.async {
+                        self.currentUser?.followedByCount += 1
+                        self.profileCollectionView.reloadData()
+                    }
+                case .failure(let error):
+                    Alert.showAlert(self, error.description)
+            }
+        }
+    }
+
+    func unfollowCurrentUserWithUserID(_ token: String, _ userID: String) {
+        networkService.postRequest().unfollowCurrentUserWithUserID(token, userID) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+                case .success(let user):
+                    self.userProfile = user
+                    DispatchQueue.main.async {
+                        self.currentUser?.followsCount -= 1
+                        self.profileCollectionView.reloadData()
+                    }
+                case .failure(let error):
+                    Alert.showAlert(self, error.description)
+            }
+        }
+    }
+
     func checkOnlineSession() -> Bool {
-        guard onlineServise.isOnline else {
+        guard onlineService.isOnline else {
 
             coreDataService.fetchData(for: UserOffline.self) { [weak self] userOffline in
                 self?.offlineCurrentUser = userOffline.first

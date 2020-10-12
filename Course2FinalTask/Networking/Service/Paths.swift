@@ -14,8 +14,8 @@ enum HttpMethod {
 }
 
 enum TokenPath {
-    static let signin = "/signin"
-    static let signout = "/signout"
+    static let signIn = "/signin"
+    static let signOut = "/signout"
     static let check = "/checkToken"
 }
 

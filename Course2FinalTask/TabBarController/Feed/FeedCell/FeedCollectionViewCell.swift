@@ -66,12 +66,19 @@ final class FeedCollectionViewCell: UICollectionViewCell {
 
         guard
             let avatar = post.authorAvatar,
-            let avatarImage = UIImage(data: avatar) else { return }
+            let avatarImage = UIImage(data: avatar)
+        else {
+            return
+        }
         avatarImageView.image = avatarImage
+        avatarImageView.layer.cornerRadius = avatarImageView.frame.height / 2
 
         guard
             let image = post.image,
-            let postImage = UIImage(data: image) else { return }
+            let postImage = UIImage(data: image)
+        else {
+            return
+        }
         imageView.image = postImage
     }
 }
@@ -95,7 +102,7 @@ extension FeedCollectionViewCell {
     }
 
     @objc
-    private func doudleLikeTap() {
+    private func doubleLikeTap() {
         UIView.animate(withDuration: 0.1,
                        delay: 0.0,
                        options: [.curveLinear],
@@ -130,7 +137,7 @@ private extension FeedCollectionViewCell {
 private extension FeedCollectionViewCell {
     func setupTapGestureRecognizer() {
         /// жест по картинке для лайка
-        let gestureImageTap = UITapGestureRecognizer(target: self, action: #selector(doudleLikeTap))
+        let gestureImageTap = UITapGestureRecognizer(target: self, action: #selector(doubleLikeTap))
         gestureImageTap.numberOfTapsRequired = 2
         imageView.addGestureRecognizer(gestureImageTap)
 
@@ -142,7 +149,7 @@ private extension FeedCollectionViewCell {
         let gestureAvatarTap = UITapGestureRecognizer(target: self, action: #selector(goToProfile))
         avatarImageView.addGestureRecognizer(gestureAvatarTap)
 
-        /// жест для перехода по имени и дате(использовал SteakView)
+        /// жест для перехода по имени и дате(использовал StackView)
         let gestureNameTap = UITapGestureRecognizer(target: self, action: #selector(goToProfile))
         containerStackView.addGestureRecognizer(gestureNameTap)
 
