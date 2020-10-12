@@ -66,6 +66,7 @@
 Перед запуском вам необходимо установить **Vapor**. Это фреймворк для создания веб серверов на Swift. Для его установки можно воспользоваться пакетным менеджером **brew**. Если у вас его еще нет выполните в терминале эту команду **/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"**
 
 Далее воспользуйтесь командой **brew install vapor/tap/vapor** для установки самого фреймворка.
+Если не установлена libressl произведите установку **brew install libressl**
 
 Для установки выполнить команду в директории проекта:
 sudo xattr -d com.apple.quarantine Run(файл Run должен быть в папке с проектом)
