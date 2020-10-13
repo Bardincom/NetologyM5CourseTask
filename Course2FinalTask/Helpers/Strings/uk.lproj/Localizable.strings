@@ -1,0 +1,58 @@
+/*
+  Localizable.string.swift
+  Course3FinalTask
+
+  Created by Aleksey Bardin on 09.10.2020.
+  Copyright © 2020 Bardincom. All rights reserved.
+*/
+
+//import Foundation
+
+// MARK: Controller
+
+"Controller.Feed" = "Стрічка";
+"Controller.Profile" = "Профіль";
+"Controller.Add Post" = "Додати пост";
+
+// MARK: Names
+
+"Names.FeedTitle" = "Instagram";
+"Names.Likes" = "Вподобань";
+"Names.Followers" = "Читачі";
+"Names.Following" = "Стежать";
+"Names.New Post" = "Нова публікація";
+"Names.Filters" = "Фільтри";
+"Names.Description" = "Опис";
+
+// MARK: Placeholder
+
+"Placeholder.Login" = "Ім'я користувача";
+"Placeholder.Password" = "Пароль";
+"Placeholder.Description" = "Додайте опис";
+
+// MARK: Button
+
+"Button.Unfollow" = "Відстежується";
+"Button.Follow" =  "Стежити";
+"Button.SignIn" = "Увійти";
+"Button.OK" = "Добре";
+
+// MARK: Error
+
+"Error.Not found" = "Не знайдений";
+"Error.Bad request" = "Невірний запит";
+"Error.Unauthorized" = "Не авторизований";
+"Error.Not acceptable" = "Неприйнятно";
+"Error.Unprocessable" = "Невірний логін або пароль";
+"Error.Offline mode" = "Режим без мережі";
+
+// MARK: Filter
+
+"Filter.Normal" = "Без змін";
+"Filter.BoxBlur" = "Розмиття";
+"Filter.ColorInvert" = "Інверсия";
+"Filter.Noir" = "Нуар";
+"Filter.SpotColor" = "Точковий";
+"Filter.Tonal" = "Тональний";
+"Filter.Pixellate" = "В пікселях";
+"Filter.Sepia" = "Сепія";

@@ -9,140 +9,125 @@
 import UIKit
 
 protocol ProfileHeaderDelegate: class {
-  func openFollowersList()
-  func openFollowingList()
-  func followUnfollowUser()
+    func openFollowersList()
+    func openFollowingList()
+    func followUnfollowUser()
 }
 
 final class ProfileHeaderCollectionReusableView: UICollectionReusableView {
 
-  @IBOutlet private var avatarImage: UIImageView!
-  @IBOutlet private var fullNameLabel: UILabel!
-  @IBOutlet private var followersLabel: UILabel!
-  @IBOutlet private var followingLabel: UILabel!
-  @IBOutlet private var followButton: UIButton!
+    @IBOutlet private var avatarImage: UIImageView!
+    @IBOutlet private var fullNameLabel: UILabel!
+    @IBOutlet private var followersLabel: UILabel!
+    @IBOutlet private var followingLabel: UILabel!
+    @IBOutlet private var followButton: UIButton!
 
-  var currentUser: User?
-  private let session = SessionProvider.shared
-  private let keychain = Keychain.shared
+    var currentUser: User?
 
-  weak var delegate: ProfileHeaderDelegate?
+    private let networkService = NetworkService()
+    private let keychain = Keychain.shared
 
-  override func awakeFromNib() {
-    super.awakeFromNib()
-    guard let token = keychain.readToken() else { return }
+    weak var delegate: ProfileHeaderDelegate?
 
-    session.getCurrentUser(token) { [weak self] currentUser in
-      guard let self = self else { return }
-      switch currentUser {
-        case .success(let currentUser):
-          self.currentUser = currentUser
-        case .fail( _):
-          break
-      }
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        checkCurrentUser()
+        followButton.layer.cornerRadius = 6
+        setupTapGestureRecognizer()
     }
 
-    followButton.layer.cornerRadius = 6
-    setupTapGestureRecognizer()
-  }
+    func setHeader(user: User) {
+        avatarImage.kf.setImage(with: user.avatar)
+        avatarImage.layer.cornerRadius = avatarImage.frame.height / 2
+        fullNameLabel.alpha = 1
+        fullNameLabel.font = Fonts.systemsFont
+        fullNameLabel.text = user.fullName
+        followersLabel.alpha = 1
+        followersLabel.font = Fonts.systemsBoldFont
+        followersLabel.text = "\(Localization.Names.followers): \(user.followedByCount)"
+        followingLabel.alpha = 1
+        followingLabel.font = Fonts.systemsBoldFont
+        followingLabel.text = "\(Localization.Names.following): \(user.followsCount)"
 
-  func setHeader(user: User) {
-    avatarImage.kf.setImage(with: user.avatar)
-    avatarImage.layer.cornerRadius = avatarImage.frame.height / 2
-    fullNameLabel.alpha = 1
-    fullNameLabel.font = systemsFont
-    fullNameLabel.text = user.fullName
-    followersLabel.alpha = 1
-    followersLabel.font = systemsBoldFont
-    followersLabel.text = "Followers: \(user.followedByCount)"
-    followingLabel.alpha = 1
-    followingLabel.font = systemsBoldFont
-    followingLabel.text = "Following: \(user.followsCount)"
-
-    buttonDisplay(user: user)
-
-  }
-
-  func buttonDisplay(user: User) {
-
-    if user.currentUserFollowsThisUser {
-      followButton.isHidden = false
-      followButton.setTitle("Unfollow", for: .normal)
-      followButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
-    } else {
-      followButton.isHidden = false
-      followButton.setTitle("Follow", for: .normal)
-      followButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
+        buttonDisplay(user: user)
     }
 
-    if user.id == currentUser?.id {
-      followButton.isHidden = true
-    }
-  }
+    private func buttonDisplay(user: User) {
 
-  func setHeader(userOffline: UserOffline) {
-    avatarImage.layer.cornerRadius = avatarImage.frame.height / 2
-    fullNameLabel.alpha = 1
-    fullNameLabel.font = systemsFont
-    fullNameLabel.text = userOffline.fullName
-    followersLabel.alpha = 1
-    followersLabel.font = systemsBoldFont
-    followersLabel.text = "Followers: \(userOffline.followedByCount)"
-    followingLabel.alpha = 1
-    followingLabel.font = systemsBoldFont
-    followingLabel.text = "Following: \(userOffline.followsCount)"
+        if user.currentUserFollowsThisUser {
+            followButton.isHidden = false
+            followButton.setTitle("\(Localization.Button.unfollow)", for: .normal)
+            followButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
+        } else {
+            followButton.isHidden = false
+            followButton.setTitle("\(Localization.Button.follow)", for: .normal)
+            followButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
+        }
 
-    guard
-      let avatarData = userOffline.avatar,
-      let userAvatarImage = UIImage(data: avatarData) else { return }
-    avatarImage.image = userAvatarImage
-
-    buttonDisplay(userOffline: userOffline)
-
-  }
-
-  func buttonDisplay(userOffline: UserOffline) {
-
-    if userOffline.currentUserFollowsThisUser {
-      followButton.isHidden = false
-      followButton.setTitle("Unfollow", for: .normal)
-      followButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
-    } else {
-      followButton.isHidden = false
-      followButton.setTitle("Follow", for: .normal)
-      followButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
+        if user.id == currentUser?.id {
+            followButton.isHidden = true
+        }
     }
 
-      followButton.isHidden = true
-  }
+    func setHeader(userOffline: UserOffline) {
+        avatarImage.layer.cornerRadius = avatarImage.frame.height / 2
+        fullNameLabel.alpha = 1
+        fullNameLabel.font = Fonts.systemsFont
+        fullNameLabel.text = userOffline.fullName
+        followersLabel.alpha = 1
+        followersLabel.font = Fonts.systemsBoldFont
+        followersLabel.text = "\(Localization.Names.followers): \(userOffline.followedByCount)"
+        followingLabel.alpha = 1
+        followingLabel.font = Fonts.systemsBoldFont
+        followingLabel.text = "\(Localization.Names.following): \(userOffline.followsCount)"
 
+        guard
+            let avatarData = userOffline.avatar,
+            let userAvatarImage = UIImage(data: avatarData) else { return }
+        avatarImage.image = userAvatarImage
+
+    }
+
+    func checkCurrentUser() {
+        guard let token = keychain.readToken() else { return }
+
+        networkService.getRequest().getCurrentUser(token) { [weak self] currentUser in
+            guard let self = self else { return }
+            switch currentUser {
+                case .success(let currentUser):
+                    self.currentUser = currentUser
+                case .failure( _):
+                    break
+            }
+        }
+    }
 }
 
 // MARK: Selector
 extension ProfileHeaderCollectionReusableView {
 
-  @objc
-  func followersTap() {
-    delegate?.openFollowersList()
-  }
+    @objc
+    func followersTap() {
+        delegate?.openFollowersList()
+    }
 
-  @objc
-  func followingTap() {
-    delegate?.openFollowingList()
-  }
+    @objc
+    func followingTap() {
+        delegate?.openFollowingList()
+    }
 
-  @IBAction func followButtonAction(_ sender: UIButton) {
-    delegate?.followUnfollowUser()
-  }
+    @IBAction func followButtonAction(_ sender: UIButton) {
+        delegate?.followUnfollowUser()
+    }
 }
 
 // MARK: TapGestureRecognizer
 private extension ProfileHeaderCollectionReusableView {
-  func setupTapGestureRecognizer() {
-    let gestureFollowersTap = UITapGestureRecognizer(target: self, action: #selector(followersTap))
-    followersLabel.addGestureRecognizer(gestureFollowersTap)
+    func setupTapGestureRecognizer() {
+        let gestureFollowersTap = UITapGestureRecognizer(target: self, action: #selector(followersTap))
+        followersLabel.addGestureRecognizer(gestureFollowersTap)
 
-    let gestureFollowingTap = UITapGestureRecognizer(target: self, action: #selector(followingTap))
-    followingLabel.addGestureRecognizer(gestureFollowingTap)
-  }
+        let gestureFollowingTap = UITapGestureRecognizer(target: self, action: #selector(followingTap))
+        followingLabel.addGestureRecognizer(gestureFollowingTap)
+    }
 }

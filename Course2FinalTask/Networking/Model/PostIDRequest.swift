@@ -9,5 +9,5 @@
 import Foundation
 
 struct PostIDRequest: Encodable {
-  let postID: String
+    let postID: String
 }

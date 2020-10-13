@@ -10,24 +10,23 @@ import UIKit
 
 final class FiltersCollectionViewCell: UICollectionViewCell {
 
-  @IBOutlet var thumbnailPhoto: UIImageView!
-  @IBOutlet var filterNameLabel: UILabel!
+    @IBOutlet var thumbnailPhoto: UIImageView!
+    @IBOutlet var filterNameLabel: UILabel!
 
-  let operationQueue = OperationQueue()
+    func setFilter(_ name: Filters.Filter, for photo: UIImage) {
+        let operationQueue = OperationQueue()
 
-  func setFilter(_ name: String, for photo: UIImage) {
+        self.filterNameLabel.text = name.description
+        let filterOperation = ImageFilterOperation(inputImage: photo, filter: name)
 
-    self.filterNameLabel.text = name
-    let filterOperation = ImageFilterOperation(inputImage: photo, filter: name)
+        filterOperation.completionBlock = { [ weak self] in
+            guard let self = self else { return }
 
-    filterOperation.completionBlock = { [ weak self] in
-      guard let self = self else { return }
-
-      OperationQueue.main.addOperation {
-        self.thumbnailPhoto.image = photo.resizedImage()
-        self.thumbnailPhoto.image = filterOperation.outputImage
-      }
+            OperationQueue.main.addOperation {
+                self.thumbnailPhoto.image = photo.resizedImage()
+                self.thumbnailPhoto.image = filterOperation.outputImage
+            }
+        }
+        operationQueue.addOperation((filterOperation))
     }
-    operationQueue.addOperation((filterOperation))
-  }
 }
